@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Raycast : MonoBehaviour {
+public class PlayerCamera : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -19,9 +19,13 @@ public class Raycast : MonoBehaviour {
 
             if (Physics.Raycast(ray, out hit, 100))
             {
-                //Debug.DrawLine(ray.origin, hit.point);
-                GameObject.Find("Ethan").transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-                //(hit.point);
+                //GameObject.Find("Player").transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
+                // Set a waypoint, player update will move the player to the waypoint
+                GameObject waypoint = new GameObject("PlayerWaypoint");
+                waypoint.transform.position = hit.point;
+
+                GameObject.Find("Player").SendMessage("SetWaypoint", waypoint);
+                
             }
             else
                 print("Krscen maticek");
