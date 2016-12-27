@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class WaypointScript : MonoBehaviour {
 
@@ -84,6 +85,13 @@ public class WaypointScript : MonoBehaviour {
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (EventSystem.current.IsPointerOverGameObject() == true)
+            {
+                print("UI clicked");
+                return;
+            }
+
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
