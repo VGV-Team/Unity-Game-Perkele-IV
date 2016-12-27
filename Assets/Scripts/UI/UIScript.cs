@@ -22,6 +22,8 @@ public class UIScript : MonoBehaviour
     private GameObject UIXPValueLabel;
 
 
+    private GameObject UIAbility1Bar;
+    private GameObject UIAbility2Bar;
 
 
     // Use this for initialization
@@ -37,16 +39,24 @@ public class UIScript : MonoBehaviour
         UIFuryValueLabel = GameObject.Find("UIFuryValueLabel");
         UIXPBar = GameObject.Find("UIXPBar");
         UIXPValueLabel = GameObject.Find("UIXPValueLabel");
-    }
+
+        UIAbility1Bar = GameObject.Find("UIAbility1Bar");
+        UIAbility2Bar = GameObject.Find("UIAbility2Bar");
+}
 	
 	// Update is called once per frame
 	void Update () {
+
+        UIAbility1Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[0].Cooldown-ActivePlayer.Abilities[0].TimeToReady)/ ActivePlayer.Abilities[0].Cooldown), 1);
+        UIAbility2Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[1].Cooldown - ActivePlayer.Abilities[1].TimeToReady)/ActivePlayer.Abilities[1].Cooldown), 1);
+
         UpdateUIBars();
     }
 
 
     private void UpdateUIBars()
     {
+        // Update Hp bar
         if (ActivePlayer.MaxHP > 0)
         {
             float HPScale = ActivePlayer.HP / (float)ActivePlayer.MaxHP;
@@ -59,6 +69,7 @@ public class UIScript : MonoBehaviour
         }
         UIHPValueLabel.GetComponent<Text>().text = ActivePlayer.HP + " / " + ActivePlayer.MaxHP;
 
+        // Update Shield bar
         if (ActivePlayer.MaxShield > 0)
         {
             float shieldScale = ActivePlayer.Shield / (float)ActivePlayer.MaxShield;
@@ -71,6 +82,7 @@ public class UIScript : MonoBehaviour
         }
         UIShieldValueLabel.GetComponent<Text>().text = ActivePlayer.Shield + " / " + ActivePlayer.MaxShield;
 
+        // Update Mana bar
         if (ActivePlayer.MaxMana > 0)
         {
             float manaScale = ActivePlayer.Mana / (float)ActivePlayer.MaxMana;
@@ -83,6 +95,7 @@ public class UIScript : MonoBehaviour
         }
         UIManaValueLabel.GetComponent<Text>().text = ActivePlayer.Mana + " / " + ActivePlayer.MaxMana;
 
+        // Update Fury bar
         if (ActivePlayer.MaxFury > 0)
         {
             float furyScale = ActivePlayer.Fury / (float)ActivePlayer.MaxFury;
@@ -95,7 +108,7 @@ public class UIScript : MonoBehaviour
         }
         UIFuryValueLabel.GetComponent<Text>().text = ActivePlayer.Fury + " / " + ActivePlayer.MaxFury;
 
-
+        // Update Xp bar
         if (ActivePlayer.MaxXp > 0)
         {
             float XPScale = ActivePlayer.Xp / (float)ActivePlayer.MaxXp;
@@ -110,16 +123,32 @@ public class UIScript : MonoBehaviour
     }
 
 
+
+    #region Test
+
+
+    public void TestAbility1()
+    {
+        GameObject.Find("Player").GetComponent<PlayerScript>().Abilities[0].Use();
+    }
+
+    public void TestMovement()
+    {
+        GameObject.Find("Enemy").GetComponent<UnitScript>().SetWaypoint(GameObject.Find("Player").transform.position);
+    }
+
     public Text MoneyText;
     public void SpendMoneyOnClick()
-	{
-		print("qwe");
-		MoneyText.text = ""+ (int.Parse(MoneyText.text) - 10);
-	}
+    {
+        MoneyText.text = "" + (int.Parse(MoneyText.text) - 10);
+    }
 
-	public void GetMoneyOnClick()
-	{
-		MoneyText.text = "" + (int.Parse(MoneyText.text) + 1);
-	}
+    public void GetMoneyOnClick()
+    {
+        MoneyText.text = "" + (int.Parse(MoneyText.text) + 1);
+    }
+
+    #endregion
+
 
 }
