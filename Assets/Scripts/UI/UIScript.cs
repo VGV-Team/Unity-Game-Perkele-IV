@@ -126,6 +126,10 @@ public class UIScript : MonoBehaviour
 
     #region Test
 
+    public void TestPopup()
+    {
+        
+    }
 
     public void TestAbility1()
     {
@@ -134,7 +138,7 @@ public class UIScript : MonoBehaviour
 
     public void TestMovement()
     {
-        GameObject.Find("Enemy").GetComponent<UnitScript>().SetWaypoint(GameObject.Find("Player").transform.position);
+        GameObject.Find("Enemy").GetComponent<UnitScript>().SetWaypoint(GameObject.Find("Player"));
     }
 
     public Text MoneyText;

@@ -665,8 +665,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4045018148785348}
   - component: {fileID: 65846583454426828}
-  - component: {fileID: 114758141987507638}
   - component: {fileID: 195348606232491810}
+  - component: {fileID: 114372385700741750}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -1856,7 +1856,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &114758141987507638
+--- !u!114 &114372385700741750
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1864,7 +1864,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1909158660889012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7b350d91b370b14c9c1bda4c26a8bc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 245a0060d3996f943b1330ccd4579e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Name: 
@@ -1884,8 +1884,9 @@ MonoBehaviour:
   Level: 0
   Xp: 0
   MaxXp: 0
+  Target: {fileID: 0}
   waypoint: {fileID: 0}
-  SampleWaypointPosition: 0
+  ViewRange: 0
 --- !u!137 &137868078272822770
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

@@ -23,6 +23,8 @@ public class UnitScript : EntityScript
     public int Xp;
     public int MaxXp;
 
+    public GameObject Target;
+
     // public Waypoint DestinationWaypoint
     public List<AbilityScript> Abilities;
 
@@ -31,7 +33,7 @@ public class UnitScript : EntityScript
         base.Start();
 
         Abilities = new List<AbilityScript>();
-
+        
         MovementInit();
     }
 
@@ -40,6 +42,7 @@ public class UnitScript : EntityScript
         UpdateAbilities();
 
         UpdateMovement();
+   
     }
 
 
@@ -51,17 +54,17 @@ public class UnitScript : EntityScript
         }
     }
 
-
-
+    
     public GameObject waypoint;
-    public bool SampleWaypointPosition;
+    bool SampleWaypointPosition;
     bool walkAnim;
-    private Transform model; // TODO: Should we move model or player?
+    Transform model; // TODO: Should we move model or player?
     //private Animation animation;
-    private float animationFadeFactor;
+    float animationFadeFactor;
 
     void MovementInit()
     {
+        Target = null;
         waypoint = null;
         walkAnim = false;
         animationFadeFactor = 0.15f;
@@ -69,27 +72,26 @@ public class UnitScript : EntityScript
         //animation = model.GetComponent<Animation>();
     }
 
+    // TODO: split logic for movement and attacking/actions
     void UpdateMovement()
     {
-        if (model == null) return;
         if (waypoint)
         {
+            if (Target != null)
+            {
+                waypoint.transform.position = Target.transform.position;
+            }
             model.GetComponent<NavMeshAgent>().SetDestination(waypoint.transform.position);
 
 
             if (!walkAnim)
             {
-                //this.GetComponent<Animator>().CrossFade("walk", 0.15f);
-                model.transform.FindChild("Model").GetComponent<Animation>().CrossFade("run", animationFadeFactor);
-                walkAnim = true;
+                StartMovement();
             }
 
-            if (Vector3.Distance(model.transform.position, waypoint.transform.position) < 0.2f)
+            if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f)
             {
-                //this.GetComponent<Animator>().CrossFade("idle", 0.15f);
-                model.transform.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
-                walkAnim = false;
-                Destroy(waypoint);
+                StopMovement();
             }
         }
         else
@@ -98,8 +100,32 @@ public class UnitScript : EntityScript
         }
     }
 
+
+    public void StopMovement()
+    {
+        //this.GetComponent<Animator>().CrossFade("idle", 0.15f);
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
+        walkAnim = false;
+        Destroy(waypoint);
+    }
+
+    public void StartMovement()
+    {
+        //this.GetComponent<Animator>().CrossFade("walk", 0.15f);
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("run", animationFadeFactor);
+        walkAnim = true;
+    }
+
+
+    public void SetWaypoint(GameObject target)
+    {
+        SetWaypoint(target.transform.position);
+        this.Target = target;
+    }
+
     public void SetWaypoint(Vector3 point)
     {
+        Target = null;
         if (this.waypoint != null) Destroy(this.waypoint);
 
         // Set a waypoint, player update will move the player to the waypoint

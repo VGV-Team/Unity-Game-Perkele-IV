@@ -43,7 +43,7 @@ public class InputHandlerScript : MonoBehaviour
             
             if (HoveredObject != null)
             {
-                PlayerWaypointScript.SetWaypoint(HoveredObject.transform.position);
+                PlayerWaypointScript.SetWaypoint(HoveredObject);
                 print("Moving to object!");
                 //SetWaypoint(mouseOverObject.transform.position);
                 //Destination = HoveredObject.transform.position;
