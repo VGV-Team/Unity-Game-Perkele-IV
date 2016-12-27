@@ -12,14 +12,20 @@ public class WaypointScript : MonoBehaviour {
 
     private Transform model;
     private GameObject camera;
+    private Animation animation;
+
+    private float animationFadeFactor;
 
 	// Use this for initialization
 	void Start () {
         waypoint = null;
         walkAnim = false;
 
+        animationFadeFactor = 0.15f;
+
         model = this.transform.FindChild("Model");
         camera = GameObject.Find("Main Camera");
+        animation = model.GetComponent<Animation>();
     }
 	
 	// Update is called once per frame
@@ -35,13 +41,15 @@ public class WaypointScript : MonoBehaviour {
 
             if (!walkAnim)
             {
-                this.GetComponent<Animator>().CrossFade("walk", 0.15f);
+                //this.GetComponent<Animator>().CrossFade("walk", 0.15f);
+                animation.CrossFade("run", animationFadeFactor);
                 walkAnim = true;
             }
 
             if (Vector3.Distance(model.transform.position, waypoint.transform.position) < 0.1f)
             {
-                this.GetComponent<Animator>().CrossFade("idle", 0.15f);
+                //this.GetComponent<Animator>().CrossFade("idle", 0.15f);
+                animation.CrossFade("idle", animationFadeFactor);
                 walkAnim = false;
                 Destroy(waypoint);
             }
@@ -58,10 +66,18 @@ public class WaypointScript : MonoBehaviour {
 
 
     // Set a waypoint for this ovbject to move to
-    public void SetWaypoint(GameObject w)
+    public void SetWaypoint(Vector3 point)
     {
         if (this.waypoint != null) Destroy(this.waypoint);
-        this.waypoint = w;
+
+        // Set a waypoint, player update will move the player to the waypoint
+        GameObject waypointTmp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        waypointTmp.name = "PlayerWaypoint";
+        waypointTmp.GetComponent<Renderer>().material.color = Color.red;
+        waypointTmp.GetComponent<Collider>().enabled = false;
+        waypointTmp.transform.position = point;
+
+        this.waypoint = waypointTmp;
     }
 
     void CheckMouseClick()
@@ -71,34 +87,39 @@ public class WaypointScript : MonoBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 100) && hit.transform.tag == "Terrain") // TODO: chack for Enemy, Item, Chest tag
+            if (Physics.Raycast(ray, out hit, 100)) // TODO: chack for Enemy, Item, Chest tag
             {
 
-                // Check if we clicked on unwalkable terrain ('blocked')
-                NavMeshHit nmHit;
-                bool blocked = NavMesh.Raycast(Camera.main.transform.position, hit.point, out nmHit, NavMesh.AllAreas);
-
-                if (blocked)
+                switch(hit.transform.tag)
                 {
-                    print("Blocked!");
-                    return;
+                    case "Terrain":
+                        MoveTo(hit);
+                        break;
+                    default:
+                        print("Not terrain");
+                        break;
                 }
-                //GameObject.Find("Player").transform.position = new Vector3(hit.point.x, hit.point.y, hit.point.z);
-                // Set a waypoint, player update will move the player to the waypoint
-                GameObject waypoint = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                waypoint.name = "PlayerWaypoint";
-                waypoint.GetComponent<Renderer>().material.color = Color.red;
-                waypoint.GetComponent<Collider>().enabled = false;
-                waypoint.transform.position = hit.point;
-
-                SetWaypoint(waypoint);
-
             }
             else
                 print("Krscen maticek");
         }
     }
 
+    private void MoveTo(RaycastHit hit)
+    {
+        // Check if we clicked on unwalkable terrain ('blocked')
+        NavMeshHit nmHit;
+
+        bool blocked = NavMesh.Raycast(Camera.main.transform.position, camera.transform.position, out nmHit, NavMesh.AllAreas);
+
+        if (blocked)
+        {
+            print("Blocked!");
+            return;
+        }
+        
+        SetWaypoint(hit.point);
+    }
 
     /* ***********************+
      * 
