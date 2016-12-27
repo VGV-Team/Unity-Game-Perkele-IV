@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerScript : UnitScript {
+public class MouseOverObjectHandlerScript : MonoBehaviour {
 
+    public GameObject MouseOverObject;
 
 	// Use this for initialization
 	void Start () {
-		
+        MouseOverObject = null;
 	}
 	
 	// Update is called once per frame

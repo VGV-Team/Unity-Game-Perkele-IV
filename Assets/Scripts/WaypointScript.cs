@@ -9,13 +9,18 @@ public class WaypointScript : MonoBehaviour {
     public GameObject waypoint;
     public float MovementSpeed;
 
+    public bool SampleWaypointPosition;
+
     bool walkAnim;
 
     private Transform model;
     private GameObject camera;
     private Animation animation;
+    private GameObject mouseOverObject;
 
     private float animationFadeFactor;
+
+    private Vector3 cameraOffset;
 
 	// Use this for initialization
 	void Start () {
@@ -27,12 +32,16 @@ public class WaypointScript : MonoBehaviour {
         model = this.transform.FindChild("Model");
         camera = GameObject.Find("Main Camera");
         animation = model.GetComponent<Animation>();
+
+        cameraOffset = new Vector3(-0.0f, 8.0f, -8.0f);
     }
 	
 	// Update is called once per frame
 	void Update () {
 
         CheckMouseClick();
+
+        CheckMouseScroll();
 
         // If waypoint for this object exists, move to it!
         if (waypoint)
@@ -47,7 +56,7 @@ public class WaypointScript : MonoBehaviour {
                 walkAnim = true;
             }
 
-            if (Vector3.Distance(model.transform.position, waypoint.transform.position) < 0.1f)
+            if (Vector3.Distance(model.transform.position, waypoint.transform.position) < 0.2f)
             {
                 //this.GetComponent<Animator>().CrossFade("idle", 0.15f);
                 animation.CrossFade("idle", animationFadeFactor);
@@ -61,7 +70,7 @@ public class WaypointScript : MonoBehaviour {
         }
 
         //Center camera to this objects position
-        camera.transform.position = model.position + new Vector3(-0.0f, 8.0f, -7.0f);
+        camera.transform.position = model.position + cameraOffset;
 
     }
 
@@ -91,6 +100,15 @@ public class WaypointScript : MonoBehaviour {
                 return;
             }
 
+            GameObject mouseOverObject = GameObject.Find("MouseOverObject").GetComponent<MouseOverObjectHandlerScript>().MouseOverObject;
+
+            if (mouseOverObject != null)
+            {
+                print("Moving to object!");
+                SetWaypoint(mouseOverObject.transform.position);
+                return;
+            }
+
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -113,20 +131,67 @@ public class WaypointScript : MonoBehaviour {
         }
     }
 
+    private void CheckMouseScroll()
+    {
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
+        {
+            if (cameraOffset.y > 3.0f)
+            {
+                cameraOffset.y -= 0.5f;
+                cameraOffset.z += 0.5f;
+            }
+                
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
+        {
+            if (cameraOffset.y < 10.0f)
+            {
+                cameraOffset.y += 0.5f;
+                cameraOffset.z -= 0.5f;
+            }
+               
+        }
+    }
+
     private void MoveTo(RaycastHit hit)
     {
         // Check if we clicked on unwalkable terrain ('blocked')
         NavMeshHit nmHit;
 
-        bool blocked = NavMesh.Raycast(Camera.main.transform.position, camera.transform.position, out nmHit, NavMesh.AllAreas);
+        //bool blocked = NavMesh.Raycast(Camera.main.transform.position, camera.transform.position, out nmHit, NavMesh.AllAreas);
 
-        if (blocked)
+        // Samples to the nearest "Walkable" area postion. 3rd param
+
+        if (SampleWaypointPosition)
+        {
+            NavMesh.SamplePosition(hit.point, out nmHit, 10, 1 << NavMesh.GetAreaFromName("Walkable"));
+            SetWaypoint(nmHit.position);
+        }
+        else
+        {
+            // No work :/
+
+            /*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            bool blocked = NavMesh.Raycast(this.transform.position, hit.point, out nmHit, NavMesh.AllAreas);
+            print(hit.point);
+            print(nmHit.distance);
+            if (Vector3.Distance(hit.point, nmHit.position) < 1.0f)
+            {
+                SetWaypoint(nmHit.position);
+            }*/
+
+            SetWaypoint(hit.point);
+        }
+
+
+
+        /*if (blocked)
         {
             print("Blocked!");
             return;
-        }
-        
-        SetWaypoint(hit.point);
+        }*/
+
+
     }
 
     /* ***********************+
