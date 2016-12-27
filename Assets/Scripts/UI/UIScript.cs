@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
+    private GameObject ActivePlayer;
+
 	public Text MoneyText;
 
 
 	// Use this for initialization
 	void Start () {
-		
+		ActivePlayer = GameObject.Find("Player");
 	}
 	
 	// Update is called once per frame
