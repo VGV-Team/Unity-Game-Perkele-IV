@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 95177885498792346}
   - component: {fileID: 114537781619611604}
   m_Layer: 0
-  m_Name: PlayerPrefab
+  m_Name: OLD_PlayerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1139,6 +1139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e64a4717b0b1a9d4d937ae897be20005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!114 &114537781619611604
 MonoBehaviour:
   m_ObjectHideFlags: 1
