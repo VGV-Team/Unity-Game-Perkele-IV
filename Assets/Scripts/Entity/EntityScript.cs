@@ -13,15 +13,26 @@ public abstract class EntityScript : MonoBehaviour
         InputManagerObject = GameObject.Find("InputHandlerObject");
     }
 
-    void OnMouseOver()
+    private void OnMouseOver()
+    {
+        SetThisHoverObject();
+    }
+
+    private void OnMouseExit()
+    {
+        UnsetThisHoverObject();
+    }
+
+    private void SetThisHoverObject()
     {
         InputManagerObject.GetComponent<InputHandlerScript>().HoveredObject = this.gameObject;
     }
 
-    void OnMouseExit()
+    private void UnsetThisHoverObject()
     {
         InputManagerObject.GetComponent<InputHandlerScript>().HoveredObject = null;
     }
+
     /*
     void OnMouseDown()
     {
