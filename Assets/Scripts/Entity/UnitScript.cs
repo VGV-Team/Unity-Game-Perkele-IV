@@ -19,7 +19,7 @@ public class UnitScript : EntityScript
     public int Mana;
     public int ManaChange;
 
-    public int Strenth;
+    public int Strength;
     public int Level;
     public int Xp;
     public int MaxXp;
@@ -124,7 +124,8 @@ public class UnitScript : EntityScript
                 StartMovement();
             }
 
-            if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f)
+            //if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f)
+            if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f) 
             {
                 StopMovement();
             }
@@ -158,9 +159,27 @@ public class UnitScript : EntityScript
 
     }
 
-    public void StartBasicAttackAnimation()
+    public void StartBasicAttackAnimation(float attackCooldown = -1)
     {
         // TODO: this
+        // Sync of attack animation to match cooldown time
+        /*AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
+        attackCooldown = 1;
+        foreach (AbilityScript a in Abilities)
+        {
+            if (a.Name == "BasicAttack Attack")
+            {
+                attackCooldown = (float) a.Cooldown;
+                break;
+            }
+        }*/
+        StopMovement();
+        if (attackCooldown != -1)
+        {
+            AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
+            state.speed = state.length / attackCooldown;
+        }
+
         model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
     }
 

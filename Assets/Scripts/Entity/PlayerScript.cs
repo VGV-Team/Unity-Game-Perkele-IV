@@ -9,7 +9,7 @@ public class PlayerScript : UnitScript {
     new void Start ()
 	{
 	    base.Start();
-		Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, Strenth));
+		Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, 5)); //5 <-- Strength
         Abilities.Add(new AbilityScript("Heal", AbilityType.RangeShot, 5, 10, 0, 10, 20));
         Abilities.Add(new AbilityScript("Test Ability", AbilityType.Heal, 10, 0, 10, 0, 20));
     }

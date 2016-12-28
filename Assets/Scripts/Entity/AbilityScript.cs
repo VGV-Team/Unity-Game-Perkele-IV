@@ -118,15 +118,18 @@ public class AbilityScript
 
     private void AbilityTypeBasic(GameObject caster, GameObject target)
     {
-        caster.GetComponent<UnitScript>().StartBasicAttackAnimation();
+        caster.GetComponent<UnitScript>().StartBasicAttackAnimation((float) this.Cooldown);
         target.GetComponent<UnitScript>().StartHitAnimation();
 
         int hp = target.GetComponent<UnitScript>().HP;
         int shield = target.GetComponent<UnitScript>().Shield;
 
+        int casterStrength = caster.GetComponent<UnitScript>().Strength;
+
+        //TODO: monster armor is not takein into account?
         if (shield < BasePower)
         {
-            hp -= (BasePower - shield);
+            hp -= (BasePower + casterStrength - shield);
             shield = 0;
             if (hp <= 0)
             {
