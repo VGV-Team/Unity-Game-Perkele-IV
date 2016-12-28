@@ -156,23 +156,18 @@ public class UnitScript : EntityScript
         // TODO: clear click collision
         model.FindChild("Model").GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
         model.FindChild("Model").GetComponent<Animation>().CrossFade("die", animationFadeFactor);
+    }
 
+    public void Die()
+    {
+        StartDeathAnimation();
+        this.GetComponent<NavMeshAgent>().enabled = false;
+        this.GetComponent<Collider>().enabled = false;
     }
 
     public void StartBasicAttackAnimation(float attackCooldown = -1)
     {
         // TODO: this
-        // Sync of attack animation to match cooldown time
-        /*AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
-        attackCooldown = 1;
-        foreach (AbilityScript a in Abilities)
-        {
-            if (a.Name == "BasicAttack Attack")
-            {
-                attackCooldown = (float) a.Cooldown;
-                break;
-            }
-        }*/
         StopMovement();
         if (attackCooldown != -1)
         {
@@ -192,7 +187,7 @@ public class UnitScript : EntityScript
     public void StartHitAnimation()
     {
         // TODO: this
-        model.FindChild("Model").GetComponent<Animation>().CrossFade("gethit", animationFadeFactor);
+        model.FindChild("Model").GetComponent<Animation>().Blend("gethit", animationFadeFactor);
     }
 
     public void SetWaypoint(GameObject target)

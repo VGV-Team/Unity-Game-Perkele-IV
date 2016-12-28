@@ -91,10 +91,20 @@ public class AbilityScript
         else return false;
     }
 
+    private void LookAtTarget(GameObject caster, GameObject target)
+    {
+        if (target == null) return;
+        caster.transform.LookAt(target.transform.position);
+        caster.transform.rotation = Quaternion.Euler(0, caster.transform.eulerAngles.y, 0);
+    }
+
     public void Use(GameObject caster, GameObject target = null)
     {
         if (CanUseAbility(caster, target))
         {
+            //Temporary, move this to approprita ability types
+            LookAtTarget(caster, target);
+
             switch (Type)
             {
                 case AbilityType.BasicAttack:
@@ -135,7 +145,7 @@ public class AbilityScript
             {
                 caster.GetComponent<UnitScript>().Target = null;
                 target.GetComponent<UnitScript>().Active = false;
-                target.GetComponent<UnitScript>().StartDeathAnimation();
+                target.GetComponent<UnitScript>().Die();
             }
         }
         else shield -= BasePower;
