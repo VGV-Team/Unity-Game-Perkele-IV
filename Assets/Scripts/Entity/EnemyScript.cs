@@ -14,7 +14,7 @@ public class EnemyScript : UnitScript
     new void Start ()
     {
         base.Start();
-        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.Basic, 2, 0, 0, 2));
+        Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, 10));
 
         Player = GameObject.Find("Player");
     }
@@ -30,10 +30,15 @@ public class EnemyScript : UnitScript
             float distance = Vector3.Distance(this.transform.position, Target.transform.position);
 
             // out of view range
+            
             if (distance > ViewRange)
             {
                 Target = null;
                 StopMovement();
+            }
+            else if (distance <= Abilities[0].Range)
+            {
+                Abilities[0].Use(this.gameObject, Target);
             }
             else if (distance > 2.5f)
             {
@@ -48,7 +53,8 @@ public class EnemyScript : UnitScript
                 }
                     
             }
-
+            
+            
             // use basic attack
 
         }

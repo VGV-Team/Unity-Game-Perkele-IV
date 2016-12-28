@@ -100,6 +100,11 @@ public class UnitScript : EntityScript
         }
     }
 
+    public void StartDeathAnimation()
+    {
+        // TODO: this
+        Destroy(this.gameObject);
+    }
 
     public void StopMovement()
     {

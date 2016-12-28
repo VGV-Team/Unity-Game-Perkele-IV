@@ -48,7 +48,7 @@ public class UIScript : MonoBehaviour
 	void Update () {
 
         UIAbility1Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[0].Cooldown-ActivePlayer.Abilities[0].TimeToReady)/ ActivePlayer.Abilities[0].Cooldown), 1);
-        UIAbility2Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[1].Cooldown - ActivePlayer.Abilities[1].TimeToReady)/ActivePlayer.Abilities[1].Cooldown), 1);
+        UIAbility2Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[2].Cooldown - ActivePlayer.Abilities[2].TimeToReady)/ActivePlayer.Abilities[2].Cooldown), 1);
 
         UpdateUIBars();
     }
@@ -133,12 +133,14 @@ public class UIScript : MonoBehaviour
 
     public void TestAbility1()
     {
-        GameObject.Find("Player").GetComponent<PlayerScript>().Abilities[0].Use();
+        //GameObject.Find("Player").GetComponent<PlayerScript>().Abilities[0].Use(GameObject.Find("Player"), GameObject.Find("Enemy"));
+        GameObject.Find("Player").GetComponent<PlayerScript>().Abilities[2].Use(GameObject.Find("Player"));
     }
 
     public void TestMovement()
     {
-        GameObject.Find("Enemy").GetComponent<UnitScript>().SetWaypoint(GameObject.Find("Player"));
+        Destroy(GameObject.Find("Enemy"));
+        //GameObject.Find("Enemy").GetComponent<UnitScript>().SetWaypoint(GameObject.Find("Player"));
     }
 
     public Text MoneyText;
