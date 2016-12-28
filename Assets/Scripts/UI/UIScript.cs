@@ -21,6 +21,8 @@ public class UIScript : MonoBehaviour
     private GameObject UIXPBar;
     private GameObject UIXPValueLabel;
 
+    private GameObject UITargetBar;
+    private GameObject UITargetValueLabel;
 
     //private GameObject UIAbility1Bar;
     //private GameObject UIAbility2Bar;
@@ -39,56 +41,60 @@ public class UIScript : MonoBehaviour
         UIFuryValueLabel = GameObject.Find("UIFuryValueLabel");
         UIXPBar = GameObject.Find("UIXPBar");
         UIXPValueLabel = GameObject.Find("UIXPValueLabel");
+        UITargetBar = GameObject.Find("UITargetBar");
+        UITargetValueLabel = GameObject.Find("UITargetValueLabel");
 
+        //UIHPBar.GetComponent<Image>().type = Image.Type.Filled;
+        //UIHPBar.GetComponent<Image>().fillMethod = Image.FillMethod.Radial360;
+        //UIHPBar.GetComponent<Image>().fillAmount = 0.5f;
         //UIAbility1Bar = GameObject.Find("UIAbility1Bar");
         //UIAbility2Bar = GameObject.Find("UIAbility2Bar");
-        UpdateAbilityList();
+        //UpdateAbilityList();
     }
 	
 	// Update is called once per frame
 	void Update () {
-
-        //UIAbility1Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[0].Cooldown-ActivePlayer.Abilities[0].TimeToReady)/ ActivePlayer.Abilities[0].Cooldown), 1);
-        //UIAbility2Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[2].Cooldown - ActivePlayer.Abilities[2].TimeToReady)/ActivePlayer.Abilities[2].Cooldown), 1);
-	    //AbilityScript ability = ActivePlayer.Abilities[2];
-        //GameObject.Find("UIAbilityPanel").transform.GetChild(0).transform.localScale = new Vector3(1, (float)((ability.Cooldown - ability.TimeToReady) / ability.Cooldown), 1);
-
-        /*
-        for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
-	    {
-            GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[i].Cooldown - ActivePlayer.Abilities[i].TimeToReady) / ActivePlayer.Abilities[i].Cooldown), 1);
-        }
-        */
-
         UpdateUIBars();
+        UpdateAbilityList();
+    }
 
-	    for (int i = 0; i < abilitiesList.Count; i++)
-	    {
-            GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((abilitiesList[i].Cooldown - abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown), 1);
-	    }
+    public void AbilityButtonClick(int id)
+    {
+        GameObject.Find("Player").GetComponent<UnitScript>().Abilities[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
     }
 
 
     public void UpdateAbilityList()
     {
-        abilitiesList = new List<AbilityScript>();
-        for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
+        if (ActivePlayer.Abilities.Count != abilitiesList.Count)
         {
-            
-            if (i < ActivePlayer.Abilities.Count)
+            abilitiesList = new List<AbilityScript>();
+            for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
             {
-                //GameObject.Find("UIAbilityPanel").transform.GetChild(i).gameObject.SetActive(true);
-                if(ActivePlayer.Abilities[i].Type == AbilityType.BasicAttack) GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.red;
-                if (ActivePlayer.Abilities[i].Type == AbilityType.RangeAttack) GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.yellow;
-                if (ActivePlayer.Abilities[i].Type == AbilityType.Heal) GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.blue;
-                abilitiesList.Add(ActivePlayer.Abilities[i]);
+                if (i < ActivePlayer.Abilities.Count)
+                {
+                    if (ActivePlayer.Abilities[i].ImageToShow != null)
+                    {
+                        GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
+                    }
+                    else
+                    {
+                        GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+                    }
+                    abilitiesList.Add(ActivePlayer.Abilities[i]);
+                }
+                else
+                {
+                    GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite;
+                    GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = 0;
+                }
             }
-            else
-            {
-                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.grey;
-                //GameObject.Find("UIAbilityPanel").transform.GetChild(i).gameObject.SetActive(false);
-            }
-            
+        }
+
+        for (int i = 0; i < abilitiesList.Count; i++)
+        {
+            //GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((abilitiesList[i].Cooldown - abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown), 1);
+            GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = (float)((abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown);
         }
     }
 
@@ -96,69 +102,93 @@ public class UIScript : MonoBehaviour
     private void UpdateUIBars()
     {
         // Update Hp bar
+        float HPScale = ActivePlayer.HP / (float)ActivePlayer.MaxHP;
         if (ActivePlayer.MaxHP > 0)
         {
-            float HPScale = ActivePlayer.HP / (float)ActivePlayer.MaxHP;
             if (HPScale > 1) HPScale = 1;
-            UIHPBar.transform.localScale = new Vector3(1, HPScale, 1);
         }
         else
         {
-            UIHPBar.transform.localScale = new Vector3(1, 0, 1);
+            HPScale = 0;
         }
+        UIHPBar.GetComponent<Image>().fillAmount = HPScale;
         UIHPValueLabel.GetComponent<Text>().text = ActivePlayer.HP + " / " + ActivePlayer.MaxHP;
 
         // Update Shield bar
+        float shieldScale = ActivePlayer.Shield / (float)ActivePlayer.MaxShield;
         if (ActivePlayer.MaxShield > 0)
         {
-            float shieldScale = ActivePlayer.Shield / (float)ActivePlayer.MaxShield;
             if (shieldScale > 1) shieldScale = 1;
-            UIShieldBar.transform.localScale = new Vector3(1, shieldScale, 1);
         }
         else
         {
-            UIShieldBar.transform.localScale = new Vector3(1, 0, 1);
+            shieldScale = 0;
         }
+        UIShieldBar.GetComponent<Image>().fillAmount = shieldScale;
         UIShieldValueLabel.GetComponent<Text>().text = ActivePlayer.Shield + " / " + ActivePlayer.MaxShield;
 
         // Update Mana bar
+        float manaScale = ActivePlayer.Mana / (float)ActivePlayer.MaxMana;
         if (ActivePlayer.MaxMana > 0)
         {
-            float manaScale = ActivePlayer.Mana / (float)ActivePlayer.MaxMana;
             if (manaScale > 1) manaScale = 1;
-            UIManaBar.transform.localScale = new Vector3(1, manaScale, 1);
         }
         else
         {
-            UIManaBar.transform.localScale = new Vector3(1, 0, 1);
+            manaScale = 0;
         }
+        UIManaBar.GetComponent<Image>().fillAmount = manaScale;
         UIManaValueLabel.GetComponent<Text>().text = ActivePlayer.Mana + " / " + ActivePlayer.MaxMana;
 
         // Update Fury bar
+        float furyScale = ActivePlayer.Fury / (float)ActivePlayer.MaxFury;
         if (ActivePlayer.MaxFury > 0)
         {
-            float furyScale = ActivePlayer.Fury / (float)ActivePlayer.MaxFury;
             if (furyScale > 1) furyScale = 1;
-            UIFuryBar.transform.localScale = new Vector3(1, furyScale, 1);
         }
         else
         {
-            UIFuryBar.transform.localScale = new Vector3(1, 0, 1);
+            furyScale = 0;
         }
+        UIFuryBar.GetComponent<Image>().fillAmount = furyScale;
         UIFuryValueLabel.GetComponent<Text>().text = ActivePlayer.Fury + " / " + ActivePlayer.MaxFury;
 
         // Update Xp bar
+        float XPScale = ActivePlayer.Xp / (float)ActivePlayer.MaxXp;
         if (ActivePlayer.MaxXp > 0)
         {
-            float XPScale = ActivePlayer.Xp / (float)ActivePlayer.MaxXp;
             if (XPScale > 1) XPScale = 1;
-            UIXPBar.transform.localScale = new Vector3(XPScale, 1, 1);
         }
         else
         {
-            UIXPBar.transform.localScale = new Vector3(0, 1, 1);
+            XPScale = 0;
         }
+        UIXPBar.GetComponent<Image>().fillAmount = XPScale;
         UIXPValueLabel.GetComponent<Text>().text = ActivePlayer.Xp + " / " + ActivePlayer.MaxXp;
+
+        if (ActivePlayer.Target != null)
+        {
+            float enemyTotalLife = ActivePlayer.Target.GetComponent<UnitScript>().MaxHP + ActivePlayer.Target.GetComponent<UnitScript>().MaxShield;
+            float enemyLife = ActivePlayer.Target.GetComponent<UnitScript>().HP + ActivePlayer.Target.GetComponent<UnitScript>().Shield;
+
+            float enemyScale = enemyLife / (float)enemyTotalLife;
+            if (ActivePlayer.MaxHP > 0)
+            {
+                if (enemyScale > 1) enemyScale = 1;
+            }
+            else
+            {
+                enemyScale = 0;
+            }
+            UITargetBar.GetComponent<Image>().fillAmount = enemyScale;
+            //UITargetValueLabel.GetComponent<Text>().text = enemyLife + " / " + enemyTotalLife;
+            UITargetValueLabel.GetComponent<Text>().text = ActivePlayer.Target.GetComponent<UnitScript>().Name;
+        }
+        else
+        {
+            UITargetBar.GetComponent<Image>().fillAmount = 0;
+            UITargetValueLabel.GetComponent<Text>().text = "";
+        }
     }
 
 

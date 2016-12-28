@@ -19,7 +19,7 @@ public class UnitScript : EntityScript
     public int Mana;
     public int ManaChange;
 
-    public int Strenth;
+    public int Strength;
     public int Level;
     public int Xp;
     public int MaxXp;
@@ -27,13 +27,11 @@ public class UnitScript : EntityScript
     public GameObject Target;
 
     // public Waypoint DestinationWaypoint
-    public List<AbilityScript> Abilities;
+    public List<AbilityScript> Abilities = new List<AbilityScript>();
 
     public new void Start()
     {
         base.Start();
-
-        Abilities = new List<AbilityScript>();
         
         MovementInit();
     }
@@ -124,7 +122,8 @@ public class UnitScript : EntityScript
                 StartMovement();
             }
 
-            if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f)
+            //if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f)
+            if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f) 
             {
                 StopMovement();
             }
@@ -155,12 +154,25 @@ public class UnitScript : EntityScript
         // TODO: clear click collision
         model.FindChild("Model").GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
         model.FindChild("Model").GetComponent<Animation>().CrossFade("die", animationFadeFactor);
-
     }
 
-    public void StartBasicAttackAnimation()
+    public void Die()
+    {
+        StartDeathAnimation();
+        this.GetComponent<NavMeshAgent>().enabled = false;
+        this.GetComponent<Collider>().enabled = false;
+    }
+
+    public void StartBasicAttackAnimation(float attackCooldown = -1)
     {
         // TODO: this
+        StopMovement();
+        if (attackCooldown != -1)
+        {
+            AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
+            state.speed = state.length / attackCooldown;
+        }
+
         model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
     }
 
@@ -178,7 +190,7 @@ public class UnitScript : EntityScript
     public void StartHitAnimation()
     {
         // TODO: this
-        model.FindChild("Model").GetComponent<Animation>().CrossFade("gethit", animationFadeFactor);
+        model.FindChild("Model").GetComponent<Animation>().Blend("gethit", animationFadeFactor);
     }
 
     public void SetWaypoint(GameObject target)

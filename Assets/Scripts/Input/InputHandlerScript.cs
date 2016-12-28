@@ -33,6 +33,32 @@ public class InputHandlerScript : MonoBehaviour
 
     void CheckKeyboardKeyPressed()
     {
+        if (Input.GetKeyDown("1"))
+        {
+            Debug.Log("1");
+            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[0].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            Debug.Log("2");
+            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[1].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            Debug.Log("3");
+            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[2].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+        }
+        if (Input.GetKeyDown("4"))
+        {
+            Debug.Log("4");
+            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[3].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+        }
+
+
+
+
+
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("A");
@@ -48,7 +74,9 @@ public class InputHandlerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("P");
-            GameObject.Find("UI Handler").GetComponent<UIScript>().UpdateAbilityList();
+            //GameObject.Find("Player").GetComponent<PlayerScript>().Abilities = new List<AbilityScript>();
+            GameObject.Find("Player").GetComponent<PlayerScript>().Abilities.Add(new AbilityScript("wuuut mate", AbilityType.None, 5,1,1,10, 10));
+            //GameObject.Find("UI Handler").GetComponent<UIScript>().UpdateAbilityList();
         }
     }
 
