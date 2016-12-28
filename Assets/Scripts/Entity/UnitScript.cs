@@ -164,6 +164,11 @@ public class UnitScript : EntityScript
         model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
     }
 
+    public void StartRangeAttackAnimation()
+    {
+        // TODO: this
+    }
+
     public void StartHealAnimation()
     {
         // TODO: this

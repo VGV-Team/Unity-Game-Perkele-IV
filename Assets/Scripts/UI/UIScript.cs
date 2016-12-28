@@ -22,9 +22,9 @@ public class UIScript : MonoBehaviour
     private GameObject UIXPValueLabel;
 
 
-    private GameObject UIAbility1Bar;
-    private GameObject UIAbility2Bar;
-
+    //private GameObject UIAbility1Bar;
+    //private GameObject UIAbility2Bar;
+    private List<AbilityScript> abilitiesList = new List<AbilityScript>();
 
     // Use this for initialization
     void Start () {
@@ -40,17 +40,56 @@ public class UIScript : MonoBehaviour
         UIXPBar = GameObject.Find("UIXPBar");
         UIXPValueLabel = GameObject.Find("UIXPValueLabel");
 
-        UIAbility1Bar = GameObject.Find("UIAbility1Bar");
-        UIAbility2Bar = GameObject.Find("UIAbility2Bar");
-}
+        //UIAbility1Bar = GameObject.Find("UIAbility1Bar");
+        //UIAbility2Bar = GameObject.Find("UIAbility2Bar");
+        UpdateAbilityList();
+    }
 	
 	// Update is called once per frame
 	void Update () {
 
-        UIAbility1Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[0].Cooldown-ActivePlayer.Abilities[0].TimeToReady)/ ActivePlayer.Abilities[0].Cooldown), 1);
-        UIAbility2Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[2].Cooldown - ActivePlayer.Abilities[2].TimeToReady)/ActivePlayer.Abilities[2].Cooldown), 1);
+        //UIAbility1Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[0].Cooldown-ActivePlayer.Abilities[0].TimeToReady)/ ActivePlayer.Abilities[0].Cooldown), 1);
+        //UIAbility2Bar.transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[2].Cooldown - ActivePlayer.Abilities[2].TimeToReady)/ActivePlayer.Abilities[2].Cooldown), 1);
+	    //AbilityScript ability = ActivePlayer.Abilities[2];
+        //GameObject.Find("UIAbilityPanel").transform.GetChild(0).transform.localScale = new Vector3(1, (float)((ability.Cooldown - ability.TimeToReady) / ability.Cooldown), 1);
+
+        /*
+        for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
+	    {
+            GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((ActivePlayer.Abilities[i].Cooldown - ActivePlayer.Abilities[i].TimeToReady) / ActivePlayer.Abilities[i].Cooldown), 1);
+        }
+        */
 
         UpdateUIBars();
+
+	    for (int i = 0; i < abilitiesList.Count; i++)
+	    {
+            GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((abilitiesList[i].Cooldown - abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown), 1);
+	    }
+    }
+
+
+    public void UpdateAbilityList()
+    {
+        abilitiesList = new List<AbilityScript>();
+        for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
+        {
+            
+            if (i < ActivePlayer.Abilities.Count)
+            {
+                //GameObject.Find("UIAbilityPanel").transform.GetChild(i).gameObject.SetActive(true);
+                if(ActivePlayer.Abilities[i].Type == AbilityType.BasicAttack) GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.red;
+                if (ActivePlayer.Abilities[i].Type == AbilityType.RangeAttack) GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.yellow;
+                if (ActivePlayer.Abilities[i].Type == AbilityType.Heal) GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.blue;
+                abilitiesList.Add(ActivePlayer.Abilities[i]);
+            }
+            else
+            {
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().color = Color.grey;
+                //GameObject.Find("UIAbilityPanel").transform.GetChild(i).gameObject.SetActive(false);
+            }
+            
+        }
     }
 
 

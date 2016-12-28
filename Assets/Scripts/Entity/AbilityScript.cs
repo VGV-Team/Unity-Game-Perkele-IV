@@ -7,7 +7,7 @@ public enum AbilityType
 {
     None,
     BasicAttack,
-    RangeShot,
+    RangeAttack,
     Heal
 }
 
@@ -101,6 +101,10 @@ public class AbilityScript
                     if (target == null) return;
                     AbilityTypeBasic(caster, target);
                     break;
+                case AbilityType.RangeAttack:
+                    if (target == null) return;
+                    AbilityTypeRange(caster, target);
+                    break;
                 case AbilityType.Heal:
                     AbilityTypeHeal(caster);
                     break;
@@ -119,6 +123,30 @@ public class AbilityScript
     private void AbilityTypeBasic(GameObject caster, GameObject target)
     {
         caster.GetComponent<UnitScript>().StartBasicAttackAnimation();
+        target.GetComponent<UnitScript>().StartHitAnimation();
+
+        int hp = target.GetComponent<UnitScript>().HP;
+        int shield = target.GetComponent<UnitScript>().Shield;
+
+        if (shield < BasePower)
+        {
+            hp -= (BasePower - shield);
+            shield = 0;
+            if (hp <= 0)
+            {
+                caster.GetComponent<UnitScript>().Target = null;
+                target.GetComponent<UnitScript>().Active = false;
+                target.GetComponent<UnitScript>().StartDeathAnimation();
+            }
+        }
+        else shield -= BasePower;
+        target.GetComponent<UnitScript>().HP = hp;
+        target.GetComponent<UnitScript>().Shield = shield;
+    }
+
+    private void AbilityTypeRange(GameObject caster, GameObject target)
+    {
+        caster.GetComponent<UnitScript>().StartRangeAttackAnimation();
         target.GetComponent<UnitScript>().StartHitAnimation();
 
         int hp = target.GetComponent<UnitScript>().HP;

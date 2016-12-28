@@ -43,6 +43,13 @@ public class InputHandlerScript : MonoBehaviour
             Debug.Log("S");
             GameObject.Find("Player").GetComponent<UnitScript>().Abilities[2].Use(GameObject.Find("Player"));
         }
+
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("P");
+            GameObject.Find("UI Handler").GetComponent<UIScript>().UpdateAbilityList();
+        }
     }
 
     void CheckMouseClick()

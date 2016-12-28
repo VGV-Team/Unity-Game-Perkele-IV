@@ -14,7 +14,7 @@ public class EnemyScript : UnitScript
     new void Start ()
     {
         base.Start();
-        Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, Strenth));
+        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 2, Strenth));
 
         Player = GameObject.Find("Player");
     }
