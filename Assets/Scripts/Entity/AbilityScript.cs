@@ -118,15 +118,32 @@ public class AbilityScript
 
     private void AbilityTypeBasic(GameObject caster, GameObject target)
     {
-        target.GetComponent<UnitScript>().HP -= BasePower;
-        if (target.GetComponent<UnitScript>().HP <= 0) // TODO: Change to work with energy shield
+        caster.GetComponent<UnitScript>().StartBasicAttackAnimation();
+        target.GetComponent<UnitScript>().StartHitAnimation();
+
+        int hp = target.GetComponent<UnitScript>().HP;
+        int shield = target.GetComponent<UnitScript>().Shield;
+
+        if (shield < BasePower)
         {
-            target.GetComponent<UnitScript>().StartDeathAnimation(); // TODO: clear target from caster
+            hp -= (BasePower - shield);
+            shield = 0;
+            if (hp <= 0)
+            {
+                caster.GetComponent<UnitScript>().Target = null;
+                target.GetComponent<UnitScript>().Active = false;
+                target.GetComponent<UnitScript>().StartDeathAnimation();
+            }
         }
+        else shield -= BasePower;
+        target.GetComponent<UnitScript>().HP = hp;
+        target.GetComponent<UnitScript>().Shield = shield;
     }
 
     private void AbilityTypeHeal(GameObject caster)
     {
+        caster.GetComponent<UnitScript>().StartHealAnimation();
+
         caster.GetComponent<UnitScript>().HP += BasePower;
         if (caster.GetComponent<UnitScript>().HP > caster.GetComponent<UnitScript>().MaxHP)
         {

@@ -14,7 +14,7 @@ public class EnemyScript : UnitScript
     new void Start ()
     {
         base.Start();
-        Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, 10));
+        Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, Strenth));
 
         Player = GameObject.Find("Player");
     }
@@ -22,6 +22,7 @@ public class EnemyScript : UnitScript
     // Update is called once per frame
     new void Update()
     {
+        if (Active != true) return;
         base.Update();
 
 
@@ -44,7 +45,7 @@ public class EnemyScript : UnitScript
             {
                 if (CheckVisibility())
                 {
-                    Debug.Log("QWE1");
+                    //Debug.Log("QWE1");
                     SetWaypoint(GameObject.Find("Player"));
                 }
                 else
@@ -64,7 +65,7 @@ public class EnemyScript : UnitScript
             {
                 if (CheckVisibility())
                 {
-                    Debug.Log("QWE2");
+                    //Debug.Log("QWE2");
                     SetWaypoint(GameObject.Find("Player"));
                 }
             }
@@ -84,7 +85,7 @@ public class EnemyScript : UnitScript
 
         Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, this.GetComponent<Collider>().bounds.size.y - 0.1f, 0.0f) - this.transform.position).normalized, out hit, 100);
 
-        Debug.Log(hit.collider.gameObject.tag);
+        //Debug.Log(hit.collider.gameObject.tag);
         if (hit.collider.gameObject.tag.Equals("Player"))
         {
             return true;

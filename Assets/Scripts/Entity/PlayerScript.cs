@@ -9,7 +9,7 @@ public class PlayerScript : UnitScript {
     new void Start ()
 	{
 	    base.Start();
-		Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, 10));
+		Abilities.Add(new AbilityScript("BasicAttack Attack", AbilityType.BasicAttack, 2, 0, 0, 2, Strenth));
         Abilities.Add(new AbilityScript("Heal", AbilityType.RangeShot, 5, 10, 0, 10, 20));
         Abilities.Add(new AbilityScript("Test Ability", AbilityType.Heal, 10, 0, 10, 0, 20));
     }
@@ -17,6 +17,7 @@ public class PlayerScript : UnitScript {
     // Update is called once per frame
     new void Update ()
 	{
+        if (Active != true) return;
         base.Update();
 
     }

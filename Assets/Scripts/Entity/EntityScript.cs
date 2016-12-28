@@ -5,8 +5,11 @@ using UnityEngine;
 public abstract class EntityScript : MonoBehaviour
 {
     public string Name;
+    public bool Active;
 
     private GameObject InputManagerObject;
+
+
 
     public void Start()
     {

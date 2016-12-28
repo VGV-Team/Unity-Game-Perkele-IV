@@ -352,7 +352,7 @@ GameObject:
   - component: {fileID: 65073030844103026}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1041,7 +1041,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1411950643407396}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 68.02, y: 1.5545931, z: 25.46}
+  m_LocalPosition: {x: 72.06, y: 1.5545931, z: 25.46}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4688150828860230}
@@ -1867,21 +1867,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de248ab532253246aca619347c29b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
-  MaxHP: 0
-  HP: 0
-  HPRegen: 0
+  Name: Test Player
+  Active: 1
+  MaxHP: 100
+  HP: 100
+  HPChange: 1
   Armor: 0
-  MaxShield: 0
-  Shield: 0
-  Strenth: 0
-  MaxFury: 0
+  MaxShield: 15
+  Shield: 15
+  ShieldChange: 2
+  MaxFury: 50
   Fury: 0
-  FuryDecay: 0
-  MaxMana: 0
-  Mana: 0
-  ManaRegen: 0
-  Level: 0
+  FuryChange: -2
+  MaxMana: 50
+  Mana: 50
+  ManaChange: 1
+  Strenth: 10
+  Level: 1
   Xp: 0
   MaxXp: 0
   Target: {fileID: 0}

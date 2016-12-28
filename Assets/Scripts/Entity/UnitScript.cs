@@ -7,18 +7,19 @@ public class UnitScript : EntityScript
 {
     public int MaxHP;
     public int HP;
-    public int HPRegen;
+    public int HPChange;
     public int Armor;
     public int MaxShield;
     public int Shield;
-    public int Strenth;
+    public int ShieldChange;
     public int MaxFury;
     public int Fury;
-    public int FuryDecay;
+    public int FuryChange;
     public int MaxMana;
     public int Mana;
-    public int ManaRegen;
-    
+    public int ManaChange;
+
+    public int Strenth;
     public int Level;
     public int Xp;
     public int MaxXp;
@@ -37,12 +38,42 @@ public class UnitScript : EntityScript
         MovementInit();
     }
 
+    private double timePassed = 0;
     public void Update()
     {
         UpdateAbilities();
 
         UpdateMovement();
-   
+
+        timePassed += Time.deltaTime;
+        if (timePassed > 1)
+        {
+            UpdateStatsRefresh();
+            timePassed -= 1;
+        }
+        
+
+    }
+
+
+    // This should be called once every second
+    private void UpdateStatsRefresh()
+    {
+        HP += HPChange;
+        if (HP > MaxHP) HP = MaxHP;
+        if (HP < 0) HP = 0;
+
+        Shield += ShieldChange;
+        if (Shield > MaxShield) Shield = MaxShield;
+        if (Shield < 0) Shield = 0;
+
+        Fury += FuryChange;
+        if (Fury > MaxFury) Fury = MaxFury;
+        if (Fury < 0) Fury = 0;
+
+        Mana += ManaChange;
+        if (Mana > MaxMana) Mana = MaxMana;
+        if (Mana < 0) Mana = 0;
     }
 
 
@@ -54,9 +85,13 @@ public class UnitScript : EntityScript
         }
     }
 
+
+
+
+
     
     public GameObject waypoint;
-    bool SampleWaypointPosition;
+    bool SampleWaypointPosition = false;
     bool walkAnim;
     Transform model; // TODO: Should we move model or player?
     //private Animation animation;
@@ -100,12 +135,6 @@ public class UnitScript : EntityScript
         }
     }
 
-    public void StartDeathAnimation()
-    {
-        // TODO: this
-        Destroy(this.gameObject);
-    }
-
     public void StopMovement()
     {
         //this.GetComponent<Animator>().CrossFade("idle", 0.15f);
@@ -121,6 +150,31 @@ public class UnitScript : EntityScript
         walkAnim = true;
     }
 
+    public void StartDeathAnimation()
+    {
+        // TODO: clear click collision
+        model.FindChild("Model").GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("die", animationFadeFactor);
+
+    }
+
+    public void StartBasicAttackAnimation()
+    {
+        // TODO: this
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
+    }
+
+    public void StartHealAnimation()
+    {
+        // TODO: this
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("dance", animationFadeFactor);
+    }
+
+    public void StartHitAnimation()
+    {
+        // TODO: this
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("gethit", animationFadeFactor);
+    }
 
     public void SetWaypoint(GameObject target)
     {

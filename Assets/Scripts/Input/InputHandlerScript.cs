@@ -28,8 +28,22 @@ public class InputHandlerScript : MonoBehaviour
     {
         CheckMouseClick();
         CheckMouseScroll();
+        CheckKeyboardKeyPressed();
     }
 
+    void CheckKeyboardKeyPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("A");
+            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[0].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Debug.Log("S");
+            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[2].Use(GameObject.Find("Player"));
+        }
+    }
 
     void CheckMouseClick()
     {

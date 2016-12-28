@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.4964127, b: 0.5748172, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1170,56 +1170,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: Name
-      value: Test Enemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: MaxHP
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: HP
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: Strenth
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: MaxMana
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: Mana
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: ManaRegen
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: Level
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114372385700741750, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: ViewRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 195348606232491810, guid: d425bf33994227b47969aa10369fa176,
-        type: 2}
-      propertyPath: m_Speed
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d425bf33994227b47969aa10369fa176, type: 2}
   m_IsPrefabParent: 0
@@ -1968,14 +1918,6 @@ Prefab:
     - target: {fileID: 4571770152718724, guid: e8e5dc29a6eaa4847bd6499b66dca454, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1411950643407396, guid: e8e5dc29a6eaa4847bd6499b66dca454, type: 2}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1506541791700426, guid: e8e5dc29a6eaa4847bd6499b66dca454, type: 2}
-      propertyPath: m_TagString
-      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e8e5dc29a6eaa4847bd6499b66dca454, type: 2}
