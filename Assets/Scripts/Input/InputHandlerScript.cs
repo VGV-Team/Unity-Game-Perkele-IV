@@ -79,21 +79,34 @@ public class InputHandlerScript : MonoBehaviour
     {
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
         {
-            
+            if (CameraScript.CameraOffset.y > 3.0f)
+            {
+                CameraScript.CameraOffset.y -= 2.0f;
+                CameraScript.CameraOffset.z += 2.0f;
+            }
+            /*
             if (CameraScript.Y > 3.0f)
             {
                 CameraScript.Y -= 5.0f;
                 CameraScript.Z += 5.0f;
             }
+            */
 
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backwards
         {
+            if (CameraScript.CameraOffset.y < 10.0f)
+            {
+                CameraScript.CameraOffset.y += 2.0f;
+                CameraScript.CameraOffset.z -= 2.0f;
+            }
+            /*
             if (CameraScript.Y < 10.0f)
             {
                 CameraScript.Y += 5.0f;
                 CameraScript.Z -= 5.0f;
             }
+            */
         }
     }
 }
