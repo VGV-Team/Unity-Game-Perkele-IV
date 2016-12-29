@@ -86,6 +86,11 @@ public class InputHandlerScript : MonoBehaviour
         GameObject.Find("Player").GetComponent<UnitScript>().Abilities[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
     }
 
+    public void AbilityUse(AbilityScript ability)
+    {
+        ability.Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+    }
+
     void CheckMouseClick()
     {
         if (Input.GetMouseButtonDown(0))

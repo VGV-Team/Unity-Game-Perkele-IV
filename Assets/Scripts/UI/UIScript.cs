@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +12,7 @@ public class UIScript : MonoBehaviour
     private PlayerScript ActivePlayer;
 
     // Prefabs
-    public GameObject abilityButton;
+    public GameObject abilityChooseButton;
 
     // different bars
     private GameObject UIHPBar;
@@ -38,6 +39,7 @@ public class UIScript : MonoBehaviour
     // Panels
     public GameObject UISkillConfigurePanel;
     public int AbilitiesPerRow = 3;
+    private int abilitySwapTo = -1;
 
     // Use this for initialization
     void Start () {
@@ -56,12 +58,15 @@ public class UIScript : MonoBehaviour
         UITargetShieldBar = GameObject.Find("UITargetShieldBar");
         UITargetValueLabel = GameObject.Find("UITargetValueLabel");
 
+        #region Commented
         //UIHPBar.GetComponent<Image>().type = Image.Type.Filled;
         //UIHPBar.GetComponent<Image>().fillMethod = Image.FillMethod.Radial360;
         //UIHPBar.GetComponent<Image>().fillAmount = 0.5f;
         //UIAbility1Bar = GameObject.Find("UIAbility1Bar");
         //UIAbility2Bar = GameObject.Find("UIAbility2Bar");
         //UpdateAbilityList();
+        #endregion
+
         UpdateAbilityOptions();
     }
 	
@@ -71,9 +76,23 @@ public class UIScript : MonoBehaviour
         UpdateUIBars();
     }
 
+
     public void AbilityButtonClick(int id)
     {
-        GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(id);
+        if (abilitySwapTo >= 0 && id < abilitiesList.Length && abilitySwapTo < ActivePlayer.Abilities.Count)
+        {
+            abilitiesList[id] = ActivePlayer.Abilities[abilitySwapTo];
+            UISkillConfigurePanel.transform.GetChild(abilitySwapTo).GetComponent<Image>().color = Color.white;
+            abilitySwapTo = -1;
+        }
+        else
+        {
+            if (abilitiesList[id] != null)
+                GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
+            //GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(id);
+        }
+
+
     }
 
     
@@ -199,6 +218,7 @@ public class UIScript : MonoBehaviour
             else
             {
                 //GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((abilitiesList[i].Cooldown - abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown), 1);
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = abilitiesList[i].ImageToShow;
                 GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = (float)((abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown);
             }
 
@@ -242,11 +262,7 @@ public class UIScript : MonoBehaviour
         UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ChestScript>().Name;
     }
 
-    public void ChangeAbilityInList(int abilityId, int abilitySlot)
-    {
-        if(abilitySlot < abilitiesList.Length && abilityId < ActivePlayer.Abilities.Count)
-            abilitiesList[abilitySlot] = ActivePlayer.Abilities[abilityId];
-    }
+
 
     public void UpdateAbilityOptions()
     {
@@ -259,14 +275,14 @@ public class UIScript : MonoBehaviour
 
         int abilityCount = ActivePlayer.Abilities.Count;
         int numOfCols = (int)Mathf.Ceil((float) abilityCount / AbilitiesPerRow);
-        float width = abilityButton.GetComponent<RectTransform>().rect.width;
-        float height = abilityButton.GetComponent<RectTransform>().rect.height;
+        float width = abilityChooseButton.GetComponent<RectTransform>().rect.width;
+        float height = abilityChooseButton.GetComponent<RectTransform>().rect.height;
 
         // Scale the ability selection window
         UISkillConfigurePanel.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(AbilitiesPerRow * (width + 5)+5, numOfCols * (height + 5)+5);
         for (int i = 0; i < ActivePlayer.Abilities.Count; i++)
         {
-            GameObject goButton = (GameObject)Instantiate(abilityButton);
+            GameObject goButton = (GameObject)Instantiate(abilityChooseButton);
             goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
             goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
                 5 + (width + 5) * (i % AbilitiesPerRow),
@@ -283,14 +299,46 @@ public class UIScript : MonoBehaviour
 
 
             // TODO: Add ability selection logics here
-            //Button tempButton = goButton.GetComponent<Button>();
-            //tempButton.onClick.AddListener(() => ButtonClicked(tempInt));
+            Button tempButton = goButton.GetComponent<Button>();
+            //print(tempButton);
+            //print(tempButton.onClick);
+            int i1 = i;
+            tempButton.onClick.AddListener(() => SelectAbilityToChange(i1, goButton));
         }
         
     }
 
+    public void SelectAbilityToChange(int id, GameObject e)
+    {
+        int size = UISkillConfigurePanel.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+        }
+        e.GetComponent<Image>().color = Color.cyan;
+        //int id = 0;
+        print(id);
+        abilitySwapTo = id;
+    }
 
-
+    /// <summary>
+    /// Called by button to toggle objectToToggle state between active and inactive
+    /// </summary>
+    /// <param name="objectToToggle">GameObject to toggle</param>
+    public void ToggleActiveInactive(GameObject objectToToggle)
+    {
+        // if we are showing ability list window then update list first
+        if (objectToToggle.name == "UISkillConfigurePanel")
+        {
+            if (objectToToggle.activeInHierarchy == false)
+            {
+                UpdateAbilityOptions();
+            }
+        }
+        
+        
+        objectToToggle.SetActive(!objectToToggle.activeInHierarchy);
+    }
 
 
     #region Test

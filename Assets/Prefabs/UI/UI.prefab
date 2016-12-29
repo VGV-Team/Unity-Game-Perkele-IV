@@ -1938,7 +1938,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d6bee0c109b6c54ea36a9ca5b00be77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityButton: {fileID: 1896038790108166, guid: 9b43253f87e9b1042bf6ac0057aac2c1,
+  abilityChooseButton: {fileID: 1896038790108166, guid: c7b5472ad69d2e7469ef38e947f45cf0,
     type: 2}
   UISkillConfigurePanel: {fileID: 1623109791491528}
   AbilitiesPerRow: 3
@@ -3475,22 +3475,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114116216361458420}
-        m_MethodName: UpdateAbilityOptions
-        m_Mode: 1
+        m_MethodName: ToggleActiveInactive
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1623109791491528}
-        m_MethodName: SetActive
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1623109791491528}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
