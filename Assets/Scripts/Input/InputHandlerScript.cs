@@ -36,22 +36,22 @@ public class InputHandlerScript : MonoBehaviour
         if (Input.GetKeyDown("1"))
         {
             Debug.Log("1");
-            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[0].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+            AbilityUse(0);
         }
         if (Input.GetKeyDown("2"))
         {
             Debug.Log("2");
-            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[1].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+            AbilityUse(1);
         }
         if (Input.GetKeyDown("3"))
         {
             Debug.Log("3");
-            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[2].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+            AbilityUse(2);
         }
         if (Input.GetKeyDown("4"))
         {
             Debug.Log("4");
-            GameObject.Find("Player").GetComponent<UnitScript>().Abilities[3].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+            AbilityUse(3);
         }
 
 
@@ -78,6 +78,12 @@ public class InputHandlerScript : MonoBehaviour
             GameObject.Find("Player").GetComponent<PlayerScript>().Abilities.Add(new AbilityScript("wuuut mate", AbilityType.None, 5,1,1,10, 10));
             //GameObject.Find("UI Handler").GetComponent<UIScript>().UpdateAbilityList();
         }
+    }
+
+    public void AbilityUse(int id)
+    {
+        if (id >= GameObject.Find("Player").GetComponent<UnitScript>().Abilities.Count) return;
+        GameObject.Find("Player").GetComponent<UnitScript>().Abilities[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
     }
 
     void CheckMouseClick()

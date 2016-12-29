@@ -102,7 +102,7 @@ public class AbilityScript
         caster.transform.rotation = Quaternion.Euler(0, caster.transform.eulerAngles.y, 0);
     }
 
-    public void Use(GameObject caster, GameObject target = null)
+    public bool Use(GameObject caster, GameObject target = null)
     {
         if (CanUseAbility(caster, target))
         {
@@ -112,11 +112,11 @@ public class AbilityScript
             switch (Type)
             {
                 case AbilityType.BasicAttack:
-                    if (target == null) return;
+                    if (target == null) return false;
                     AbilityTypeBasic(caster, target);
                     break;
                 case AbilityType.RangeAttack:
-                    if (target == null) return;
+                    if (target == null) return false;
                     AbilityTypeRange(caster, target);
                     break;
                 case AbilityType.Heal:
@@ -130,7 +130,10 @@ public class AbilityScript
             caster.GetComponent<UnitScript>().HP -= HPRequired;
             caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
             TimeToReady = Cooldown;
-        }   
+        }
+        else return false;
+
+        return true;
     }
 
 

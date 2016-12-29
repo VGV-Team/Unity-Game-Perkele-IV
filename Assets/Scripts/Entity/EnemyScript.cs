@@ -24,38 +24,33 @@ public class EnemyScript : UnitScript
         if (Active != true) return;
         base.Update();
 
+        
 
         if (Target != null)
         {
             float distance = Vector3.Distance(this.transform.position, Target.transform.position);
 
             // out of view range
-            
-            if (distance > ViewRange)
+            bool canSee = CheckVisibility();
+            if (distance > ViewRange || !canSee)
             {
                 Target = null;
                 StopMovement();
             }
-            else if (distance <= Abilities[0].Range)
+            else
             {
-                Abilities[0].Use(this.gameObject, Target);
-            }
-            else if (distance > 2.5f)
-            {
-                if (CheckVisibility())
+                bool ok = false;
+                foreach (var ability in Abilities)
                 {
-                    //Debug.Log("QWE1");
-                    SetWaypoint(GameObject.Find("Player"));
+                    //if(ability.Type == AbilityType.BasicAttack) ability.Use(this.gameObject, Target);
+                    if (ability.Range >= distance) // use all possible abilities for now
+                    {
+                        ok = true;
+                        ability.Use(this.gameObject, Target);
+                    }
                 }
-                else
-                {
-                    Target = null;
-                }
-                    
+                if(!ok) SetWaypoint(Target);
             }
-            
-            
-            // use basic attack
 
         }
         else
@@ -69,6 +64,11 @@ public class EnemyScript : UnitScript
                 }
             }
         }
+    }
+
+    protected override void DestinationReached()
+    {
+
     }
 
     // Raycast from enemy position to player postiion to determine if the enemy can see the player

@@ -1882,7 +1882,7 @@ MonoBehaviour:
   MaxMana: 50
   Mana: 50
   ManaChange: 1
-  Strenth: 10
+  Strength: 0
   Level: 1
   Xp: 0
   MaxXp: 0

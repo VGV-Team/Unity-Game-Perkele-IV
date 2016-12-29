@@ -126,12 +126,18 @@ public class UnitScript : EntityScript
             if (Vector3.Distance(model.position, waypoint.transform.position) < 1.5f) 
             {
                 StopMovement();
+                DestinationReached();
             }
         }
         else
         {
             model.GetComponent<NavMeshAgent>().velocity = new Vector3(0, 0, 0);
         }
+    }
+
+    protected virtual void DestinationReached()
+    {
+        
     }
 
     public void StopMovement()

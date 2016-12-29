@@ -1,14 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Networking.NetworkSystem;
 using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
+    // Active player
     private PlayerScript ActivePlayer;
 
+    // Prefabs
+    public GameObject abilityButton;
 
+    // different bars
     private GameObject UIHPBar;
     private GameObject UIHPValueLabel;
     private GameObject UIShieldBar;
@@ -21,12 +26,18 @@ public class UIScript : MonoBehaviour
     private GameObject UIXPBar;
     private GameObject UIXPValueLabel;
 
-    private GameObject UITargetBar;
+    private GameObject UITargetHPBar;
+    private GameObject UITargetShieldBar;
     private GameObject UITargetValueLabel;
 
     //private GameObject UIAbility1Bar;
     //private GameObject UIAbility2Bar;
-    private List<AbilityScript> abilitiesList = new List<AbilityScript>();
+    //private List<AbilityScript> abilitiesList = new List<AbilityScript>();
+    private AbilityScript[] abilitiesList = new AbilityScript[4];
+
+    // Panels
+    public GameObject UISkillConfigurePanel;
+    public int AbilitiesPerRow = 3;
 
     // Use this for initialization
     void Start () {
@@ -41,7 +52,8 @@ public class UIScript : MonoBehaviour
         UIFuryValueLabel = GameObject.Find("UIFuryValueLabel");
         UIXPBar = GameObject.Find("UIXPBar");
         UIXPValueLabel = GameObject.Find("UIXPValueLabel");
-        UITargetBar = GameObject.Find("UITargetBar");
+        UITargetHPBar = GameObject.Find("UITargetHPBar");
+        UITargetShieldBar = GameObject.Find("UITargetShieldBar");
         UITargetValueLabel = GameObject.Find("UITargetValueLabel");
 
         //UIHPBar.GetComponent<Image>().type = Image.Type.Filled;
@@ -50,57 +62,25 @@ public class UIScript : MonoBehaviour
         //UIAbility1Bar = GameObject.Find("UIAbility1Bar");
         //UIAbility2Bar = GameObject.Find("UIAbility2Bar");
         //UpdateAbilityList();
+        UpdateAbilityOptions();
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         UpdateUIBars();
-        UpdateAbilityList();
     }
 
     public void AbilityButtonClick(int id)
     {
-        GameObject.Find("Player").GetComponent<UnitScript>().Abilities[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+        GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(id);
     }
 
-
-    public void UpdateAbilityList()
-    {
-        if (ActivePlayer.Abilities.Count != abilitiesList.Count)
-        {
-            abilitiesList = new List<AbilityScript>();
-            for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
-            {
-                if (i < ActivePlayer.Abilities.Count)
-                {
-                    if (ActivePlayer.Abilities[i].ImageToShow != null)
-                    {
-                        GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
-                    }
-                    else
-                    {
-                        GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
-                    }
-                    abilitiesList.Add(ActivePlayer.Abilities[i]);
-                }
-                else
-                {
-                    GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite;
-                    GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = 0;
-                }
-            }
-        }
-
-        for (int i = 0; i < abilitiesList.Count; i++)
-        {
-            //GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((abilitiesList[i].Cooldown - abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown), 1);
-            GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = (float)((abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown);
-        }
-    }
-
-
+    
     private void UpdateUIBars()
     {
+        #region Update main UI bars
+
         // Update Hp bar
         float HPScale = ActivePlayer.HP / (float)ActivePlayer.MaxHP;
         if (ActivePlayer.MaxHP > 0)
@@ -166,30 +146,123 @@ public class UIScript : MonoBehaviour
         UIXPBar.GetComponent<Image>().fillAmount = XPScale;
         UIXPValueLabel.GetComponent<Text>().text = ActivePlayer.Xp + " / " + ActivePlayer.MaxXp;
 
-        if (ActivePlayer.Target != null)
-        {
-            float enemyTotalLife = ActivePlayer.Target.GetComponent<UnitScript>().MaxHP + ActivePlayer.Target.GetComponent<UnitScript>().MaxShield;
-            float enemyLife = ActivePlayer.Target.GetComponent<UnitScript>().HP + ActivePlayer.Target.GetComponent<UnitScript>().Shield;
 
-            float enemyScale = enemyLife / (float)enemyTotalLife;
-            if (ActivePlayer.MaxHP > 0)
+        // Updating of target bar
+        GameObject objectToShow = null;
+        if(GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject != null) // Hovered object update
+        {
+            objectToShow = GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject;
+        }
+        else if (ActivePlayer.Target != null) // Active target update
+        {
+            objectToShow = ActivePlayer.Target;
+        }
+
+        if (objectToShow != null)
+        {
+            // Update Hp bar
+            float targetHPScale = objectToShow.GetComponent<UnitScript>().HP / (float)objectToShow.GetComponent<UnitScript>().MaxHP;
+            if (objectToShow.GetComponent<UnitScript>().MaxHP > 0)
             {
-                if (enemyScale > 1) enemyScale = 1;
+                if (targetHPScale > 1) targetHPScale = 1;
             }
             else
             {
-                enemyScale = 0;
+                targetHPScale = 0;
             }
-            UITargetBar.GetComponent<Image>().fillAmount = enemyScale;
-            //UITargetValueLabel.GetComponent<Text>().text = enemyLife + " / " + enemyTotalLife;
-            UITargetValueLabel.GetComponent<Text>().text = ActivePlayer.Target.GetComponent<UnitScript>().Name;
+            UITargetHPBar.GetComponent<Image>().fillAmount = targetHPScale;
+
+            // Update Shield bar
+            float targetShieldScale = objectToShow.GetComponent<UnitScript>().Shield / (float)objectToShow.GetComponent<UnitScript>().MaxShield;
+            if (objectToShow.GetComponent<UnitScript>().MaxShield > 0)
+            {
+                if (targetShieldScale > 1) targetShieldScale = 1;
+            }
+            else
+            {
+                targetShieldScale = 0;
+            }
+            UITargetShieldBar.GetComponent<Image>().fillAmount = targetShieldScale;
+
+            UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<UnitScript>().Name;
         }
         else
         {
-            UITargetBar.GetComponent<Image>().fillAmount = 0;
+            UITargetHPBar.GetComponent<Image>().fillAmount = 0;
+            UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
             UITargetValueLabel.GetComponent<Text>().text = "";
         }
+
+        #endregion
+
+        #region Update abilities bars
+        
+        // Update abilities bar
+        for (int i = 0; i < abilitiesList.Length; i++)
+        {
+            if (abilitiesList[i] == null)
+            {
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite;
+            }
+            else
+            {
+                //GameObject.Find("UIAbilityPanel").transform.GetChild(i).transform.localScale = new Vector3(1, (float)((abilitiesList[i].Cooldown - abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown), 1);
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = (float)((abilitiesList[i].TimeToReady) / abilitiesList[i].Cooldown);
+            }
+
+        }
+
+        #endregion
     }
+
+    public void ChangeAbilityInList(int abilityId, int abilitySlot)
+    {
+        if(abilitySlot < abilitiesList.Length && abilityId < ActivePlayer.Abilities.Count)
+            abilitiesList[abilitySlot] = ActivePlayer.Abilities[abilityId];
+    }
+
+    public void UpdateAbilityOptions()
+    {
+        // Remove any previous abilities
+        int size = UISkillConfigurePanel.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            Destroy(UISkillConfigurePanel.transform.GetChild(i).gameObject);
+        }
+
+        int abilityCount = ActivePlayer.Abilities.Count;
+        int numOfCols = (int)Mathf.Ceil((float) abilityCount / AbilitiesPerRow);
+        float width = abilityButton.GetComponent<RectTransform>().rect.width;
+        float height = abilityButton.GetComponent<RectTransform>().rect.height;
+
+        // Scale the ability selection window
+        UISkillConfigurePanel.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(AbilitiesPerRow * (width + 5)+5, numOfCols * (height + 5)+5);
+        for (int i = 0; i < ActivePlayer.Abilities.Count; i++)
+        {
+            GameObject goButton = (GameObject)Instantiate(abilityButton);
+            goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
+            goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
+                5 + (width + 5) * (i % AbilitiesPerRow),
+                5 + (height + 5) * (i / AbilitiesPerRow), 
+                0);
+
+            
+            Image imageComponent = goButton.GetComponent<Image>();
+            if (ActivePlayer.Abilities[i].ImageToShow != null)
+                imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
+            else
+                imageComponent.overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+
+
+
+            // TODO: Add ability selection logics here
+            //Button tempButton = goButton.GetComponent<Button>();
+            //tempButton.onClick.AddListener(() => ButtonClicked(tempInt));
+        }
+        
+    }
+
+
 
 
 
@@ -197,7 +270,7 @@ public class UIScript : MonoBehaviour
 
     public void TestPopup()
     {
-        
+
     }
 
     public void TestAbility1()
@@ -227,3 +300,42 @@ public class UIScript : MonoBehaviour
 
 
 }
+
+#region Old
+
+/*
+// Old ability updating
+public void UpdateAbilityBars()
+{
+
+    if (ActivePlayer.Abilities.Count != abilitiesList.Count)
+    {
+
+        abilitiesList = new List<AbilityScript>();
+        for (int i = 0; i < GameObject.Find("UIAbilityPanel").transform.childCount; i++)
+        {
+            if (i < ActivePlayer.Abilities.Count)
+            {
+                if (ActivePlayer.Abilities[i].ImageToShow != null)
+                {
+                    GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
+                }
+                else
+                {
+                    GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+                }
+                abilitiesList.Add(ActivePlayer.Abilities[i]);
+            }
+            else
+            {
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite;
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).FindChild("UIAbilityBarCooldown").GetComponent<Image>().fillAmount = 0;
+            }
+        }
+
+    }
+
+}
+*/
+
+#endregion

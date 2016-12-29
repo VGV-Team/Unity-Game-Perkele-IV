@@ -11,7 +11,7 @@ public class PlayerScript : UnitScript {
     new void Start ()
 	{
 	    base.Start();
-        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 2, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 10, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
         Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 5, 0, 10, 0, 20, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
         Abilities.Add(new AbilityScript("Whatever Ability", AbilityType.RangeAttack, 10, 10, 0, 10, 20, GameObject.Find("UISpritesWhatever").transform.GetComponent<SpriteRenderer>().sprite));
     }
@@ -22,5 +22,23 @@ public class PlayerScript : UnitScript {
         if (Active != true) return;
         base.Update();
 
+
+        if (Target != null && Target.tag == "Enemy")
+        {
+            foreach (var ability in Abilities)
+            {
+                if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
+                {
+                    // TODO: should we click for basic attack? If yes then break
+                    break;
+                    //Target = null;
+                }
+            }
+        }
+    }
+
+    protected override void DestinationReached()
+    {
+        
     }
 }
