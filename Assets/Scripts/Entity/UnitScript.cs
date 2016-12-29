@@ -142,24 +142,26 @@ public class UnitScript : EntityScript
 
     public void StopMovement()
     {
-        //this.GetComponent<Animator>().CrossFade("idle", 0.15f);
+
         model.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
+
         walkAnim = false;
         Destroy(waypoint);
     }
 
     public void StartMovement()
     {
-        //this.GetComponent<Animator>().CrossFade("walk", 0.15f);
+
         model.FindChild("Model").GetComponent<Animation>().CrossFade("run", animationFadeFactor);
         walkAnim = true;
     }
 
     public void StartDeathAnimation()
     {
-        // TODO: clear click collision
+
         model.FindChild("Model").GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
         model.FindChild("Model").GetComponent<Animation>().CrossFade("die", animationFadeFactor);
+        
     }
 
     public void Die()
@@ -175,11 +177,14 @@ public class UnitScript : EntityScript
         StopMovement();
         if (attackCooldown != -1)
         {
+
             AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
             state.speed = state.length / attackCooldown;
+            model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
+           
         }
 
-        model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
+        
     }
 
     public void StartRangeAttackAnimation()
@@ -196,7 +201,7 @@ public class UnitScript : EntityScript
     public void StartHitAnimation()
     {
         // TODO: this
-        model.FindChild("Model").GetComponent<Animation>().Blend("gethit", animationFadeFactor);
+        //model.FindChild("Model").GetComponent<Animation>().Blend("gethit", animationFadeFactor);
     }
 
     public void SetWaypoint(GameObject target)

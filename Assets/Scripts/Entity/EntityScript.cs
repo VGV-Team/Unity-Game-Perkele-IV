@@ -28,6 +28,7 @@ public abstract class EntityScript : MonoBehaviour
 
     private void SetThisHoverObject()
     {
+        if (this.gameObject == null) Debug.Log("WQWE");
         InputManagerObject.GetComponent<InputHandlerScript>().HoveredObject = this.gameObject;
     }
 

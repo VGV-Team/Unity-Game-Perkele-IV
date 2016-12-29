@@ -102,7 +102,7 @@ public class InputHandlerScript : MonoBehaviour
                 print("Moving to object!");
                 //SetWaypoint(mouseOverObject.transform.position);
                 //Destination = HoveredObject.transform.position;
-                return;
+                //return;
             }
 
 
@@ -111,7 +111,6 @@ public class InputHandlerScript : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 100)) // TODO: chack for Enemy, Item, Chest tag
             {
-
                 switch (hit.transform.tag)
                 {
                     case "Terrain":
@@ -120,8 +119,13 @@ public class InputHandlerScript : MonoBehaviour
                         //Destination = hit.point;
                         print("Terrain");
                         break;
+                    case "Chest":
+                        print("CHEST");
+                        // Testing
+                        hit.transform.GetComponent<ChestScript>().OpenChest();
+                        break;
                     default:
-                        print("Not terrain");
+                        print("Not terrain or chest");
                         break;
                 }
             }

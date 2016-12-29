@@ -160,31 +160,23 @@ public class UIScript : MonoBehaviour
 
         if (objectToShow != null)
         {
-            // Update Hp bar
-            float targetHPScale = objectToShow.GetComponent<UnitScript>().HP / (float)objectToShow.GetComponent<UnitScript>().MaxHP;
-            if (objectToShow.GetComponent<UnitScript>().MaxHP > 0)
-            {
-                if (targetHPScale > 1) targetHPScale = 1;
-            }
-            else
-            {
-                targetHPScale = 0;
-            }
-            UITargetHPBar.GetComponent<Image>().fillAmount = targetHPScale;
 
-            // Update Shield bar
-            float targetShieldScale = objectToShow.GetComponent<UnitScript>().Shield / (float)objectToShow.GetComponent<UnitScript>().MaxShield;
-            if (objectToShow.GetComponent<UnitScript>().MaxShield > 0)
+            switch (objectToShow.tag)
             {
-                if (targetShieldScale > 1) targetShieldScale = 1;
+                case "Enemy":
+                    UpdateEnemyUI(objectToShow);
+                    break;
+                case "Chest":
+                    UpdateChestUI(objectToShow);
+                    break;
+                case "Item":
+                    //ITEM
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                targetShieldScale = 0;
-            }
-            UITargetShieldBar.GetComponent<Image>().fillAmount = targetShieldScale;
 
-            UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<UnitScript>().Name;
+            
         }
         else
         {
@@ -213,6 +205,41 @@ public class UIScript : MonoBehaviour
         }
 
         #endregion
+    }
+
+    private void UpdateEnemyUI(GameObject objectToShow)
+    {
+        // Update Hp bar
+        float targetHPScale = objectToShow.GetComponent<UnitScript>().HP / (float)objectToShow.GetComponent<UnitScript>().MaxHP;
+        if (objectToShow.GetComponent<UnitScript>().MaxHP > 0)
+        {
+            if (targetHPScale > 1) targetHPScale = 1;
+        }
+        else
+        {
+            targetHPScale = 0;
+        }
+        UITargetHPBar.GetComponent<Image>().fillAmount = targetHPScale;
+
+        // Update Shield bar
+        float targetShieldScale = objectToShow.GetComponent<UnitScript>().Shield / (float)objectToShow.GetComponent<UnitScript>().MaxShield;
+        if (objectToShow.GetComponent<UnitScript>().MaxShield > 0)
+        {
+            if (targetShieldScale > 1) targetShieldScale = 1;
+        }
+        else
+        {
+            targetShieldScale = 0;
+        }
+        UITargetShieldBar.GetComponent<Image>().fillAmount = targetShieldScale;
+
+        UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<UnitScript>().Name;
+    }
+
+    private void UpdateChestUI(GameObject objectToShow)
+    {
+        // TODO
+        UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ChestScript>().Name;
     }
 
     public void ChangeAbilityInList(int abilityId, int abilitySlot)
