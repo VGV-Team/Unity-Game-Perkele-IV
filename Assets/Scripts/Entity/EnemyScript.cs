@@ -85,7 +85,7 @@ public class EnemyScript : UnitScript
         Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, this.GetComponent<Collider>().bounds.size.y - 0.1f, 0.0f) - this.transform.position).normalized, out hit, 100);
 
         //Debug.Log(hit.collider.gameObject.tag);
-        if (hit.collider.gameObject.tag.Equals("Player"))
+        if (hit.collider!=null && hit.collider.gameObject.tag.Equals("Player"))
         {
             return true;
         }

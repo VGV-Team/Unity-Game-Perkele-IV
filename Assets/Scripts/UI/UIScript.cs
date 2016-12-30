@@ -29,6 +29,7 @@ public class UIScript : MonoBehaviour
 
     private GameObject UITargetHPBar;
     private GameObject UITargetShieldBar;
+    private GameObject UITargetOtherBar;
     private GameObject UITargetValueLabel;
 
     //private GameObject UIAbility1Bar;
@@ -56,6 +57,7 @@ public class UIScript : MonoBehaviour
         UIXPValueLabel = GameObject.Find("UIXPValueLabel");
         UITargetHPBar = GameObject.Find("UITargetHPBar");
         UITargetShieldBar = GameObject.Find("UITargetShieldBar");
+        UITargetOtherBar = GameObject.Find("UITargetOtherBar");
         UITargetValueLabel = GameObject.Find("UITargetValueLabel");
 
         #region Commented
@@ -67,7 +69,7 @@ public class UIScript : MonoBehaviour
         //UpdateAbilityList();
         #endregion
 
-        UpdateAbilityOptions();
+        UpdateAbilityOptionsPopup();
     }
 	
 	// Update is called once per frame
@@ -89,13 +91,65 @@ public class UIScript : MonoBehaviour
         {
             if (abilitiesList[id] != null)
                 GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
-            //GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(id);
         }
-
-
     }
 
-    
+
+    public void UpdateAbilityOptionsPopup()
+    {
+        // Remove any previous abilities
+        int size = UISkillConfigurePanel.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            Destroy(UISkillConfigurePanel.transform.GetChild(i).gameObject);
+        }
+
+        int abilityCount = ActivePlayer.Abilities.Count;
+        int numOfCols = (int)Mathf.Ceil((float)abilityCount / AbilitiesPerRow);
+        float width = abilityChooseButton.GetComponent<RectTransform>().rect.width;
+        float height = abilityChooseButton.GetComponent<RectTransform>().rect.height;
+
+        // Scale the ability selection window
+        UISkillConfigurePanel.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(AbilitiesPerRow * (width + 5) + 5, numOfCols * (height + 5) + 5);
+        for (int i = 0; i < ActivePlayer.Abilities.Count; i++)
+        {
+            GameObject goButton = (GameObject)Instantiate(abilityChooseButton);
+            goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
+            goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
+                5 + (width + 5) * (i % AbilitiesPerRow),
+                5 + (height + 5) * (i / AbilitiesPerRow),
+                0);
+
+            Image imageComponent = goButton.GetComponent<Image>();
+            if (ActivePlayer.Abilities[i].ImageToShow != null)
+                imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
+            else
+                imageComponent.overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+
+            Button tempButton = goButton.GetComponent<Button>();
+            int i1 = i;
+            tempButton.onClick.AddListener(() => SelectAbilityToChange(i1, goButton));
+        }
+    }
+
+    /// <summary>
+    /// Chooses active player ability id to select to
+    /// </summary>
+    /// <param name="id">Id of player ability we want to change to</param>
+    /// <param name="e">Button pressed for ability change</param>
+    private void SelectAbilityToChange(int id, GameObject e = null)
+    {
+        int size = UISkillConfigurePanel.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+        }
+        if (e != null) e.GetComponent<Image>().color = Color.cyan;
+        abilitySwapTo = id;
+    }
+
+
+
     private void UpdateUIBars()
     {
         #region Update main UI bars
@@ -201,6 +255,7 @@ public class UIScript : MonoBehaviour
         {
             UITargetHPBar.GetComponent<Image>().fillAmount = 0;
             UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
+            UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
             UITargetValueLabel.GetComponent<Text>().text = "";
         }
 
@@ -253,73 +308,21 @@ public class UIScript : MonoBehaviour
         }
         UITargetShieldBar.GetComponent<Image>().fillAmount = targetShieldScale;
 
+        UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
         UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<UnitScript>().Name;
     }
 
     private void UpdateChestUI(GameObject objectToShow)
     {
         // TODO
+        UITargetHPBar.GetComponent<Image>().fillAmount = 0;
+        UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
+        UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
+
         UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ChestScript>().Name;
+
     }
 
-
-
-    public void UpdateAbilityOptions()
-    {
-        // Remove any previous abilities
-        int size = UISkillConfigurePanel.transform.childCount;
-        for (int i = 0; i < size; i++)
-        {
-            Destroy(UISkillConfigurePanel.transform.GetChild(i).gameObject);
-        }
-
-        int abilityCount = ActivePlayer.Abilities.Count;
-        int numOfCols = (int)Mathf.Ceil((float) abilityCount / AbilitiesPerRow);
-        float width = abilityChooseButton.GetComponent<RectTransform>().rect.width;
-        float height = abilityChooseButton.GetComponent<RectTransform>().rect.height;
-
-        // Scale the ability selection window
-        UISkillConfigurePanel.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(AbilitiesPerRow * (width + 5)+5, numOfCols * (height + 5)+5);
-        for (int i = 0; i < ActivePlayer.Abilities.Count; i++)
-        {
-            GameObject goButton = (GameObject)Instantiate(abilityChooseButton);
-            goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
-            goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
-                5 + (width + 5) * (i % AbilitiesPerRow),
-                5 + (height + 5) * (i / AbilitiesPerRow), 
-                0);
-
-            
-            Image imageComponent = goButton.GetComponent<Image>();
-            if (ActivePlayer.Abilities[i].ImageToShow != null)
-                imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
-            else
-                imageComponent.overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
-
-
-
-            // TODO: Add ability selection logics here
-            Button tempButton = goButton.GetComponent<Button>();
-            //print(tempButton);
-            //print(tempButton.onClick);
-            int i1 = i;
-            tempButton.onClick.AddListener(() => SelectAbilityToChange(i1, goButton));
-        }
-        
-    }
-
-    public void SelectAbilityToChange(int id, GameObject e)
-    {
-        int size = UISkillConfigurePanel.transform.childCount;
-        for (int i = 0; i < size; i++)
-        {
-            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
-        }
-        e.GetComponent<Image>().color = Color.cyan;
-        //int id = 0;
-        print(id);
-        abilitySwapTo = id;
-    }
 
     /// <summary>
     /// Called by button to toggle objectToToggle state between active and inactive
@@ -332,7 +335,7 @@ public class UIScript : MonoBehaviour
         {
             if (objectToToggle.activeInHierarchy == false)
             {
-                UpdateAbilityOptions();
+                UpdateAbilityOptionsPopup();
             }
         }
         
