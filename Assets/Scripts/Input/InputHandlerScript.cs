@@ -141,6 +141,12 @@ public class InputHandlerScript : MonoBehaviour
 
     private void CheckMouseScroll()
     {
+        if (EventSystem.current.IsPointerOverGameObject() == true)
+        {
+            print("UI scroll");
+            return;
+        }
+
         if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
         {
             if (CameraScript.CameraOffset.y > 3.0f)

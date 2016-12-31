@@ -999,6 +999,8 @@ MonoBehaviour:
   Xp: 0
   MaxXp: 0
   Target: {fileID: 0}
+  InventoryItemsList: []
+  EquipedItemsList: []
   waypoint: {fileID: 0}
 --- !u!65 &592155063
 BoxCollider:

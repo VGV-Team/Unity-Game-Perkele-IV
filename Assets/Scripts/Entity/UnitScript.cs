@@ -24,10 +24,23 @@ public class UnitScript : EntityScript
     public int Xp;
     public int MaxXp;
 
+    // need to add critical
+    // need to add discovery
+    // abilities should check for this values
+    // abilities should also check for equipped items
+
+
     public GameObject Target;
 
     // public Waypoint DestinationWaypoint
     public List<AbilityScript> Abilities = new List<AbilityScript>();
+
+    // TODO: this
+    // Inventory
+    public List<ItemScript> InventoryItemsList = new List<ItemScript>();
+    // Equiped items
+    public List<ItemScript> EquipedItemsList = new List<ItemScript>();
+
 
     public new void Start()
     {

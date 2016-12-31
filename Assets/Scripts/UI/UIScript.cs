@@ -39,8 +39,12 @@ public class UIScript : MonoBehaviour
 
     // Panels
     public GameObject UISkillConfigurePanel;
+    public GameObject UIInventoryPanel;
+
     public int AbilitiesPerRow = 3;
     private int abilitySwapTo = -1;
+
+
 
     // Use this for initialization
     void Start () {
@@ -338,8 +342,15 @@ public class UIScript : MonoBehaviour
                 UpdateAbilityOptionsPopup();
             }
         }
-        
-        
+        if (objectToToggle.name == "UIInventoryPanel")
+        {
+            if (objectToToggle.activeInHierarchy == false)
+            {
+                // TODO: Update inventory items
+            }
+        }
+
+
         objectToToggle.SetActive(!objectToToggle.activeInHierarchy);
     }
 
