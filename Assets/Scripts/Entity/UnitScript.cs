@@ -128,6 +128,7 @@ public class UnitScript : EntityScript
                 waypoint.transform.position = Target.transform.position;
             }
             model.GetComponent<NavMeshAgent>().SetDestination(waypoint.transform.position);
+            
 
 
             if (!walkAnim)
@@ -157,6 +158,7 @@ public class UnitScript : EntityScript
     {
 
         model.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
+        this.GetComponent<NavMeshAgent>().ResetPath();
 
         walkAnim = false;
         Destroy(waypoint);

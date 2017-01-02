@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum AbilityType
 {
@@ -108,6 +109,7 @@ public class AbilityScript
         {
             //Temporary, move this to approprita ability types
             LookAtTarget(caster, target);
+            //caster.GetComponent<UnitScript>().StopMovement();
 
             switch (Type)
             {
