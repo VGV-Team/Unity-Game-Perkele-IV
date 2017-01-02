@@ -34,7 +34,7 @@ public class EnemyScript : UnitScript
             if (distance > ViewRange || !canSee)
             {
                 Target = null;
-                StopMovement();
+                //StopMovement(); If this is commented, enemy will move to last known location upon losing LoS
             }
             else
             {
