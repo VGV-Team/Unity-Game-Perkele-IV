@@ -5,6 +5,9 @@ using UnityEngine;
 public class ChestScript : EntityScript
 {
 
+    public bool Opened = false;
+    public int ScrapRequired = 0;
+
     // Use this for initialization
     new void Start()
     {
@@ -18,6 +21,11 @@ public class ChestScript : EntityScript
 
     public void OpenChest()
     {
-        this.GetComponent<Animator>().Play("Open chest");
+        if (!Opened)
+        {
+            this.GetComponent<Animator>().Play("Open chest");
+            Opened = true;
+        }
+        
     }
 }

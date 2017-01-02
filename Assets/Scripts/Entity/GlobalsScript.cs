@@ -10,6 +10,19 @@ public enum RarityType
     Special
 }
 
+public enum ItemType
+{
+    MeleeWeapon,
+    RangedWeapon,
+    Shield,
+    Armor,
+    Belt,
+    Gloves,
+    Boots,
+    Ring,
+    Amulet
+}
+
 public class GlobalsScript{
 
     

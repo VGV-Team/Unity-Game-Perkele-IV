@@ -39,7 +39,7 @@ public class UnitScript : EntityScript
     // Inventory
     public List<ItemScript> InventoryItemsList = new List<ItemScript>();
     // Equiped items
-    public List<ItemScript> EquipedItemsList = new List<ItemScript>();
+    public List<ItemScript> EquippedItemsList = new List<ItemScript>();
 
 
     public new void Start()

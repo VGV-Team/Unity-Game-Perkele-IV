@@ -127,7 +127,7 @@ public class InputHandlerScript : MonoBehaviour
                     case "Chest":
                         print("CHEST");
                         // Testing
-                        hit.transform.GetComponent<ChestScript>().OpenChest();
+                        //hit.transform.GetComponent<ChestScript>().OpenChest();
                         break;
                     case "Item":
                         print("ITEM");

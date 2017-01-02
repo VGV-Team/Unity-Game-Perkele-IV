@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class PlayerScript : UnitScript {
 
 
+    public int Scrap = 0;
+
 	// Use this for initialization
     new void Start ()
 	{
@@ -23,26 +25,42 @@ public class PlayerScript : UnitScript {
         base.Update();
 
 
-        if (Target != null && Target.tag == "Enemy")
+        if (Target != null)
         {
-            foreach (var ability in Abilities)
+
+            switch (Target.tag)
             {
-                if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
-                {
-                    // TODO: should we click for basic attack? If yes then break
+                case "Enemy":
+                    foreach (var ability in Abilities)
+                    {
+                        if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
+                        {
+                            // TODO: should we click for basic attack? If yes then break
+                            break;
+                            //Target = null;
+                        }
+                    }
                     break;
-                    //Target = null;
-                }
+
+                case "Item":
+                    PickUpItem(Target);
+                    break;
+
+                case "Chest":
+                    OpenChest(Target);
+                    break;
+
+                default:
+                    Debug.Log("DEFAULT playerscript switch");
+                    break;
+
             }
+
         }
 
-        if (Target != null && Target.tag == "Item")
-        {
-            PickUpItem(Target);
-        }
     }
 
-    public void PickUpItem(GameObject item)
+    private void PickUpItem(GameObject item)
     {
         // if in range, try to pick up
         if (item.GetComponent<ItemScript>().PlayerTouching)
@@ -50,6 +68,17 @@ public class PlayerScript : UnitScript {
             StopMovement();
             /// TODO: Add to inventory
             Destroy(item);
+        }
+    }
+
+    private void OpenChest(GameObject chest)
+    {
+        Debug.Log("TRYING Opening chest");
+        if (chest.GetComponent<ChestScript>().PlayerTouching)
+        {
+            Debug.Log("Opening chest");
+            StopMovement();
+            chest.GetComponent<ChestScript>().OpenChest();
         }
     }
 

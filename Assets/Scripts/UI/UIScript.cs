@@ -323,7 +323,13 @@ public class UIScript : MonoBehaviour
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
 
-        UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ChestScript>().Name;
+        string nameToShow = objectToShow.GetComponent<ChestScript>().Name;
+        if (objectToShow.GetComponent<ChestScript>().Opened)
+        {
+            nameToShow += " (Open)";
+        }
+
+        UITargetValueLabel.GetComponent<Text>().text = nameToShow;
 
     }
 

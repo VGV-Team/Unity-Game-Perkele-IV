@@ -5,15 +5,14 @@ using UnityEngine;
 public class ItemScript : EntityScript
 {
 
-
-
-    public int Value = 0;
-    public string Type = "Weapon";
+    public ItemType Type = ItemType.MeleeWeapon;
 
     public float Damage;
     public float CriticalChance;
     public float CriticalDamage;
 
     public RarityType Rarity;
+
+    public int ScrapValue = 0;
 
 }
