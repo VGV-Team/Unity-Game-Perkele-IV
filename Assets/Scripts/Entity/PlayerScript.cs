@@ -66,8 +66,10 @@ public class PlayerScript : UnitScript {
         if (item.GetComponent<ItemScript>().PlayerTouching)
         {
             StopMovement();
-            /// TODO: Add to inventory
-            Destroy(item);
+            InventoryItemsList.Add(item);
+            //Destroy(item);
+            item.SetActive(false);
+            item.GetComponent<ItemScript>().PlayerTouching = false;
         }
     }
 

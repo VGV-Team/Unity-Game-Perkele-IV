@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking.NetworkSystem;
@@ -16,22 +17,36 @@ public class UIScript : MonoBehaviour
     public GameObject inventoryItemButton;
 
     // different bars
-    private GameObject UIHPBar;
-    private GameObject UIHPValueLabel;
-    private GameObject UIShieldBar;
-    private GameObject UIShieldValueLabel;
-    private GameObject UIManaBar;
-    private GameObject UIManaValueLabel;
-    private GameObject UIFuryBar;
-    private GameObject UIFuryValueLabel;
+    public GameObject UIHPBar;
+    public GameObject UIHPValueLabel;
+    public GameObject UIShieldBar;
+    public GameObject UIShieldValueLabel;
+    public GameObject UIManaBar;
+    public GameObject UIManaValueLabel;
+    public GameObject UIFuryBar;
+    public GameObject UIFuryValueLabel;
 
-    private GameObject UIXPBar;
-    private GameObject UIXPValueLabel;
+    public GameObject UIXPBar;
+    public GameObject UIXPValueLabel;
 
-    private GameObject UITargetHPBar;
-    private GameObject UITargetShieldBar;
-    private GameObject UITargetOtherBar;
-    private GameObject UITargetValueLabel;
+    public GameObject UITargetHPBar;
+    public GameObject UITargetShieldBar;
+    public GameObject UITargetOtherBar;
+    public GameObject UITargetValueLabel;
+
+    public GameObject UIInventorySelectedItemNameLabel;
+    public GameObject UIInventorySelectedItemTypeLabel;
+    public GameObject UIInventorySelectedItemDamageLabel;
+    public GameObject UIInventorySelectedItemAttackSpeedLabel;
+    public GameObject UIInventorySelectedItemCriticalChanceLabel;
+    public GameObject UIInventorySelectedItemCriticalDamageLabel;
+    public GameObject UIInventorySelectedItemRarityLabel;
+    public GameObject UIInventorySelectedItemScrapValueLabel;
+    public GameObject UIInventoryScrapLabel;
+
+    public GameObject UIInventoryUnequipButton;
+    public GameObject UIInventoryEquipButton;
+    public GameObject UIInventoryDestroyButton;
 
     //private GameObject UIAbility1Bar;
     //private GameObject UIAbility2Bar;
@@ -43,29 +58,18 @@ public class UIScript : MonoBehaviour
     public GameObject UIInventoryPanel;
     public GameObject UIInventoryItemsContent;
     public GameObject UIInventoryEquippedItemsContent;
+    public GameObject UIInventorySelectedItemPanel;
 
     public int AbilitiesPerRow = 3;
-    private int abilitySwapTo = -1;
-
+    //private int selectedAbility = -1;
+    private AbilityScript selectedAbility = null;
+    private GameObject selectedItem = null;
+    private List<GameObject> selectedItemList = null;
 
 
     // Use this for initialization
     void Start () {
 		ActivePlayer = (PlayerScript)GameObject.Find("Player").GetComponent("PlayerScript");
-        UIHPBar = GameObject.Find("UIHPBar");
-        UIHPValueLabel = GameObject.Find("UIHPValueLabel");
-        UIShieldBar = GameObject.Find("UIShieldBar");
-        UIShieldValueLabel = GameObject.Find("UIShieldValueLabel");
-        UIManaBar = GameObject.Find("UIManaBar");
-        UIManaValueLabel = GameObject.Find("UIManaValueLabel");
-        UIFuryBar = GameObject.Find("UIFuryBar");
-        UIFuryValueLabel = GameObject.Find("UIFuryValueLabel");
-        UIXPBar = GameObject.Find("UIXPBar");
-        UIXPValueLabel = GameObject.Find("UIXPValueLabel");
-        UITargetHPBar = GameObject.Find("UITargetHPBar");
-        UITargetShieldBar = GameObject.Find("UITargetShieldBar");
-        UITargetOtherBar = GameObject.Find("UITargetOtherBar");
-        UITargetValueLabel = GameObject.Find("UITargetValueLabel");
 
         #region Commented
         //UIHPBar.GetComponent<Image>().type = Image.Type.Filled;
@@ -85,100 +89,6 @@ public class UIScript : MonoBehaviour
         UpdateUIBars();
     }
 
-
-    public void AbilityButtonClick(int id)
-    {
-        if (abilitySwapTo >= 0 && id < abilitiesList.Length && abilitySwapTo < ActivePlayer.Abilities.Count)
-        {
-            abilitiesList[id] = ActivePlayer.Abilities[abilitySwapTo];
-            UISkillConfigurePanel.transform.GetChild(abilitySwapTo).GetComponent<Image>().color = Color.white;
-            abilitySwapTo = -1;
-        }
-        else
-        {
-            if (abilitiesList[id] != null)
-                GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
-        }
-    }
-
-
-    public void UpdateAbilityOptionsPopup()
-    {
-        // Remove any previous abilities
-        int size = UISkillConfigurePanel.transform.childCount;
-        for (int i = 0; i < size; i++)
-        {
-            Destroy(UISkillConfigurePanel.transform.GetChild(i).gameObject);
-        }
-
-        int abilityCount = ActivePlayer.Abilities.Count;
-        int numOfCols = (int)Mathf.Ceil((float)abilityCount / AbilitiesPerRow);
-        float width = abilityChooseButton.GetComponent<RectTransform>().rect.width;
-        float height = abilityChooseButton.GetComponent<RectTransform>().rect.height;
-
-        // Scale the ability selection window
-        UISkillConfigurePanel.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(AbilitiesPerRow * (width + 5) + 5, numOfCols * (height + 5) + 5);
-        for (int i = 0; i < ActivePlayer.Abilities.Count; i++)
-        {
-            GameObject goButton = (GameObject)Instantiate(abilityChooseButton);
-            goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
-            goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
-                5 + (width + 5) * (i % AbilitiesPerRow),
-                5 + (height + 5) * (i / AbilitiesPerRow),
-                0);
-
-            Image imageComponent = goButton.GetComponent<Image>();
-            if (ActivePlayer.Abilities[i].ImageToShow != null)
-                imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
-            else
-                imageComponent.overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
-
-            Button tempButton = goButton.GetComponent<Button>();
-            int i1 = i;
-            tempButton.onClick.AddListener(() => SelectAbilityToChange(i1, goButton));
-        }
-    }
-
-    public void UpdateInventoryList()
-    {
-        int size = UIInventoryItemsContent.transform.childCount;
-        for (int i = 0; i < size; i++)
-        {
-            Destroy(UIInventoryItemsContent.transform.GetChild(i).gameObject);
-        }
-
-        for (int i = 0; i < ActivePlayer.InventoryItemsList.Count; i++)
-        {
-            GameObject goButton = (GameObject)Instantiate(inventoryItemButton);
-            goButton.transform.SetParent(UIInventoryItemsContent.transform, false);
-
-            Image imageComponent = goButton.GetComponent<Image>();
-            Button tempButton = goButton.GetComponent<Button>();
-            int i1 = i;
-            tempButton.onClick.AddListener(() => SelectItemToEquip(i1, goButton));
-        }
-    }
-
-    private void SelectItemToEquip(int id, GameObject e = null)
-    {
-        Debug.Log(id);
-    }
-
-    /// <summary>
-    /// Chooses active player ability id to select to
-    /// </summary>
-    /// <param name="id">Id of player ability we want to change to</param>
-    /// <param name="e">Button pressed for ability change</param>
-    private void SelectAbilityToChange(int id, GameObject e = null)
-    {
-        int size = UISkillConfigurePanel.transform.childCount;
-        for (int i = 0; i < size; i++)
-        {
-            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
-        }
-        if (e != null) e.GetComponent<Image>().color = Color.cyan;
-        abilitySwapTo = id;
-    }
 
     private void UpdateUIBars()
     {
@@ -252,7 +162,7 @@ public class UIScript : MonoBehaviour
 
         // Updating of target bar
         GameObject objectToShow = null;
-        if(GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject != null) // Hovered object update
+        if (GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject != null) // Hovered object update
         {
             objectToShow = GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject;
         }
@@ -279,7 +189,7 @@ public class UIScript : MonoBehaviour
                     break;
             }
 
-            
+
         }
         else
         {
@@ -292,7 +202,7 @@ public class UIScript : MonoBehaviour
         #endregion
 
         #region Update abilities bars
-        
+
         // Update abilities bar
         for (int i = 0; i < abilitiesList.Length; i++)
         {
@@ -310,6 +220,36 @@ public class UIScript : MonoBehaviour
         }
 
         #endregion
+    }
+
+    /// <summary>
+    /// Called by button to toggle objectToToggle state between active and inactive
+    /// </summary>
+    /// <param name="objectToToggle">GameObject to toggle</param>
+    public void ToggleActiveInactive(GameObject objectToToggle)
+    {
+        // if we are showing ability list window then update list first
+        if (objectToToggle.name == "UISkillConfigurePanel")
+        {
+            if (objectToToggle.activeInHierarchy == false)
+            {
+                selectedAbility = null;
+                UpdateAbilityOptionsPopup();
+            }
+        }
+        if (objectToToggle.name == "UIInventoryPanel")
+        {
+            if (objectToToggle.activeInHierarchy == false)
+            {
+                selectedItemList = null;
+                selectedItem = null;
+                UpdateInventoryList();
+                UpdateUIInventorySelectedItemLabels(null);
+            }
+        }
+
+
+        objectToToggle.SetActive(!objectToToggle.activeInHierarchy);
     }
 
     private void UpdateEnemyUI(GameObject objectToShow)
@@ -370,32 +310,225 @@ public class UIScript : MonoBehaviour
 
     }
 
+    #region Abilities
+
+    public void AbilityButtonClick(int id)
+    {
+        if (selectedAbility != null && id < abilitiesList.Length)
+        {
+            abilitiesList[id] = selectedAbility;
+            for (int i = 0; i < UISkillConfigurePanel.transform.childCount; i++)
+            {
+                UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+            }
+            selectedAbility = null;
+        }
+        else
+        {
+            if (abilitiesList[id] != null)
+                GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
+        }
+    }
+
+    public void UpdateAbilityOptionsPopup()
+    {
+        // Remove any previous abilities
+        int size = UISkillConfigurePanel.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            Destroy(UISkillConfigurePanel.transform.GetChild(i).gameObject);
+        }
+
+        int abilityCount = ActivePlayer.Abilities.Count;
+        int numOfCols = (int)Mathf.Ceil((float)abilityCount / AbilitiesPerRow);
+        float width = abilityChooseButton.GetComponent<RectTransform>().rect.width;
+        float height = abilityChooseButton.GetComponent<RectTransform>().rect.height;
+
+        // Scale the ability selection window
+        UISkillConfigurePanel.transform.GetComponent<RectTransform>().sizeDelta = new Vector2(AbilitiesPerRow * (width + 5) + 5, numOfCols * (height + 5) + 5);
+        for (int i = 0; i < ActivePlayer.Abilities.Count; i++)
+        {
+            GameObject goButton = (GameObject)Instantiate(abilityChooseButton);
+            goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
+            goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
+                5 + (width + 5) * (i % AbilitiesPerRow),
+                5 + (height + 5) * (i / AbilitiesPerRow),
+                0);
+
+            Image imageComponent = goButton.GetComponent<Image>();
+            if (ActivePlayer.Abilities[i].ImageToShow != null)
+                imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
+            else
+                imageComponent.overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+
+            Button tempButton = goButton.GetComponent<Button>();
+            int i1 = i;
+            tempButton.onClick.AddListener(() => SelectAbilityToChange(ActivePlayer.Abilities[i1], goButton));
+        }
+    }
+
 
     /// <summary>
-    /// Called by button to toggle objectToToggle state between active and inactive
+    /// Chooses active player ability ability to select to
     /// </summary>
-    /// <param name="objectToToggle">GameObject to toggle</param>
-    public void ToggleActiveInactive(GameObject objectToToggle)
+    /// <param name="ability">Id of player ability we want to change to</param>
+    /// <param name="e">Button pressed for ability change</param>
+    private void SelectAbilityToChange(AbilityScript ability, GameObject e = null)
     {
-        // if we are showing ability list window then update list first
-        if (objectToToggle.name == "UISkillConfigurePanel")
+        int size = UISkillConfigurePanel.transform.childCount;
+        for (int i = 0; i < size; i++)
         {
-            if (objectToToggle.activeInHierarchy == false)
-            {
-                UpdateAbilityOptionsPopup();
-            }
+            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
         }
-        if (objectToToggle.name == "UIInventoryPanel")
-        {
-            if (objectToToggle.activeInHierarchy == false)
-            {
-                UpdateInventoryList();
-            }
-        }
-
-
-        objectToToggle.SetActive(!objectToToggle.activeInHierarchy);
+        if (e != null) e.GetComponent<Image>().color = Color.cyan;
+        selectedAbility = ability;
     }
+
+    #endregion
+
+    #region Inventory
+
+    public void UpdateInventoryList()
+    {
+        int size = UIInventoryItemsContent.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            Destroy(UIInventoryItemsContent.transform.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < ActivePlayer.InventoryItemsList.Count; i++)
+        {
+            GameObject goButton = (GameObject)Instantiate(inventoryItemButton);
+            goButton.transform.SetParent(UIInventoryItemsContent.transform, false);
+            goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Rarity);
+            goButton.transform.FindChild("Text").GetComponent<Text>().text = ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Name;
+            Button tempButton = goButton.GetComponent<Button>();
+            int i1 = i;
+            tempButton.onClick.AddListener(() => SelectItemToShow(ActivePlayer.InventoryItemsList[i1], ActivePlayer.InventoryItemsList, goButton));
+        }
+
+
+        size = UIInventoryEquippedItemsContent.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            Destroy(UIInventoryEquippedItemsContent.transform.GetChild(i).gameObject);
+        }
+        for (int i = 0; i < ActivePlayer.EquippedItemsList.Count; i++)
+        {
+            GameObject goButton = (GameObject)Instantiate(inventoryItemButton);
+            goButton.transform.SetParent(UIInventoryEquippedItemsContent.transform, false);
+            goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Rarity);
+            goButton.transform.FindChild("Text").GetComponent<Text>().text = ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Name;
+            Button tempButton = goButton.GetComponent<Button>();
+            int i1 = i;
+            tempButton.onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItemsList[i1], ActivePlayer.EquippedItemsList, goButton));
+        }
+
+        UIInventoryScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString();
+}
+
+    private void SelectItemToShow(GameObject item, List<GameObject> itemList, GameObject e = null)
+    {
+        for (int i = 0; i < UIInventoryItemsContent.transform.childCount; i++)
+        {
+            //UIInventoryItemsContent.transform.GetChild(i).GetComponent<Image>().color = GlobalsScript.RarityToColor(UIInventoryItemsContent.transform.GetChild(i).GetComponent<ItemScript>().Rarity);
+            UIInventoryItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontSize = 14;
+            UIInventoryItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
+        }
+        for (int i = 0; i < UIInventoryEquippedItemsContent.transform.childCount; i++)
+        {
+            // UIInventoryEquippedItemsContent.transform.GetChild(i).GetComponent<Image>().color = GlobalsScript.RarityToColor(UIInventoryEquippedItemsContent.transform.GetChild(i).GetComponent<ItemScript>().Rarity);
+            UIInventoryEquippedItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontSize = 14;
+            UIInventoryEquippedItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
+        }
+
+        if (e != null)
+        {
+            //e.GetComponent<Image>().color = Color.cyan;
+            e.transform.FindChild("Text").GetComponent<Text>().fontSize = 16;
+            e.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Bold;
+        }
+
+        UpdateUIInventorySelectedItemLabels(item);
+        selectedItemList = itemList;
+        selectedItem = item;
+    }
+
+    private void UpdateUIInventorySelectedItemLabels(GameObject item)
+    {
+        //Debug.Log(item);
+        //Debug.Log((item != null));
+        if (item != null)
+        {
+            UIInventorySelectedItemNameLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Name;
+            UIInventorySelectedItemTypeLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Type.ToString();
+            UIInventorySelectedItemDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("####");
+            UIInventorySelectedItemAttackSpeedLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("####");
+            UIInventorySelectedItemCriticalChanceLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalChance.ToString("####");
+            UIInventorySelectedItemCriticalDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalDamage.ToString("####");
+            UIInventorySelectedItemRarityLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Rarity.ToString();
+            UIInventorySelectedItemScrapValueLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().ScrapValue.ToString();
+            UIInventorySelectedItemPanel.SetActive(true);
+        }
+        else
+        {
+            UIInventorySelectedItemPanel.SetActive(false);
+        }
+
+    }
+
+    public void UIInventoryEquipButtonClick()
+    {
+        if (selectedItem == null) return;
+
+        for (int i = 0; i < ActivePlayer.EquippedItemsList.Count; i++)
+        {
+            if (ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Type == selectedItem.GetComponent<ItemScript>().Type)
+            {
+                Debug.Log("exists");
+                ActivePlayer.InventoryItemsList.Add(ActivePlayer.EquippedItemsList[i]);
+                ActivePlayer.EquippedItemsList.Remove(ActivePlayer.EquippedItemsList[i]);
+            }
+        }
+
+        selectedItemList.Remove(selectedItem);
+        ActivePlayer.EquippedItemsList.Add(selectedItem);
+
+        selectedItemList = null;
+        selectedItem = null;
+        UpdateInventoryList();
+        UpdateUIInventorySelectedItemLabels(null);
+    }
+
+    public void UIInventoryUnquipButtonClick()
+    {
+        if (selectedItem == null) return;
+        selectedItemList.Remove(selectedItem);
+        ActivePlayer.InventoryItemsList.Add(selectedItem);
+
+        selectedItemList = null;
+        selectedItem = null;
+        UpdateInventoryList();
+        UpdateUIInventorySelectedItemLabels(null);
+    }
+
+    public void UIInventoryDestroyButtonClick()
+    {
+        if (selectedItem == null) return;
+
+        ActivePlayer.Scrap += selectedItem.GetComponent<ItemScript>().ScrapValue;
+
+        selectedItemList.Remove(selectedItem);
+
+        selectedItemList = null;
+        selectedItem = null;
+        UpdateInventoryList();
+        UpdateUIInventorySelectedItemLabels(null);
+    }
+
+    #endregion
+
+
+
 
 
     #region Test

@@ -37,9 +37,9 @@ public class UnitScript : EntityScript
 
     // TODO: this
     // Inventory
-    public List<ItemScript> InventoryItemsList = new List<ItemScript>();
+    public List<GameObject> InventoryItemsList = new List<GameObject>();
     // Equiped items
-    public List<ItemScript> EquippedItemsList = new List<ItemScript>();
+    public List<GameObject> EquippedItemsList = new List<GameObject>();
 
 
     public new void Start()
