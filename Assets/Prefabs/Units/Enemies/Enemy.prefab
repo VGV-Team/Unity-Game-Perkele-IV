@@ -236,6 +236,7 @@ GameObject:
   - component: {fileID: 111246358365651044}
   - component: {fileID: 195412258230391288}
   - component: {fileID: 114653835349750050}
+  - component: {fileID: 114051462622887326}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -285,7 +286,7 @@ GameObject:
   - component: {fileID: 135414373487009162}
   - component: {fileID: 23946090260973484}
   m_Layer: 8
-  m_Name: Sphere
+  m_Name: Minimap Marker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1717,7 +1718,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 7485f3820d59c9f41a55a8d2c60ef766, type: 2}
+  - {fileID: 2100000, guid: 1f93513bd8dde904383afc3cee8b76c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1927,6 +1928,17 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &114051462622887326
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333525240575388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cff269fc37399b4193231558470e6f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114372385700741750
 MonoBehaviour:
   m_ObjectHideFlags: 1

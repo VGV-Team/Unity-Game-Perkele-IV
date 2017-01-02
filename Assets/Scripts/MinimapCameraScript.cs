@@ -45,8 +45,8 @@ public class MinimapCameraScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        MinimapCameraObject = GameObject.Find("Minimap Camera");
-        CenterCameraObject = GameObject.Find("Player").transform;
+        //MinimapCameraObject = GameObject.Find("Minimap Camera");
+        //CenterCameraObject = GameObject.Find("Player").transform;
         //CameraOffset = new Vector3(-0.0f, 8.0f, -8.0f);
     }
 
@@ -55,9 +55,9 @@ public class MinimapCameraScript : MonoBehaviour
     {
         if (CenterCameraObject != null)
         {
-            X = CenterCameraObject.transform.position.x;// + CameraOffset.x;
-            Y = CenterCameraObject.transform.position.y + 10;// + CameraOffset.y;
-            Z = CenterCameraObject.transform.position.z;// + CameraOffset.z;
+            X = CenterCameraObject.transform.position.x + CameraOffset.x;
+            Y = CenterCameraObject.transform.position.y + 10 + CameraOffset.y;
+            Z = CenterCameraObject.transform.position.z + CameraOffset.z;
         }
     }
 }

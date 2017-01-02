@@ -218,6 +218,7 @@ public class UnitScript : EntityScript
         StartDeathAnimation();
         this.GetComponent<NavMeshAgent>().enabled = false;
         this.GetComponent<Collider>().enabled = false;
+        this.transform.FindChild("Minimap Marker").gameObject.SetActive(false);
 
     }
 
