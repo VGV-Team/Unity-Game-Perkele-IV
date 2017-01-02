@@ -170,6 +170,11 @@ public class UIScript : MonoBehaviour
         {
             objectToShow = ActivePlayer.Target;
         }
+        Debug.Log(objectToShow);
+        UITargetHPBar.GetComponent<Image>().fillAmount = 0;
+        UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
+        UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
+        UITargetValueLabel.GetComponent<Text>().text = "";
 
         if (objectToShow != null)
         {
@@ -188,15 +193,6 @@ public class UIScript : MonoBehaviour
                 default:
                     break;
             }
-
-
-        }
-        else
-        {
-            UITargetHPBar.GetComponent<Image>().fillAmount = 0;
-            UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
-            UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
-            UITargetValueLabel.GetComponent<Text>().text = "";
         }
 
         #endregion
@@ -483,7 +479,7 @@ public class UIScript : MonoBehaviour
     public void UIInventoryEquipButtonClick()
     {
         if (selectedItem == null) return;
-
+        /*
         for (int i = 0; i < ActivePlayer.EquippedItemsList.Count; i++)
         {
             if (ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Type == selectedItem.GetComponent<ItemScript>().Type)
@@ -493,7 +489,7 @@ public class UIScript : MonoBehaviour
                 ActivePlayer.EquippedItemsList.Remove(ActivePlayer.EquippedItemsList[i]);
             }
         }
-
+        */
         selectedItemList.Remove(selectedItem);
         ActivePlayer.EquippedItemsList.Add(selectedItem);
 
