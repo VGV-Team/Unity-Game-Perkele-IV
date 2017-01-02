@@ -7,7 +7,6 @@ public class EnemyScript : UnitScript
 
     public int ViewRange;
 
-
     private GameObject Player;
 
     // Use this for initialization

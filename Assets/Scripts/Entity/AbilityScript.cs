@@ -157,6 +157,30 @@ public class AbilityScript
                 caster.GetComponent<UnitScript>().Target = null;
                 target.GetComponent<UnitScript>().Active = false;
                 target.GetComponent<UnitScript>().Die();
+
+
+                // Loot drops and XP
+                if (caster.tag == "Player")
+                {
+
+                    // Give XP to caster
+                    caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().Xp;
+
+                    // Loot drops
+                    int numItems = Random.Range(1, 3);
+
+                    for (int i = 0; i < numItems; i++)
+                    {
+                        GameObject item = GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().GenerateRandomItem();
+                        item = GameObject.Instantiate(item);
+
+                        item.transform.position = target.transform.position;
+                        item.transform.position += new Vector3(0, 3, 0);
+                        item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
+                        item.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
+                    }
+                }
+
             }
         }
         else shield -= (BasePower + casterStrength);

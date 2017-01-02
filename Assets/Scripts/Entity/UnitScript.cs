@@ -183,25 +183,6 @@ public class UnitScript : EntityScript
         this.GetComponent<NavMeshAgent>().enabled = false;
         this.GetComponent<Collider>().enabled = false;
 
-        // If this is not player (is the enemy), spawn an item
-        if (this.tag != "Player")
-        {
-
-            int numItems = Random.Range(1, 3);
-
-            for (int i = 0; i < numItems; i++)
-            {
-                GameObject item = GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().GenerateRandomItem();
-                item = GameObject.Instantiate(item);
-
-                item.transform.position = this.transform.position;
-                item.transform.position += new Vector3(0, 3, 0);
-                item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
-                item.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
-            }
-
-        }
-
     }
 
     public void StartBasicAttackAnimation(float attackCooldown = -1)

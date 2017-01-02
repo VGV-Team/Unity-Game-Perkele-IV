@@ -1869,6 +1869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Test Enemy
   Active: 1
+  PlayerTouching: 0
   MaxHP: 100
   HP: 20
   HPChange: 1
@@ -1887,6 +1888,8 @@ MonoBehaviour:
   Xp: 0
   MaxXp: 0
   Target: {fileID: 0}
+  InventoryItemsList: []
+  EquippedItemsList: []
   waypoint: {fileID: 0}
   ViewRange: 10
 --- !u!137 &137868078272822770

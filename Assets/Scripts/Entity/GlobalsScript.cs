@@ -23,8 +23,9 @@ public enum ItemType
     Amulet
 }
 
+
 public class GlobalsScript{
 
-    
-	
+    public static int[] XPCurve = { 250, 1000, 2500, 5000, 10000, 25000, 100000 };
+
 }
