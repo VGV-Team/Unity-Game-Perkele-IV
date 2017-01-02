@@ -179,6 +179,40 @@ public class UnitScript : EntityScript
         
     }
 
+    public void AnimationEventFunction(string type)
+    {
+        Debug.Log("Anim event!");
+        TriggerAbilityImpact(type);
+
+    }
+
+    private void TriggerAbilityImpact(string abilityName)
+    {
+
+        AbilityType aType = AbilityType.BasicAttack;
+
+        // String to Enum :)
+        switch (abilityName)
+        {
+            case "Heal":
+                aType = AbilityType.Heal;
+                break;
+            case "RangedAttack":
+                aType = AbilityType.RangeAttack;
+                break;
+            default:
+                break;
+        }
+
+        foreach (var ability in Abilities)
+        {
+            if (ability.Type == aType)
+            {
+                ability.AbilityImpact(this.gameObject, Target);
+            }
+        }
+    }
+
     public void Die()
     {
         StartDeathAnimation();

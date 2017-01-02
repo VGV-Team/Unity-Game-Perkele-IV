@@ -138,12 +138,32 @@ public class AbilityScript
         return true;
     }
 
+    public void AbilityImpact(GameObject caster, GameObject target)
+    {
+        switch (Type)
+        {
+            case AbilityType.BasicAttack:
+                if (target == null) return;
+                AbilityTypeBasicImpact(caster, target);
+                break;
+            case AbilityType.RangeAttack:
+                if (target == null) return;
+                AbilityTypeRangeImpact(caster, target);
+                break;
+            case AbilityType.Heal:
+                AbilityTypeHealImpact(caster);
+                break;
+        }
+    }
+
 
     private void AbilityTypeBasic(GameObject caster, GameObject target)
     {
         caster.GetComponent<UnitScript>().StartBasicAttackAnimation((float) this.Cooldown);
         target.GetComponent<UnitScript>().StartHitAnimation();
-
+    }
+    private void AbilityTypeBasicImpact(GameObject caster, GameObject target)
+    {
         int hp = target.GetComponent<UnitScript>().HP;
         int shield = target.GetComponent<UnitScript>().Shield;
 
@@ -190,11 +210,14 @@ public class AbilityScript
         target.GetComponent<UnitScript>().Shield = shield;
     }
 
+
     private void AbilityTypeRange(GameObject caster, GameObject target)
     {
         caster.GetComponent<UnitScript>().StartRangeAttackAnimation();
         target.GetComponent<UnitScript>().StartHitAnimation();
-
+    }
+    private void AbilityTypeRangeImpact(GameObject caster, GameObject target)
+    {
         int hp = target.GetComponent<UnitScript>().HP;
         int shield = target.GetComponent<UnitScript>().Shield;
 
@@ -219,12 +242,13 @@ public class AbilityScript
     private void AbilityTypeHeal(GameObject caster)
     {
         caster.GetComponent<UnitScript>().StartHealAnimation();
-
+    }
+    private void AbilityTypeHealImpact(GameObject caster)
+    {
         caster.GetComponent<UnitScript>().HP += BasePower;
         if (caster.GetComponent<UnitScript>().HP > caster.GetComponent<UnitScript>().MaxHP)
         {
             caster.GetComponent<UnitScript>().HP = caster.GetComponent<UnitScript>().MaxHP;
         }
-        
     }
 }
