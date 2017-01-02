@@ -82,11 +82,17 @@ public class PlayerScript : UnitScript {
     private void OpenChest(GameObject chest)
     {
         Debug.Log("TRYING Opening chest");
-        if (chest.GetComponent<ChestScript>().PlayerTouching)
+        if (chest.GetComponent<ChestScript>().PlayerTouching && !chest.GetComponent<ChestScript>().Opened)
         {
-            Debug.Log("Opening chest");
-            StopMovement();
-            chest.GetComponent<ChestScript>().OpenChest();
+            //player is in range, but does he have enough scrap?
+            if (Scrap >= chest.GetComponent<ChestScript>().ScrapRequired)
+            {
+                Debug.Log("Opening chest");
+                Scrap -= chest.GetComponent<ChestScript>().ScrapRequired;
+                StopMovement();
+                chest.GetComponent<ChestScript>().OpenChest();
+            }
+            
         }
     }
 

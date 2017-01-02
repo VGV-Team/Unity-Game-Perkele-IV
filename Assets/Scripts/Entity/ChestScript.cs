@@ -22,9 +22,9 @@ public class ChestScript : EntityScript
     public void OpenChest()
     {
         if (!Opened)
-        {
+        {    
             this.GetComponent<Animator>().Play("Open chest");
-            Opened = true;
+            Opened = true;    
         }
         
     }

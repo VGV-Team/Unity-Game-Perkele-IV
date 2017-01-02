@@ -354,6 +354,10 @@ public class UIScript : MonoBehaviour
         {
             nameToShow += " (Open)";
         }
+        else
+        {
+            nameToShow += " (" + objectToShow.GetComponent<ChestScript>().ScrapRequired + " Scrap)";
+        }
 
         UITargetValueLabel.GetComponent<Text>().text = nameToShow;
 
