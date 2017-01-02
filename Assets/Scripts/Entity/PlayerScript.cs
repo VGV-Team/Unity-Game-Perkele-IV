@@ -35,6 +35,22 @@ public class PlayerScript : UnitScript {
                 }
             }
         }
+
+        if (Target != null && Target.tag == "Item")
+        {
+            PickUpItem(Target);
+        }
+    }
+
+    public void PickUpItem(GameObject item)
+    {
+        // if in range, try to pick up
+        if (item.GetComponent<ItemScript>().PlayerTouching)
+        {
+            StopMovement();
+            /// TODO: Add to inventory
+            Destroy(item);
+        }
     }
 
     protected override void DestinationReached()

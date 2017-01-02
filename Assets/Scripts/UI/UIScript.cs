@@ -247,7 +247,7 @@ public class UIScript : MonoBehaviour
                     UpdateChestUI(objectToShow);
                     break;
                 case "Item":
-                    //ITEM
+                    UpdateItemUI(objectToShow);
                     break;
                 default:
                     break;
@@ -324,6 +324,17 @@ public class UIScript : MonoBehaviour
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
 
         UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ChestScript>().Name;
+
+    }
+
+    private void UpdateItemUI(GameObject objectToShow)
+    {
+        // TODO
+        UITargetHPBar.GetComponent<Image>().fillAmount = 0;
+        UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
+        UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
+
+        UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ItemScript>().Name;
 
     }
 

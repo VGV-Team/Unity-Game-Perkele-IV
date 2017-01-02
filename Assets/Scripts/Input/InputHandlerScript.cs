@@ -129,6 +129,10 @@ public class InputHandlerScript : MonoBehaviour
                         // Testing
                         hit.transform.GetComponent<ChestScript>().OpenChest();
                         break;
+                    case "Item":
+                        print("ITEM");
+                        //PlayerWaypointScript.PickUpItem(hit.transform);
+                        break;
                     default:
                         print("Not terrain or chest");
                         break;
