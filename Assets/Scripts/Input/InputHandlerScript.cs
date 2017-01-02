@@ -147,7 +147,7 @@ public class InputHandlerScript : MonoBehaviour
     {
         if (EventSystem.current.IsPointerOverGameObject() == true)
         {
-            print("UI scroll");
+            //print("UI scroll");
             return;
         }
 
