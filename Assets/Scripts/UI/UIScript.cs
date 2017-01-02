@@ -13,6 +13,7 @@ public class UIScript : MonoBehaviour
 
     // Prefabs
     public GameObject abilityChooseButton;
+    public GameObject inventoryItemButton;
 
     // different bars
     private GameObject UIHPBar;
@@ -40,6 +41,8 @@ public class UIScript : MonoBehaviour
     // Panels
     public GameObject UISkillConfigurePanel;
     public GameObject UIInventoryPanel;
+    public GameObject UIInventoryItemsContent;
+    public GameObject UIInventoryEquippedItemsContent;
 
     public int AbilitiesPerRow = 3;
     private int abilitySwapTo = -1;
@@ -136,6 +139,31 @@ public class UIScript : MonoBehaviour
         }
     }
 
+    public void UpdateInventoryList()
+    {
+        int size = UIInventoryItemsContent.transform.childCount;
+        for (int i = 0; i < size; i++)
+        {
+            Destroy(UIInventoryItemsContent.transform.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < ActivePlayer.InventoryItemsList.Count; i++)
+        {
+            GameObject goButton = (GameObject)Instantiate(inventoryItemButton);
+            goButton.transform.SetParent(UIInventoryItemsContent.transform, false);
+
+            Image imageComponent = goButton.GetComponent<Image>();
+            Button tempButton = goButton.GetComponent<Button>();
+            int i1 = i;
+            tempButton.onClick.AddListener(() => SelectItemToEquip(i1, goButton));
+        }
+    }
+
+    private void SelectItemToEquip(int id, GameObject e = null)
+    {
+        Debug.Log(id);
+    }
+
     /// <summary>
     /// Chooses active player ability id to select to
     /// </summary>
@@ -151,8 +179,6 @@ public class UIScript : MonoBehaviour
         if (e != null) e.GetComponent<Image>().color = Color.cyan;
         abilitySwapTo = id;
     }
-
-
 
     private void UpdateUIBars()
     {
@@ -363,7 +389,7 @@ public class UIScript : MonoBehaviour
         {
             if (objectToToggle.activeInHierarchy == false)
             {
-                // TODO: Update inventory items
+                UpdateInventoryList();
             }
         }
 
