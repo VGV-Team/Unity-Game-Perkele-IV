@@ -128,6 +128,7 @@ public class UnitScript : EntityScript
                 waypoint.transform.position = Target.transform.position;
             }
             model.GetComponent<NavMeshAgent>().SetDestination(waypoint.transform.position);
+            
 
 
             if (!walkAnim)
@@ -157,6 +158,7 @@ public class UnitScript : EntityScript
     {
 
         model.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
+        this.GetComponent<NavMeshAgent>().ResetPath();
 
         walkAnim = false;
         Destroy(waypoint);
@@ -177,30 +179,46 @@ public class UnitScript : EntityScript
         
     }
 
+    public void AnimationEventFunction(string type)
+    {
+        Debug.Log("Anim event!");
+        TriggerAbilityImpact(type);
+
+    }
+
+    private void TriggerAbilityImpact(string abilityName)
+    {
+
+        AbilityType aType = AbilityType.BasicAttack;
+
+        // String to Enum :)
+        switch (abilityName)
+        {
+            case "Heal":
+                aType = AbilityType.Heal;
+                break;
+            case "RangedAttack":
+                aType = AbilityType.RangeAttack;
+                break;
+            default:
+                break;
+        }
+
+        foreach (var ability in Abilities)
+        {
+            if (ability.Type == aType)
+            {
+                ability.AbilityImpact(this.gameObject, Target);
+            }
+        }
+    }
+
     public void Die()
     {
         StartDeathAnimation();
         this.GetComponent<NavMeshAgent>().enabled = false;
         this.GetComponent<Collider>().enabled = false;
-
-        // If this is not player (is the enemy), spawn an item
-        if (this.tag != "Player")
-        {
-
-            int numItems = Random.Range(1, 3);
-
-            for (int i = 0; i < numItems; i++)
-            {
-                GameObject item = GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().GenerateRandomItem();
-                item = GameObject.Instantiate(item);
-
-                item.transform.position = this.transform.position;
-                item.transform.position += new Vector3(0, 3, 0);
-                item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
-                item.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
-            }
-
-        }
+        this.transform.FindChild("Minimap Marker").gameObject.SetActive(false);
 
     }
 

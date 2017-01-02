@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum AbilityType
 {
@@ -108,6 +109,7 @@ public class AbilityScript
         {
             //Temporary, move this to approprita ability types
             LookAtTarget(caster, target);
+            //caster.GetComponent<UnitScript>().StopMovement();
 
             switch (Type)
             {
@@ -136,12 +138,32 @@ public class AbilityScript
         return true;
     }
 
+    public void AbilityImpact(GameObject caster, GameObject target)
+    {
+        switch (Type)
+        {
+            case AbilityType.BasicAttack:
+                if (target == null) return;
+                AbilityTypeBasicImpact(caster, target);
+                break;
+            case AbilityType.RangeAttack:
+                if (target == null) return;
+                AbilityTypeRangeImpact(caster, target);
+                break;
+            case AbilityType.Heal:
+                AbilityTypeHealImpact(caster);
+                break;
+        }
+    }
+
 
     private void AbilityTypeBasic(GameObject caster, GameObject target)
     {
         caster.GetComponent<UnitScript>().StartBasicAttackAnimation((float) this.Cooldown);
         target.GetComponent<UnitScript>().StartHitAnimation();
-
+    }
+    private void AbilityTypeBasicImpact(GameObject caster, GameObject target)
+    {
         int hp = target.GetComponent<UnitScript>().HP;
         int shield = target.GetComponent<UnitScript>().Shield;
 
@@ -157,6 +179,30 @@ public class AbilityScript
                 caster.GetComponent<UnitScript>().Target = null;
                 target.GetComponent<UnitScript>().Active = false;
                 target.GetComponent<UnitScript>().Die();
+
+
+                // Loot drops and XP
+                if (caster.tag == "Player")
+                {
+
+                    // Give XP to caster
+                    caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().Xp;
+
+                    // Loot drops
+                    int numItems = Random.Range(1, 3);
+
+                    for (int i = 0; i < numItems; i++)
+                    {
+                        GameObject item = GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().GenerateRandomItem();
+                        item = GameObject.Instantiate(item);
+
+                        item.transform.position = target.transform.position;
+                        item.transform.position += new Vector3(0, 3, 0);
+                        item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
+                        item.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
+                    }
+                }
+
             }
         }
         else shield -= (BasePower + casterStrength);
@@ -164,11 +210,14 @@ public class AbilityScript
         target.GetComponent<UnitScript>().Shield = shield;
     }
 
+
     private void AbilityTypeRange(GameObject caster, GameObject target)
     {
         caster.GetComponent<UnitScript>().StartRangeAttackAnimation();
         target.GetComponent<UnitScript>().StartHitAnimation();
-
+    }
+    private void AbilityTypeRangeImpact(GameObject caster, GameObject target)
+    {
         int hp = target.GetComponent<UnitScript>().HP;
         int shield = target.GetComponent<UnitScript>().Shield;
 
@@ -193,12 +242,13 @@ public class AbilityScript
     private void AbilityTypeHeal(GameObject caster)
     {
         caster.GetComponent<UnitScript>().StartHealAnimation();
-
+    }
+    private void AbilityTypeHealImpact(GameObject caster)
+    {
         caster.GetComponent<UnitScript>().HP += BasePower;
         if (caster.GetComponent<UnitScript>().HP > caster.GetComponent<UnitScript>().MaxHP)
         {
             caster.GetComponent<UnitScript>().HP = caster.GetComponent<UnitScript>().MaxHP;
         }
-        
     }
 }

@@ -24,7 +24,10 @@ public enum ItemType
     Amulet
 }
 
-public static class GlobalsScript{
+public class GlobalsScript{
+
+    public static int[] XPCurve = { 250, 1000, 2500, 5000, 10000, 25000, 100000 };
+
     public static Color RarityToColor(RarityType? rarityType)
     {
         if (rarityType == RarityType.Common) return Color.grey;
@@ -34,6 +37,4 @@ public static class GlobalsScript{
         if (rarityType == RarityType.Special) return Color.green;
         return Color.black;
     }
-    
-	
 }

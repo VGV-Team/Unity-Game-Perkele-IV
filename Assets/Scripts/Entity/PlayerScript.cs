@@ -8,6 +8,7 @@ public class PlayerScript : UnitScript {
 
 
     public int Scrap = 0;
+    public int AbilityPoints = 0;
 
 	// Use this for initialization
     new void Start ()
@@ -16,6 +17,9 @@ public class PlayerScript : UnitScript {
         Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
         Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 5, 0, 10, 0, 20, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
         Abilities.Add(new AbilityScript("Whatever Ability", AbilityType.RangeAttack, 10, 10, 0, 10, 20, GameObject.Find("UISpritesWhatever").transform.GetComponent<SpriteRenderer>().sprite));
+
+        // Set starting level maxXP
+        MaxXp = GlobalsScript.XPCurve[Level - 1];
     }
 
     // Update is called once per frame
@@ -24,6 +28,7 @@ public class PlayerScript : UnitScript {
         if (Active != true) return;
         base.Update();
 
+        #region Target Checking
 
         if (Target != null)
         {
@@ -58,6 +63,9 @@ public class PlayerScript : UnitScript {
 
         }
 
+        #endregion
+
+        CheckLevelUp();
     }
 
     private void PickUpItem(GameObject item)
@@ -76,11 +84,40 @@ public class PlayerScript : UnitScript {
     private void OpenChest(GameObject chest)
     {
         Debug.Log("TRYING Opening chest");
-        if (chest.GetComponent<ChestScript>().PlayerTouching)
+        if (chest.GetComponent<ChestScript>().PlayerTouching && !chest.GetComponent<ChestScript>().Opened)
         {
-            Debug.Log("Opening chest");
-            StopMovement();
-            chest.GetComponent<ChestScript>().OpenChest();
+            //player is in range, but does he have enough scrap?
+            if (Scrap >= chest.GetComponent<ChestScript>().ScrapRequired)
+            {
+                Debug.Log("Opening chest");
+                Scrap -= chest.GetComponent<ChestScript>().ScrapRequired;
+                StopMovement();
+                chest.GetComponent<ChestScript>().OpenChest();
+            }
+            
+        }
+    }
+
+    private void CheckLevelUp()
+    {
+        if (Xp >= MaxXp)
+        {
+            int overheadXP = Xp - MaxXp;
+
+            Debug.Log("LEVEL UP!");
+
+            if (Level >= GlobalsScript.XPCurve.Length)
+            {
+                // MAX LEVEL
+            }
+            else
+            {
+                MaxXp = GlobalsScript.XPCurve[Level];
+                Level++;
+                Xp = overheadXP;
+            }
+
+            AbilityPoints += 1;
         }
     }
 
