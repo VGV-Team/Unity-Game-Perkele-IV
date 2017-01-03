@@ -8,7 +8,6 @@ public class UnitScript : EntityScript
     public int MaxHP;
     public int HP;
     public int HPChange;
-    public int Armor;
     public int MaxShield;
     public int Shield;
     public int ShieldChange;
@@ -19,10 +18,18 @@ public class UnitScript : EntityScript
     public int Mana;
     public int ManaChange;
 
+    public int Armor;
     public int Strength;
+    public int AttackSpeed;
+    public int Discovery;
+
     public int Level;
-    public int Xp;
-    public int MaxXp;
+    public int Xp = 0;
+    public int MaxXp = 10;
+    public int XPWorth = 10;
+
+    public int Scrap = 0;
+    public int AbilityPoints = 0;
 
     // need to add critical
     // need to add discovery
@@ -62,8 +69,31 @@ public class UnitScript : EntityScript
             UpdateStatsRefresh();
             timePassed -= 1;
         }
-        
 
+        CheckLevelUp();
+    }
+
+    private void CheckLevelUp()
+    {
+        if (Xp >= MaxXp)
+        {
+            int overheadXP = Xp - MaxXp;
+
+            Debug.Log("LEVEL UP!");
+
+            if (Level >= GlobalsScript.XPCurve.Length)
+            {
+                // TODO: MAX LEVEL
+            }
+            else
+            {
+                MaxXp = GlobalsScript.XPCurve[Level];
+                Level++;
+                Xp = overheadXP;
+            }
+
+            AbilityPoints += 1;
+        }
     }
 
 

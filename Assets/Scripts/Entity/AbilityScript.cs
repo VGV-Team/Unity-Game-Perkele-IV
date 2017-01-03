@@ -186,7 +186,7 @@ public class AbilityScript
                 {
 
                     // Give XP to caster
-                    caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().Xp;
+                    caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
                     // Loot drops
                     int numItems = Random.Range(1, 3);

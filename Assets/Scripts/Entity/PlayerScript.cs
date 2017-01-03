@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class PlayerScript : UnitScript {
 
 
-    public int Scrap = 0;
-    public int AbilityPoints = 0;
+    
 
 	// Use this for initialization
     new void Start ()
@@ -65,7 +64,7 @@ public class PlayerScript : UnitScript {
 
         #endregion
 
-        CheckLevelUp();
+        
     }
 
     private void PickUpItem(GameObject item)
@@ -94,32 +93,11 @@ public class PlayerScript : UnitScript {
                 StopMovement();
                 chest.GetComponent<ChestScript>().OpenChest();
             }
-            
+
         }
     }
 
-    private void CheckLevelUp()
-    {
-        if (Xp >= MaxXp)
-        {
-            int overheadXP = Xp - MaxXp;
-
-            Debug.Log("LEVEL UP!");
-
-            if (Level >= GlobalsScript.XPCurve.Length)
-            {
-                // MAX LEVEL
-            }
-            else
-            {
-                MaxXp = GlobalsScript.XPCurve[Level];
-                Level++;
-                Xp = overheadXP;
-            }
-
-            AbilityPoints += 1;
-        }
-    }
+    
 
     protected override void DestinationReached()
     {

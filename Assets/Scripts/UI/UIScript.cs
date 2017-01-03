@@ -16,7 +16,7 @@ public class UIScript : MonoBehaviour
     public GameObject abilityChooseButton;
     public GameObject inventoryItemButton;
 
-    // different bars
+    // bars
     public GameObject UIHPBar;
     public GameObject UIHPValueLabel;
     public GameObject UIShieldBar;
@@ -25,15 +25,12 @@ public class UIScript : MonoBehaviour
     public GameObject UIManaValueLabel;
     public GameObject UIFuryBar;
     public GameObject UIFuryValueLabel;
-
     public GameObject UIXPBar;
     public GameObject UIXPValueLabel;
-
     public GameObject UITargetHPBar;
     public GameObject UITargetShieldBar;
     public GameObject UITargetOtherBar;
     public GameObject UITargetValueLabel;
-
     public GameObject UIInventorySelectedItemNameLabel;
     public GameObject UIInventorySelectedItemTypeLabel;
     public GameObject UIInventorySelectedItemDamageLabel;
@@ -44,6 +41,25 @@ public class UIScript : MonoBehaviour
     public GameObject UIInventorySelectedItemScrapValueLabel;
     public GameObject UIInventoryScrapLabel;
 
+    // character stats
+    public GameObject UICharacterStatsMaxHPLabel;
+    public GameObject UICharacterStatsHPLabel;
+    public GameObject UICharacterStatsHPChangeLabel;
+    public GameObject UICharacterStatsMaxShieldLabel;
+    public GameObject UICharacterStatsShieldLabel;
+    public GameObject UICharacterStatsShieldChangeLabel;
+    public GameObject UICharacterStatsMaxFuryLabel;
+    public GameObject UICharacterStatsFuryLabel;
+    public GameObject UICharacterStatsFuryChangeLabel;
+    public GameObject UICharacterStatsMaxManaLabel;
+    public GameObject UICharacterStatsManaLabel;
+    public GameObject UICharacterStatsManaChangeLabel;
+    public GameObject UICharacterStatsArmorLabel;
+    public GameObject UICharacterStatsStrengthLabel;
+    public GameObject UICharacterStatsAttackSpeedLabel;
+    public GameObject UICharacterStatsDiscoveryLabel;
+
+    // Buttons
     public GameObject UIInventoryUnequipButton;
     public GameObject UIInventoryEquipButton;
     public GameObject UIInventoryDestroyButton;
@@ -86,11 +102,11 @@ public class UIScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        UpdateUIBars();
+        UpdateUI();
     }
 
 
-    private void UpdateUIBars()
+    private void UpdateUI()
     {
         #region Update main UI bars
 
@@ -170,7 +186,7 @@ public class UIScript : MonoBehaviour
         {
             objectToShow = ActivePlayer.Target;
         }
-        Debug.Log(objectToShow);
+
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
@@ -216,7 +232,29 @@ public class UIScript : MonoBehaviour
         }
 
         #endregion
+
+        #region Update character stats
+
+        UICharacterStatsMaxHPLabel.GetComponent<Text>().text = ActivePlayer.MaxHP.ToString();
+        UICharacterStatsHPLabel.GetComponent<Text>().text = ActivePlayer.HP.ToString();
+        UICharacterStatsHPChangeLabel.GetComponent<Text>().text = ActivePlayer.HPChange.ToString();
+        UICharacterStatsMaxShieldLabel.GetComponent<Text>().text = ActivePlayer.MaxShield.ToString();
+        UICharacterStatsShieldLabel.GetComponent<Text>().text = ActivePlayer.Shield.ToString();
+        UICharacterStatsShieldChangeLabel.GetComponent<Text>().text = ActivePlayer.ShieldChange.ToString();
+        UICharacterStatsMaxFuryLabel.GetComponent<Text>().text = ActivePlayer.MaxFury.ToString();
+        UICharacterStatsFuryLabel.GetComponent<Text>().text = ActivePlayer.Fury.ToString();
+        UICharacterStatsFuryChangeLabel.GetComponent<Text>().text = ActivePlayer.FuryChange.ToString();
+        UICharacterStatsMaxManaLabel.GetComponent<Text>().text = ActivePlayer.MaxMana.ToString();
+        UICharacterStatsManaLabel.GetComponent<Text>().text = ActivePlayer.Mana.ToString();
+        UICharacterStatsManaChangeLabel.GetComponent<Text>().text = ActivePlayer.ManaChange.ToString();
+        UICharacterStatsArmorLabel.GetComponent<Text>().text = ActivePlayer.Armor.ToString();
+        UICharacterStatsStrengthLabel.GetComponent<Text>().text = ActivePlayer.Strength.ToString();
+        UICharacterStatsAttackSpeedLabel.GetComponent<Text>().text = ActivePlayer.AttackSpeed.ToString();
+        UICharacterStatsDiscoveryLabel.GetComponent<Text>().text = ActivePlayer.Discovery.ToString();
+
+        #endregion
     }
+
 
     /// <summary>
     /// Called by button to toggle objectToToggle state between active and inactive
