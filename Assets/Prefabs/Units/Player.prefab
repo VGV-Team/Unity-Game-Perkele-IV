@@ -59,6 +59,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1130885233518874
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4311391857384826}
+  - component: {fileID: 33313137451366544}
+  - component: {fileID: 23586789629435712}
+  m_Layer: 0
+  m_Name: TemplateSword
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1299201016125770
 GameObject:
   m_ObjectHideFlags: 1
@@ -269,7 +286,7 @@ GameObject:
   - component: {fileID: 195107127162930142}
   - component: {fileID: 114142482976153738}
   - component: {fileID: 65683452450249878}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -352,7 +369,7 @@ GameObject:
   - component: {fileID: 23530422752133376}
   m_Layer: 0
   m_Name: Sword
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -564,6 +581,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 0.99999994}
   m_Children:
   - {fileID: 4044189189679810}
+  - {fileID: 4311391857384826}
   m_Father: {fileID: 4521616648998234}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 27.971735, y: -112.14316, z: -175.87614}
@@ -627,6 +645,19 @@ Transform:
   m_Father: {fileID: 4270660055910786}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 7.5418615, y: -85.620186, z: -149.63145}
+--- !u!4 &4311391857384826
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1130885233518874}
+  m_LocalRotation: {x: 0.04086344, y: 0.0056850454, z: 0.9921214, w: -0.11829234}
+  m_LocalPosition: {x: -0.05526491, y: 0.0070711356, z: 0.017405825}
+  m_LocalScale: {x: 0.9999988, y: 1.0000042, z: 0.9999999}
+  m_Children: []
+  m_Father: {fileID: 4118831074692100}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4392356123101522
 Transform:
   m_ObjectHideFlags: 1
@@ -1114,6 +1145,37 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!23 &23586789629435712
+MeshRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1130885233518874}
+  m_Enabled: 0
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: eed0f13a7184adf43b5caddd9973a998, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
 --- !u!33 &33065709780317540
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -1142,6 +1204,13 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1067566134934672}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &33313137451366544
+MeshFilter:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1130885233518874}
+  m_Mesh: {fileID: 4300004, guid: 2cfba37fab445484d96249beba922637, type: 3}
 --- !u!33 &33542983953010652
 MeshFilter:
   m_ObjectHideFlags: 1
@@ -1215,13 +1284,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9de248ab532253246aca619347c29b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ImageToShow: {fileID: 0}
   Name: Test Player
   Active: 1
   PlayerTouching: 0
   MaxHP: 100
   HP: 100
   HPChange: 1
-  Armor: 0
   MaxShield: 15
   Shield: 15
   ShieldChange: 2
@@ -1231,16 +1300,19 @@ MonoBehaviour:
   MaxMana: 50
   Mana: 50
   ManaChange: 1
+  Armor: 0
   Strength: 9
+  AttackSpeed: 0
+  Discovery: 0
   Level: 1
   Xp: 0
   MaxXp: 0
-  Target: {fileID: 0}
-  InventoryItemsList: []
-  EquippedItemsList: []
-  waypoint: {fileID: 0}
+  XPWorth: 10
   Scrap: 100
   AbilityPoints: 0
+  Target: {fileID: 0}
+  InventoryItemsList: []
+  waypoint: {fileID: 0}
 --- !u!114 &114581916023983570
 MonoBehaviour:
   m_ObjectHideFlags: 1
