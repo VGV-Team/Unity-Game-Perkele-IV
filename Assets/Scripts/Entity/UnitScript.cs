@@ -345,6 +345,7 @@ public class UnitScript : EntityScript
 			InventoryItemsList.Add(item);
 			//Destroy(item);
 			item.SetActive(false);
+			Target = null;
 			item.GetComponent<ItemScript>().PlayerTouching = false;
 		}
 	}
