@@ -499,7 +499,7 @@ public class UnitScript : EntityScript
                     Debug.Log("Old shield not found!");
                     return;
                 }
-                if (oldItem != null) Destroy(oldItem);
+                if (oldItem != null)  Destroy(oldItem.gameObject);
 
                 // Positioning the new weapon
                 // 0,0,0 position is now the center of the player
@@ -520,7 +520,20 @@ public class UnitScript : EntityScript
 
                 break;
 
-			default:
+            case ItemType.Amulet:
+                if (EquippedItems.AmuletSlot != null)
+                {
+                    InventoryItemsList.Add(EquippedItems.AmuletSlot);
+                }
+                EquippedItems.AmuletSlot = item;
+                InventoryItemsList.Remove(item);
+
+                Transform amuletLight = this.transform.FindChild("Amulet Light");
+                if (amuletLight != null) amuletLight.gameObject.active = true;
+
+                break;
+
+            default:
 				Debug.Log("Player:EquipItem - Unimplemented weapon type equip");
 				break;
 		}
@@ -549,7 +562,16 @@ public class UnitScript : EntityScript
 				EquippedItems.ShieldSlot = null;
 				break;
 
-			default:
+            case ItemType.Amulet:
+                InventoryItemsList.Add(item);
+                EquippedItems.AmuletSlot = null;
+
+                Transform amuletLight = this.transform.FindChild("Amulet Light");
+                if (amuletLight != null) amuletLight.gameObject.active = false;
+
+                break;
+
+            default:
 				Debug.Log("Player:EquipItem - Unimplemented weapon type equip");
 				break;
 		}

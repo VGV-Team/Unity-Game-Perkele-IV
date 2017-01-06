@@ -72,7 +72,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1010448656964410}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 61.276684, y: 0.026126862, z: 19.216286}
+  m_LocalPosition: {x: 48.476685, y: -10.0738735, z: 10.216286}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4640435935912424}
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ca98b119d3b1248bfe5640f4220b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImageToShow: {fileID: 21300000, guid: c0a8e9c4c9be60d46970264ea0827f6f, type: 3}
+  ImageToShow: {fileID: 21300000, guid: 91ae493b84fe69d4aad21af830b18851, type: 3}
   Name: Spear
   Active: 1
   PlayerTouching: 0
