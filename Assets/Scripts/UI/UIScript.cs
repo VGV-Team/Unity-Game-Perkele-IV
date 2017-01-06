@@ -348,6 +348,11 @@ public class UIScript : MonoBehaviour
 
     }
 
+    private void OnMouseEnter()
+    {
+        Debug.Log("qweqweqwe");
+    }
+
     #region Abilities
 
     public void AbilityButtonClick(int id)
@@ -531,10 +536,15 @@ public class UIScript : MonoBehaviour
         selectedItemList.Remove(selectedItem);
         ActivePlayer.EquippedItemsList.Add(selectedItem);
 
+        // Make equip visible on player model
+        ActivePlayer.EquipItem(selectedItem);
+
         selectedItemList = null;
         selectedItem = null;
         UpdateInventoryList();
         UpdateUIInventorySelectedItemLabels(null);
+
+        
     }
 
     public void UIInventoryUnquipButtonClick()
