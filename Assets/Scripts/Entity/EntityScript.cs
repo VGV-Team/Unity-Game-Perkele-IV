@@ -21,14 +21,14 @@ public abstract class EntityScript : MonoBehaviour
     }
 
     //private Color tmpColor;
-    private void OnMouseEnter()
+    protected void OnMouseEnter()
     {
         SetThisHoverObject();
         //tmpColor = this.GetComponent<Renderer>().material.color;
         //this.GetComponent<Renderer>().material.color = Color.red;
     }
 
-    private void OnMouseExit()
+    protected void OnMouseExit()
     {
         //this.GetComponent<Renderer>().material.color = tmpColor;
         UnsetThisHoverObject();

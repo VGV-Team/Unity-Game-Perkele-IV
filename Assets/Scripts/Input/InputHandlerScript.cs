@@ -113,9 +113,13 @@ public class InputHandlerScript : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
+            LayerMask layerMask = ~(1 << 10);
 
-            if (Physics.Raycast(ray, out hit, 100)) // TODO: chack for Enemy, Item, Chest tag
+            GameObject.Find("Player").GetComponent<PlayerScript>().DisableTriggerCollider();
+
+            if (Physics.Raycast(ray, out hit, 100, layerMask)) // TODO: chack for Enemy, Item, Chest tag
             {
+                GameObject.Find("Player").GetComponent<PlayerScript>().EnableTriggerCollider();
                 switch (hit.transform.tag)
                 {
                     case "Terrain":

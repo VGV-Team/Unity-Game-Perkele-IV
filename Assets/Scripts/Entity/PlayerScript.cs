@@ -67,6 +67,11 @@ public class PlayerScript : UnitScript {
         
     }
 
+    /*new void OnMouseEnter()
+    {
+        //override as we don't want the player to block hover object
+    }*/
+
     private void PickUpItem(GameObject item)
     {
         // if in range, try to pick up
@@ -97,7 +102,14 @@ public class PlayerScript : UnitScript {
         }
     }
 
-    
+    public void EnableTriggerCollider()
+    {
+        this.GetComponent<Collider>().enabled = true;
+    }
+    public void DisableTriggerCollider()
+    {
+        this.GetComponent<Collider>().enabled = false;
+    }
 
     protected override void DestinationReached()
     {

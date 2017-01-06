@@ -73,7 +73,6 @@ public class EnemyScript : UnitScript
     // Raycast from enemy position to player postiion to determine if the enemy can see the player
     private bool CheckVisibility()
     {
-
         RaycastHit hit;
 
         // If you want to look from this objects head (roughly): this.GetComponent<Collider>().bounds.size.y - 0.05f
@@ -81,7 +80,9 @@ public class EnemyScript : UnitScript
         // Current models are y=0 at ground, so we need to add a little to y to evaluate things a little above terrain
         //Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, 0.1f, 0.0f) - this.transform.position).normalized, out hit, 100);
 
-        Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, this.GetComponent<Collider>().bounds.size.y - 0.1f, 0.0f) - this.transform.position).normalized, out hit, 100);
+        LayerMask layerMask = ~0; // Raycast ALL (!) layers
+
+        Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, this.GetComponent<Collider>().bounds.size.y - 0.1f, 0.0f) - this.transform.position).normalized, out hit, 100, layerMask);
 
         //Debug.Log(hit.collider.gameObject.tag);
         if (hit.collider!=null && hit.collider.gameObject.tag.Equals("Player"))
