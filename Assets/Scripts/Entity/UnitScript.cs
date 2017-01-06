@@ -420,10 +420,11 @@ public class UnitScript : EntityScript
                 Destroy(playerWeapon.transform.FindChild("Minimap Marker").gameObject);
 				//playerWeapon.GetComponent<MeshRenderer>().enabled = true;
 				playerWeapon.name = "Sword";
+                playerWeapon.gameObject.layer = 11;
+                playerWeapon.transform.FindChild("Model").gameObject.layer = 11;
 
-
-				// Finding the old (current) weapon
-				children = GetComponentsInChildren<Transform>();
+                // Finding the old (current) weapon
+                children = GetComponentsInChildren<Transform>();
                 oldItem = null;
 				template = null;
 				foreach (Transform child in children)
@@ -483,7 +484,8 @@ public class UnitScript : EntityScript
                 Destroy(playerShield.transform.FindChild("Minimap Marker").gameObject);
                 //playerShield.GetComponent<MeshRenderer>().enabled = true;
                 playerShield.name = "Shield";
-
+                playerShield.gameObject.layer = 11;
+                playerShield.transform.FindChild("Model").gameObject.layer = 11;
 
                 // Finding the old (current) weapon
                 children = GetComponentsInChildren<Transform>();
@@ -527,6 +529,8 @@ public class UnitScript : EntityScript
                 break;
 
             case ItemType.Amulet:
+                if (item.transform.FindChild("Minimap Marker") != null)
+                    Destroy(item.transform.FindChild("Minimap Marker").gameObject);
                 if (EquippedItems.AmuletSlot != null)
                 {
                     InventoryItemsList.Add(EquippedItems.AmuletSlot);
