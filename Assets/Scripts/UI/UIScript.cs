@@ -73,18 +73,24 @@ public class UIScript : MonoBehaviour
     public GameObject UISkillConfigurePanel;
     public GameObject UIInventoryPanel;
     public GameObject UIInventoryItemsContent;
-    public GameObject UIInventoryEquippedItemsContent;
     public GameObject UIInventorySelectedItemPanel;
+	public GameObject UICharacterPanel;
 
-    public int AbilitiesPerRow = 3;
+
+	public int AbilitiesPerRow = 3;
     //private int selectedAbility = -1;
     private AbilityScript selectedAbility = null;
     private GameObject selectedItem = null;
-    private List<GameObject> selectedItemList = null;
+    //private List<GameObject> selectedItemList = null;
+
+	// Equipped items
+	public GameObject UIInventoryEquippedItemsWeaponButton;
+	public GameObject UIInventoryEquippedItemsShieldButton;
+	public GameObject UIInventoryEquippedItemsAmuletButton;
 
 
-    // Use this for initialization
-    void Start () {
+	// Use this for initialization
+	void Start () {
 		ActivePlayer = (PlayerScript)GameObject.Find("Player").GetComponent("PlayerScript");
 
         #region Commented
@@ -275,15 +281,15 @@ public class UIScript : MonoBehaviour
         {
             if (objectToToggle.activeInHierarchy == false)
             {
-                selectedItemList = null;
-                selectedItem = null;
                 UpdateInventoryList();
-                UpdateUIInventorySelectedItemLabels(null);
             }
         }
 
+		UISkillConfigurePanel.SetActive(false);
+		UIInventoryPanel.SetActive(false);
+		UICharacterPanel.SetActive(false);
 
-        objectToToggle.SetActive(!objectToToggle.activeInHierarchy);
+		objectToToggle.SetActive(true);
     }
 
     private void UpdateEnemyUI(GameObject objectToShow)
@@ -318,7 +324,6 @@ public class UIScript : MonoBehaviour
 
     private void UpdateChestUI(GameObject objectToShow)
     {
-        // TODO
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
@@ -332,20 +337,15 @@ public class UIScript : MonoBehaviour
         {
             nameToShow += " (" + objectToShow.GetComponent<ChestScript>().ScrapRequired + " Scrap)";
         }
-
         UITargetValueLabel.GetComponent<Text>().text = nameToShow;
-
     }
 
     private void UpdateItemUI(GameObject objectToShow)
     {
-        // TODO
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
-
         UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ItemScript>().Name;
-
     }
 
     private void OnMouseEnter()
@@ -431,6 +431,9 @@ public class UIScript : MonoBehaviour
 
     #region Inventory
 
+	/// <summary>
+	/// Updates item lists and clears currently selected item
+	/// </summary>
     public void UpdateInventoryList()
     {
         int size = UIInventoryItemsContent.transform.childCount;
@@ -446,60 +449,77 @@ public class UIScript : MonoBehaviour
             goButton.transform.FindChild("Text").GetComponent<Text>().text = ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Name;
             Button tempButton = goButton.GetComponent<Button>();
             int i1 = i;
-            tempButton.onClick.AddListener(() => SelectItemToShow(ActivePlayer.InventoryItemsList[i1], ActivePlayer.InventoryItemsList, goButton));
+            tempButton.onClick.AddListener(() => SelectItemToShow(ActivePlayer.InventoryItemsList[i1], false, goButton));
         }
 
+		#region Equipped items
 
-        size = UIInventoryEquippedItemsContent.transform.childCount;
-        for (int i = 0; i < size; i++)
-        {
-            Destroy(UIInventoryEquippedItemsContent.transform.GetChild(i).gameObject);
-        }
-        for (int i = 0; i < ActivePlayer.EquippedItemsList.Count; i++)
-        {
-            GameObject goButton = (GameObject)Instantiate(inventoryItemButton);
-            goButton.transform.SetParent(UIInventoryEquippedItemsContent.transform, false);
-            goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Rarity);
-            goButton.transform.FindChild("Text").GetComponent<Text>().text = ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Name;
-            Button tempButton = goButton.GetComponent<Button>();
-            int i1 = i;
-            tempButton.onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItemsList[i1], ActivePlayer.EquippedItemsList, goButton));
-        }
+		if (ActivePlayer.EquippedItems.WeaponSlot != null)
+		{
+			UIInventoryEquippedItemsWeaponButton.GetComponent<Image>().overrideSprite = ActivePlayer.EquippedItems.WeaponSlot.GetComponent<ItemScript>().ImageToShow;
+			UIInventoryEquippedItemsWeaponButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			UIInventoryEquippedItemsWeaponButton.GetComponent<Button>().onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItems.WeaponSlot, true, UIInventoryEquippedItemsWeaponButton));
+		}
+		else
+		{
+			UIInventoryEquippedItemsWeaponButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			UIInventoryEquippedItemsWeaponButton.GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
 
-        UIInventoryScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString();
-}
+		}
+		if (ActivePlayer.EquippedItems.ShieldSlot != null)
+		{
+			UIInventoryEquippedItemsShieldButton.GetComponent<Image>().overrideSprite = ActivePlayer.EquippedItems.ShieldSlot.GetComponent<ItemScript>().ImageToShow;
+			UIInventoryEquippedItemsShieldButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			UIInventoryEquippedItemsShieldButton.GetComponent<Button>().onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItems.ShieldSlot, true, UIInventoryEquippedItemsWeaponButton));
+		}
+		else
+		{
+			UIInventoryEquippedItemsShieldButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			UIInventoryEquippedItemsShieldButton.GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
 
-    private void SelectItemToShow(GameObject item, List<GameObject> itemList, GameObject e = null)
+		}
+		if (ActivePlayer.EquippedItems.AmuletSlot != null)
+		{
+			UIInventoryEquippedItemsAmuletButton.GetComponent<Image>().overrideSprite = ActivePlayer.EquippedItems.AmuletSlot.GetComponent<ItemScript>().ImageToShow;
+			UIInventoryEquippedItemsAmuletButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			UIInventoryEquippedItemsAmuletButton.GetComponent<Button>().onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItems.AmuletSlot, true, UIInventoryEquippedItemsWeaponButton));
+		}
+		else
+		{
+			UIInventoryEquippedItemsAmuletButton.GetComponent<Button>().onClick.RemoveAllListeners();
+			UIInventoryEquippedItemsAmuletButton.GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+
+		}
+
+		#endregion
+
+		UIInventoryScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString();
+	    selectedItem = null;
+	    UpdateUIInventorySelectedItemLabels(null, null);
+    }
+
+    private void SelectItemToShow(GameObject item, bool isEquippedItem, GameObject e = null)
     {
+		
         for (int i = 0; i < UIInventoryItemsContent.transform.childCount; i++)
         {
-            //UIInventoryItemsContent.transform.GetChild(i).GetComponent<Image>().color = GlobalsScript.RarityToColor(UIInventoryItemsContent.transform.GetChild(i).GetComponent<ItemScript>().Rarity);
             UIInventoryItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontSize = 14;
             UIInventoryItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
-        }
-        for (int i = 0; i < UIInventoryEquippedItemsContent.transform.childCount; i++)
-        {
-            // UIInventoryEquippedItemsContent.transform.GetChild(i).GetComponent<Image>().color = GlobalsScript.RarityToColor(UIInventoryEquippedItemsContent.transform.GetChild(i).GetComponent<ItemScript>().Rarity);
-            UIInventoryEquippedItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontSize = 14;
-            UIInventoryEquippedItemsContent.transform.GetChild(i).transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
         }
 
         if (e != null)
         {
-            //e.GetComponent<Image>().color = Color.cyan;
             e.transform.FindChild("Text").GetComponent<Text>().fontSize = 16;
             e.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Bold;
         }
 
-        UpdateUIInventorySelectedItemLabels(item);
-        selectedItemList = itemList;
-        selectedItem = item;
+        UpdateUIInventorySelectedItemLabels(item, isEquippedItem);
+		
+		selectedItem = item;
     }
 
-    private void UpdateUIInventorySelectedItemLabels(GameObject item)
+    private void UpdateUIInventorySelectedItemLabels(GameObject item, bool? isEquippedItem)
     {
-        //Debug.Log(item);
-        //Debug.Log((item != null));
         if (item != null)
         {
             UIInventorySelectedItemNameLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Name;
@@ -511,73 +531,53 @@ public class UIScript : MonoBehaviour
             UIInventorySelectedItemRarityLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Rarity.ToString();
             UIInventorySelectedItemScrapValueLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().ScrapValue.ToString();
             UIInventorySelectedItemPanel.SetActive(true);
-        }
+
+			if (isEquippedItem == true)
+			{
+				UIInventoryUnequipButton.SetActive(true);
+				UIInventoryEquipButton.SetActive(false);
+				UIInventoryDestroyButton.SetActive(false);
+			}
+			else if(isEquippedItem == false)
+			{
+				UIInventoryUnequipButton.SetActive(false);
+				UIInventoryEquipButton.SetActive(true);
+				UIInventoryDestroyButton.SetActive(true);
+			}
+		}
         else
         {
             UIInventorySelectedItemPanel.SetActive(false);
-        }
 
-    }
+			UIInventoryUnequipButton.SetActive(false);
+			UIInventoryEquipButton.SetActive(false);
+			UIInventoryDestroyButton.SetActive(false);
+		}
+	}
 
     public void UIInventoryEquipButtonClick()
     {
         if (selectedItem == null) return;
-        /*
-        for (int i = 0; i < ActivePlayer.EquippedItemsList.Count; i++)
-        {
-            if (ActivePlayer.EquippedItemsList[i].GetComponent<ItemScript>().Type == selectedItem.GetComponent<ItemScript>().Type)
-            {
-                Debug.Log("exists");
-                ActivePlayer.InventoryItemsList.Add(ActivePlayer.EquippedItemsList[i]);
-                ActivePlayer.EquippedItemsList.Remove(ActivePlayer.EquippedItemsList[i]);
-            }
-        }
-        */
-        selectedItemList.Remove(selectedItem);
-        ActivePlayer.EquippedItemsList.Add(selectedItem);
-
-        // Make equip visible on player model
-        ActivePlayer.EquipItem(selectedItem);
-
-        selectedItemList = null;
-        selectedItem = null;
+		ActivePlayer.EquipItem(selectedItem);
         UpdateInventoryList();
-        UpdateUIInventorySelectedItemLabels(null);
-
-        
     }
 
     public void UIInventoryUnquipButtonClick()
     {
         if (selectedItem == null) return;
-        selectedItemList.Remove(selectedItem);
-        ActivePlayer.InventoryItemsList.Add(selectedItem);
-
-        selectedItemList = null;
-        selectedItem = null;
+		ActivePlayer.UnequipItem(selectedItem);
         UpdateInventoryList();
-        UpdateUIInventorySelectedItemLabels(null);
     }
 
-    public void UIInventoryDestroyButtonClick()
+	public void UIInventoryDestroyButtonClick()
     {
         if (selectedItem == null) return;
-
-        ActivePlayer.Scrap += selectedItem.GetComponent<ItemScript>().ScrapValue;
-
-        selectedItemList.Remove(selectedItem);
-
-        selectedItemList = null;
-        selectedItem = null;
+		ActivePlayer.DestroyItem(selectedItem);
         UpdateInventoryList();
-        UpdateUIInventorySelectedItemLabels(null);
     }
 
     #endregion
-
-
-
-
+	
 
     #region Test
 

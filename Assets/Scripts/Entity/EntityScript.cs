@@ -4,7 +4,9 @@ using UnityEngine;
 
 public abstract class EntityScript : MonoBehaviour
 {
-    public string Name;
+	public Sprite ImageToShow;
+
+	public string Name;
     public bool Active;
 
     private GameObject InputManagerObject;

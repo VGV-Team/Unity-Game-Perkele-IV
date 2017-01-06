@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ca98b119d3b1248bfe5640f4220b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ImageToShow: {fileID: 21300000, guid: c0a8e9c4c9be60d46970264ea0827f6f, type: 3}
   Name: Spear
   Active: 1
   PlayerTouching: 0
@@ -223,4 +224,4 @@ MonoBehaviour:
   CriticalChance: 50
   CriticalDamage: 50
   Rarity: 1
-  ScrapValue: 0
+  ScrapValue: 10

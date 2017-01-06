@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+
+
 public class UnitScript : EntityScript
 {
-    public int MaxHP;
+	
+	public struct EquippedItemsStruct
+	{
+		public GameObject WeaponSlot;
+		public GameObject ShieldSlot;
+		public GameObject AmuletSlot;
+	}
+	
+
+	public int MaxHP;
     public int HP;
     public int HPChange;
     public int MaxShield;
@@ -46,10 +57,11 @@ public class UnitScript : EntityScript
     // Inventory
     public List<GameObject> InventoryItemsList = new List<GameObject>();
     // Equiped items
-    public List<GameObject> EquippedItemsList = new List<GameObject>();
-
-
-    public new void Start()
+    //public List<GameObject> EquippedItemsList = new List<GameObject>();
+	public EquippedItemsStruct EquippedItems;
+	
+	
+	public new void Start()
     {
         base.Start();
         
@@ -319,4 +331,173 @@ public class UnitScript : EntityScript
             SetWaypoint(hit.point);
         }
     }
+
+
+
+
+
+	protected void PickUpItem(GameObject item)
+	{
+		// if in range, try to pick up
+		if (item.GetComponent<ItemScript>().PlayerTouching)
+		{
+			StopMovement();
+			InventoryItemsList.Add(item);
+			//Destroy(item);
+			item.SetActive(false);
+			item.GetComponent<ItemScript>().PlayerTouching = false;
+		}
+	}
+
+	protected void OpenChest(GameObject chest)
+	{
+		Debug.Log("TRYING Opening chest");
+		if (chest.GetComponent<ChestScript>().PlayerTouching && !chest.GetComponent<ChestScript>().Opened)
+		{
+			//player is in range, but does he have enough scrap?
+			if (Scrap >= chest.GetComponent<ChestScript>().ScrapRequired)
+			{
+				Debug.Log("Opening chest");
+				Scrap -= chest.GetComponent<ChestScript>().ScrapRequired;
+				StopMovement();
+				chest.GetComponent<ChestScript>().OpenChest();
+			}
+
+		}
+	}
+
+	public void EnableTriggerCollider()
+	{
+		this.GetComponent<Collider>().enabled = true;
+	}
+	public void DisableTriggerCollider()
+	{
+		this.GetComponent<Collider>().enabled = false;
+	}
+
+	public void EquipItem(GameObject item)
+	{
+		ItemScript itemScript = item.GetComponent<ItemScript>();
+
+		if (itemScript == null)
+		{
+			Debug.Log("Invalid equip item");
+			return;
+		}
+
+		switch (itemScript.Type)
+		{
+			case ItemType.Melee:
+				if (EquippedItems.WeaponSlot != null)
+				{
+					InventoryItemsList.Add(EquippedItems.WeaponSlot);
+				}
+				EquippedItems.WeaponSlot = item;
+				InventoryItemsList.Remove(item);
+
+				// Temporary -- TODO: sanitize object when picking up
+				GameObject playerWeapon = GameObject.Instantiate(item);
+				Component[] comps = playerWeapon.GetComponents(typeof(Component));
+				foreach (Component c in comps)
+				{
+					if (!(c is MeshFilter || c is MeshRenderer || c is ItemScript || c is Transform))
+					{
+						Destroy(c);
+					}
+				}
+				playerWeapon.GetComponent<MeshRenderer>().enabled = true;
+				playerWeapon.name = "Sword";
+
+
+				// Finding the old (current) weapon
+				Transform[] children = GetComponentsInChildren<Transform>();
+				Transform oldWeapon = null;
+				Transform template = null;
+				foreach (Transform child in children)
+				{
+					if (child.CompareTag("Item"))
+					{
+						oldWeapon = child;
+					}
+					if (child.name == "TemplateSword")
+					{
+						template = child;
+					}
+				}
+				if (oldWeapon == null)
+				{
+					Debug.Log("Old weapon not found!");
+					return;
+				}
+				oldWeapon.gameObject.SetActive(false);
+				oldWeapon.name = "SwordOLD";
+
+				// Positioning the new weapon
+				// 0,0,0 position is now the center of the player
+				playerWeapon.transform.parent = oldWeapon.parent;
+				playerWeapon.transform.localPosition = Vector3.zero;
+
+				// Set offset (position) the same as old weapon
+				playerWeapon.transform.position = template.transform.position;
+				playerWeapon.transform.rotation = template.transform.rotation;
+
+				// Additional offset tweaking (localposition instead of global)
+				playerWeapon.transform.localPosition += new Vector3(0, 0, -0.10f); // How much in the hand should the weapon handle go?
+				playerWeapon.transform.localRotation = Quaternion.Euler(playerWeapon.transform.localRotation.eulerAngles.x, playerWeapon.transform.localRotation.eulerAngles.y, 0);
+				playerWeapon.gameObject.SetActive(true);
+
+				Debug.Log("DONE!!!!");
+
+				break;
+
+			case ItemType.Shield:
+				if (EquippedItems.ShieldSlot != null)
+				{
+					InventoryItemsList.Add(EquippedItems.ShieldSlot);
+				}
+				EquippedItems.ShieldSlot = item;
+				InventoryItemsList.Remove(item);
+				break;
+
+			default:
+				Debug.Log("Player:EquipItem - Unimplemented weapon type equip");
+				break;
+		}
+	}
+
+	public void UnequipItem(GameObject item)
+	{
+		ItemScript itemScript = item.GetComponent<ItemScript>();
+
+		if (itemScript == null)
+		{
+			Debug.Log("Invalid equip item");
+			return;
+		}
+
+		switch (itemScript.Type)
+		{
+			case ItemType.Melee:
+				InventoryItemsList.Add(item);
+				EquippedItems.WeaponSlot = null;
+				break;
+
+			case ItemType.Shield:
+				InventoryItemsList.Add(item);
+				EquippedItems.ShieldSlot = null;
+				break;
+
+			default:
+				Debug.Log("Player:EquipItem - Unimplemented weapon type equip");
+				break;
+		}
+	}
+
+	public void DestroyItem(GameObject item)
+	{
+		Scrap += item.GetComponent<ItemScript>().ScrapValue;
+		InventoryItemsList.Remove(item);
+	}
+
+
 }
