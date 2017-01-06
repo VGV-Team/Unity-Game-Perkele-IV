@@ -189,7 +189,7 @@ public class AbilityScript
                     caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
                     // Loot drops
-                    int numItems = Random.Range(1, 3);
+                    int numItems = Random.Range(1, 5);
 
                     for (int i = 0; i < numItems; i++)
                     {

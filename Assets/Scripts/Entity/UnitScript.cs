@@ -392,7 +392,12 @@ public class UnitScript : EntityScript
 			return;
 		}
 
-		switch (itemScript.Type)
+        Component[] comps;
+        Transform[] children;
+        Transform oldItem = null;
+        Transform template = null;
+
+        switch (itemScript.Type)
 		{
 			case ItemType.Melee:
 				if (EquippedItems.WeaponSlot != null)
@@ -404,7 +409,7 @@ public class UnitScript : EntityScript
 
 				// Temporary -- TODO: sanitize object when picking up
 				GameObject playerWeapon = GameObject.Instantiate(item);
-				Component[] comps = playerWeapon.GetComponents(typeof(Component));
+				comps = playerWeapon.GetComponents(typeof(Component));
 				foreach (Component c in comps)
 				{
 					if (!(c is MeshFilter || c is MeshRenderer || c is ItemScript || c is Transform))
@@ -412,36 +417,36 @@ public class UnitScript : EntityScript
 						Destroy(c);
 					}
 				}
-				playerWeapon.GetComponent<MeshRenderer>().enabled = true;
+                Destroy(playerWeapon.transform.FindChild("Minimap Marker").gameObject);
+				//playerWeapon.GetComponent<MeshRenderer>().enabled = true;
 				playerWeapon.name = "Sword";
 
 
 				// Finding the old (current) weapon
-				Transform[] children = GetComponentsInChildren<Transform>();
-				Transform oldWeapon = null;
-				Transform template = null;
+				children = GetComponentsInChildren<Transform>();
+                oldItem = null;
+				template = null;
 				foreach (Transform child in children)
 				{
-					if (child.CompareTag("Item"))
+					if (child.CompareTag("Item") && child.name == "Sword")
 					{
-						oldWeapon = child;
+                        oldItem = child;
 					}
 					if (child.name == "TemplateSword")
 					{
 						template = child;
 					}
 				}
-				if (oldWeapon == null)
+				if (template == null)
 				{
-					Debug.Log("Old weapon not found!");
+					Debug.Log("Template not found!");
 					return;
 				}
-				oldWeapon.gameObject.SetActive(false);
-				oldWeapon.name = "SwordOLD";
+                if (oldItem != null) Destroy(oldItem.gameObject);
 
-				// Positioning the new weapon
-				// 0,0,0 position is now the center of the player
-				playerWeapon.transform.parent = oldWeapon.parent;
+                // Positioning the new weapon
+                // 0,0,0 position is now the center of the player
+                playerWeapon.transform.parent = template.parent;
 				playerWeapon.transform.localPosition = Vector3.zero;
 
 				// Set offset (position) the same as old weapon
@@ -449,8 +454,8 @@ public class UnitScript : EntityScript
 				playerWeapon.transform.rotation = template.transform.rotation;
 
 				// Additional offset tweaking (localposition instead of global)
-				playerWeapon.transform.localPosition += new Vector3(0, 0, -0.10f); // How much in the hand should the weapon handle go?
-				playerWeapon.transform.localRotation = Quaternion.Euler(playerWeapon.transform.localRotation.eulerAngles.x, playerWeapon.transform.localRotation.eulerAngles.y, 0);
+				//playerWeapon.transform.localPosition += new Vector3(0, 0, -0.10f); // How much in the hand should the weapon handle go?
+				//playerWeapon.transform.localRotation = Quaternion.Euler(playerWeapon.transform.localRotation.eulerAngles.x, playerWeapon.transform.localRotation.eulerAngles.y, 0);
 				playerWeapon.gameObject.SetActive(true);
 
 				Debug.Log("DONE!!!!");
@@ -464,13 +469,82 @@ public class UnitScript : EntityScript
 				}
 				EquippedItems.ShieldSlot = item;
 				InventoryItemsList.Remove(item);
-				break;
 
-			default:
+                // Temporary -- TODO: sanitize object when picking up
+                GameObject playerShield = GameObject.Instantiate(item);
+                comps = playerShield.GetComponents(typeof(Component));
+                foreach (Component c in comps)
+                {
+                    if (!(c is MeshFilter || c is MeshRenderer || c is ItemScript || c is Transform))
+                    {
+                        Destroy(c);
+                    }
+                }
+                Destroy(playerShield.transform.FindChild("Minimap Marker").gameObject);
+                //playerShield.GetComponent<MeshRenderer>().enabled = true;
+                playerShield.name = "Shield";
+
+
+                // Finding the old (current) weapon
+                children = GetComponentsInChildren<Transform>();
+                oldItem = null;
+                template = null;
+                foreach (Transform child in children)
+                {
+                    if (child.CompareTag("Item") && child.name == "Shield")
+                    {
+                        oldItem = child;
+                    }
+                    if (child.name == "TemplateShield")
+                    {
+                        template = child;
+                    }
+                }
+                if (template == null)
+                {
+                    Debug.Log("Old shield not found!");
+                    return;
+                }
+                if (oldItem != null)  Destroy(oldItem.gameObject);
+
+                // Positioning the new weapon
+                // 0,0,0 position is now the center of the player
+                playerShield.transform.parent = template.parent;
+                playerShield.transform.localPosition = Vector3.zero;
+                playerShield.transform.localRotation = Quaternion.Euler(Vector3.zero);
+
+                // Set offset (position) the same as old weapon
+                playerShield.transform.position = template.transform.position;
+                playerShield.transform.rotation = template.transform.rotation;
+
+                // Additional offset tweaking (localposition instead of global)
+                //playerShield.transform.localPosition += new Vector3(0, 0, -0.10f); // How much in the hand should the weapon handle go?
+                //playerShield.transform.localRotation = Quaternion.Euler(playerShield.transform.localRotation.eulerAngles.x, playerShield.transform.localRotation.eulerAngles.y, 0);
+                playerShield.gameObject.SetActive(true);
+
+                Debug.Log("DONE SHIELD!!!!");
+
+                break;
+
+            case ItemType.Amulet:
+                if (EquippedItems.AmuletSlot != null)
+                {
+                    InventoryItemsList.Add(EquippedItems.AmuletSlot);
+                }
+                EquippedItems.AmuletSlot = item;
+                InventoryItemsList.Remove(item);
+
+                Transform amuletLight = this.transform.FindChild("Amulet Light");
+                if (amuletLight != null) amuletLight.gameObject.active = true;
+
+                break;
+
+            default:
 				Debug.Log("Player:EquipItem - Unimplemented weapon type equip");
 				break;
 		}
-	}
+        
+    }
 
 	public void UnequipItem(GameObject item)
 	{
@@ -494,7 +568,16 @@ public class UnitScript : EntityScript
 				EquippedItems.ShieldSlot = null;
 				break;
 
-			default:
+            case ItemType.Amulet:
+                InventoryItemsList.Add(item);
+                EquippedItems.AmuletSlot = null;
+
+                Transform amuletLight = this.transform.FindChild("Amulet Light");
+                if (amuletLight != null) amuletLight.gameObject.active = false;
+
+                break;
+
+            default:
 				Debug.Log("Player:EquipItem - Unimplemented weapon type equip");
 				break;
 		}
