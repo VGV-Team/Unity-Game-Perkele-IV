@@ -97,7 +97,7 @@ public class InputHandlerScript : MonoBehaviour
         {
             if (EventSystem.current.IsPointerOverGameObject() == true)
             {
-                print("UI clicked");
+                //print("UI clicked");
                 return;
             }
             

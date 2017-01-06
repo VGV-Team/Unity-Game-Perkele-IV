@@ -106,6 +106,7 @@ MonoBehaviour:
   MinimapCameraObject: {fileID: 1489634481633976}
   CenterCameraObject: {fileID: 0}
   CameraOffset: {x: 0, y: 30, z: 0}
+  ShowNavmesh: 0
 --- !u!124 &124585589143981688
 Behaviour:
   m_ObjectHideFlags: 1

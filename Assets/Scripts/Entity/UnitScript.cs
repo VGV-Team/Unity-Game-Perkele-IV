@@ -16,30 +16,32 @@ public class UnitScript : EntityScript
 	}
 	
 
-	public int MaxHP;
-    public int HP;
-    public int HPChange;
-    public int MaxShield;
-    public int Shield;
-    public int ShieldChange;
-    public int MaxFury;
-    public int Fury;
-    public int FuryChange;
-    public int MaxMana;
-    public int Mana;
-    public int ManaChange;
+	public int MaxHP = 100;
+    public int HP = 100;
+    public int HPChange = 1;
+    public int MaxShield = 20;
+    public int Shield = 20;
+    public int ShieldChange = 2;
+    public int MaxFury = 50;
+    public int Fury = 0;
+    public int FuryChange = -2;
+    public int MaxMana = 50;
+    public int Mana = 50;
+    public int ManaChange = 1;
 
-    public int Armor;
-    public int Strength;
-    public int AttackSpeed;
-    public int Discovery;
+    public int Armor = 1;
+    public int Strength = 10;
+    public int AttackSpeed = 100;
+    public int Discovery = 20;
+	public int MovementSpeed = 100;
 
-    public int Level;
+    public int Level = 1;
     public int Xp = 0;
     public int MaxXp = 10;
     public int XPWorth = 10;
 
     public int Scrap = 0;
+	public int Gold = 0;
     public int AbilityPoints = 0;
 
     // need to add critical
@@ -345,6 +347,10 @@ public class UnitScript : EntityScript
 			InventoryItemsList.Add(item);
 			//Destroy(item);
 			item.SetActive(false);
+			if (GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject == Target)
+			{
+				GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().HoveredObject = null;
+			}
 			Target = null;
 			item.GetComponent<ItemScript>().PlayerTouching = false;
 		}
@@ -500,5 +506,50 @@ public class UnitScript : EntityScript
 		InventoryItemsList.Remove(item);
 	}
 
+	public void StatsUpgrade(string statName)
+	{
+		if (AbilityPoints <= 0) return;
+		AbilityPoints--;
+
+		switch (statName)
+		{
+			case "MaxHP":
+				MaxHP = (int)(MaxHP * 1.1);
+				break;
+			case "HPChange":
+				HPChange = (int)(HPChange * 1.1);
+				break;
+			case "MaxShield":
+				MaxShield = (int)(MaxShield * 1.1);
+				break;
+			case "ShieldChange":
+				ShieldChange = (int)(ShieldChange * 1.1);
+				break;
+			case "MaxFury":
+				MaxFury = (int)(MaxFury * 1.1);
+				break;
+			case "FuryChange":
+				FuryChange = (int)(FuryChange * 0.9);
+				break;
+			case "MaxMana":
+				MaxMana = (int)(MaxMana * 1.1);
+				break;
+			case "ManaChange":
+				ManaChange = (int)(ManaChange * 1.1);
+				break;
+			case "Armor":
+				Armor = (int)(Armor * 1.1);
+				break;
+			case "Strength":
+				Strength = (int)(Strength * 1.1);
+				break;
+			case "AttackSpeed":
+				AttackSpeed = (int)(AttackSpeed * 1.1);
+				break;
+			case "Discovery":
+				Discovery = (int)(Discovery * 1.1);
+				break;
+		}
+	}
 
 }

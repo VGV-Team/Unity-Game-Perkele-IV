@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking.NetworkSystem;
@@ -9,8 +10,10 @@ using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
 {
-    // Active player
-    private PlayerScript ActivePlayer;
+	#region Public UI objects
+
+	// Active player
+	private PlayerScript ActivePlayer;
 
     // Prefabs
     public GameObject abilityChooseButton;
@@ -58,35 +61,40 @@ public class UIScript : MonoBehaviour
     public GameObject UICharacterStatsStrengthLabel;
     public GameObject UICharacterStatsAttackSpeedLabel;
     public GameObject UICharacterStatsDiscoveryLabel;
+	public GameObject UICharacterStatsMovementSpeedLabel;
+	public GameObject UICharacterStatsLevelLabel;
+	public GameObject UICharacterStatsXPLabel;
+	public GameObject UICharacterStatsMaxXPLabel;
+	public GameObject UICharacterStatsScrapLabel;
+	public GameObject UICharacterStatsGoldLabel;
 
-    // Buttons
-    public GameObject UIInventoryUnequipButton;
+	// Buttons
+	public GameObject UIInventoryUnequipButton;
     public GameObject UIInventoryEquipButton;
     public GameObject UIInventoryDestroyButton;
 
-    //private GameObject UIAbility1Bar;
-    //private GameObject UIAbility2Bar;
-    //private List<AbilityScript> abilitiesList = new List<AbilityScript>();
-    private AbilityScript[] abilitiesList = new AbilityScript[4];
-
-    // Panels
-    public GameObject UISkillConfigurePanel;
-    public GameObject UIInventoryPanel;
-    public GameObject UIInventoryItemsContent;
-    public GameObject UIInventorySelectedItemPanel;
+	// Panels
+	public GameObject UISkillConfigurePanel;
+	public GameObject UIInventoryPanel;
+	public GameObject UIInventoryItemsContent;
+	public GameObject UIInventorySelectedItemPanel;
 	public GameObject UICharacterPanel;
-
-
-	public int AbilitiesPerRow = 3;
-    //private int selectedAbility = -1;
-    private AbilityScript selectedAbility = null;
-    private GameObject selectedItem = null;
-    //private List<GameObject> selectedItemList = null;
 
 	// Equipped items
 	public GameObject UIInventoryEquippedItemsWeaponButton;
 	public GameObject UIInventoryEquippedItemsShieldButton;
 	public GameObject UIInventoryEquippedItemsAmuletButton;
+
+	#endregion
+
+	public int AbilitiesPerRow = 3;
+	private AbilityScript[] abilitiesList = new AbilityScript[4];
+    //private int selectedAbility = -1;
+    private AbilityScript selectedAbility = null;
+    private GameObject selectedItem = null;
+    //private List<GameObject> selectedItemList = null;
+
+	
 
 
 	// Use this for initialization
@@ -257,9 +265,31 @@ public class UIScript : MonoBehaviour
         UICharacterStatsStrengthLabel.GetComponent<Text>().text = ActivePlayer.Strength.ToString();
         UICharacterStatsAttackSpeedLabel.GetComponent<Text>().text = ActivePlayer.AttackSpeed.ToString();
         UICharacterStatsDiscoveryLabel.GetComponent<Text>().text = ActivePlayer.Discovery.ToString();
+		UICharacterStatsLevelLabel.GetComponent<Text>().text = ActivePlayer.Level.ToString();
+		UICharacterStatsXPLabel.GetComponent<Text>().text = ActivePlayer.Xp.ToString();
+		UICharacterStatsMaxXPLabel.GetComponent<Text>().text = ActivePlayer.MaxXp.ToString();
+		UICharacterStatsScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString();
+		UICharacterStatsGoldLabel.GetComponent<Text>().text = ActivePlayer.Gold.ToString();
 
-        #endregion
-    }
+	    if (ActivePlayer.AbilityPoints > 0)
+	    {
+		    foreach (var item in GameObject.FindGameObjectsWithTag("StatUpgrade"))
+		    {
+			    item.transform.FindChild("UICharacterStatsUpgradeButton").gameObject.SetActive(true);
+		    }
+	    }
+	    else
+	    {
+			foreach (var item in GameObject.FindGameObjectsWithTag("StatUpgrade"))
+			{
+				item.transform.FindChild("UICharacterStatsUpgradeButton").gameObject.SetActive(false);
+			}
+		}
+		
+		
+
+		#endregion
+	}
 
 
     /// <summary>
@@ -276,20 +306,33 @@ public class UIScript : MonoBehaviour
                 selectedAbility = null;
                 UpdateAbilityOptionsPopup();
             }
-        }
+
+			UIInventoryPanel.SetActive(false);
+			UICharacterPanel.SetActive(false);
+		}
         if (objectToToggle.name == "UIInventoryPanel")
         {
             if (objectToToggle.activeInHierarchy == false)
             {
                 UpdateInventoryList();
             }
-        }
 
-		UISkillConfigurePanel.SetActive(false);
-		UIInventoryPanel.SetActive(false);
-		UICharacterPanel.SetActive(false);
+			UICharacterPanel.SetActive(false);
+			UISkillConfigurePanel.SetActive(false);
+		}
+		if (objectToToggle.name == "UICharacterPanel")
+		{
+			if (objectToToggle.activeInHierarchy == false)
+			{
+				//UpdateInventoryList();
+			}
 
-		objectToToggle.SetActive(true);
+			UIInventoryPanel.SetActive(false);
+			UISkillConfigurePanel.SetActive(false);
+		}
+
+		
+		objectToToggle.SetActive(!objectToToggle.activeInHierarchy);
     }
 
     private void UpdateEnemyUI(GameObject objectToShow)
@@ -577,9 +620,21 @@ public class UIScript : MonoBehaviour
     }
 
     #endregion
-	
 
-    #region Test
+
+	public void StatsUpgrade(string statName)
+	{
+		Debug.Log(statName);
+		ActivePlayer.StatsUpgrade(statName);
+	}
+
+}
+
+#region Old
+
+/*
+
+	#region Test
 
     public void TestPopup()
     {
@@ -612,11 +667,6 @@ public class UIScript : MonoBehaviour
     #endregion
 
 
-}
-
-#region Old
-
-/*
 // Old ability updating
 public void UpdateAbilityBars()
 {
