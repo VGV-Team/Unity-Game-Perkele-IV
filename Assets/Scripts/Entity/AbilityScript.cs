@@ -162,7 +162,7 @@ public class AbilityScript
         caster.GetComponent<UnitScript>().StartBasicAttackAnimation((float) this.Cooldown);
         target.GetComponent<UnitScript>().StartHitAnimation();
     }
-    private void AbilityTypeBasicImpact(GameObject caster, GameObject target)
+    public void AbilityTypeBasicImpact(GameObject caster, GameObject target)
     {
 		float hp = target.GetComponent<UnitScript>().HP;
 		float shield = target.GetComponent<UnitScript>().Shield;
@@ -188,19 +188,13 @@ public class AbilityScript
                     // Give XP to caster
                     caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
-                    // Loot drops
-                    int numItems = Random.Range(1, 5);
 
-                    for (int i = 0; i < numItems; i++)
-                    {
-                        GameObject item = GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().GenerateRandomItem();
-                        item = GameObject.Instantiate(item);
-
-                        item.transform.position = target.transform.position;
-                        item.transform.position += new Vector3(0, 3, 0);
-                        item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
-                        item.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
-                    }
+                    GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                        (int)caster.GetComponent<UnitScript>().Discovery,
+                        50,
+                        30,
+                        20,
+                        target.transform);
                 }
 
             }

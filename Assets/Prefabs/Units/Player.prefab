@@ -366,7 +366,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4091045761604984}
   - component: {fileID: 111471603623589426}
-  - component: {fileID: 114581916023983570}
   - component: {fileID: 195738622688463212}
   - component: {fileID: 114778093785038882}
   m_Layer: 2
@@ -1392,17 +1391,6 @@ MonoBehaviour:
   Target: {fileID: 0}
   InventoryItemsList: []
   waypoint: {fileID: 0}
---- !u!114 &114581916023983570
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1770076782717528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cff269fc37399b4193231558470e6f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114663582388853934
 MonoBehaviour:
   m_ObjectHideFlags: 1

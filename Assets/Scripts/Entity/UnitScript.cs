@@ -223,11 +223,9 @@ public class UnitScript : EntityScript
         
     }
 
-    public void AnimationEventFunction(string type)
+    public void AnimationEventFunctionRelay(string type)
     {
-        Debug.Log("Anim event!");
         TriggerAbilityImpact(type);
-
     }
 
     private void TriggerAbilityImpact(string abilityName)

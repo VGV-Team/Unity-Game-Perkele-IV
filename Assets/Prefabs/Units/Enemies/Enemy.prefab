@@ -235,8 +235,7 @@ GameObject:
   - component: {fileID: 4078637727202154}
   - component: {fileID: 111246358365651044}
   - component: {fileID: 195412258230391288}
-  - component: {fileID: 114653835349750050}
-  - component: {fileID: 114051462622887326}
+  - component: {fileID: 114435740360875762}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -1928,17 +1927,6 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &114051462622887326
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1333525240575388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cff269fc37399b4193231558470e6f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114372385700741750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1983,7 +1971,7 @@ MonoBehaviour:
   InventoryItemsList: []
   waypoint: {fileID: 0}
   ViewRange: 10
---- !u!114 &114653835349750050
+--- !u!114 &114435740360875762
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
