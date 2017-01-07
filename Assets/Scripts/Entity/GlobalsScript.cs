@@ -37,4 +37,6 @@ public class GlobalsScript{
         if (rarityType == RarityType.Special) return Color.green;
         return Color.black;
     }
+
+
 }

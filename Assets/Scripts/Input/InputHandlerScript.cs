@@ -137,6 +137,9 @@ public class InputHandlerScript : MonoBehaviour
                         print("ITEM");
                         //PlayerWaypointScript.PickUpItem(hit.transform);
                         break;
+					case "NPC":
+						print("NPC");
+		                break;
                     default:
                         print("Not terrain or chest");
                         break;

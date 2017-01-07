@@ -221,6 +221,9 @@ public class UIScript : MonoBehaviour
                 case "Item":
                     UpdateItemUI(objectToShow);
                     break;
+				case "NPC":
+		            UpdateNPCUI(objectToShow);
+		            break;
                 default:
                     break;
             }
@@ -373,8 +376,10 @@ public class UIScript : MonoBehaviour
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
+		UITargetOtherBar.GetComponent<Image>().color = Color.yellow;
 
-        string nameToShow = objectToShow.GetComponent<ChestScript>().Name;
+
+		string nameToShow = objectToShow.GetComponent<ChestScript>().Name;
         if (objectToShow.GetComponent<ChestScript>().Opened)
         {
             nameToShow += " (Open)";
@@ -391,10 +396,20 @@ public class UIScript : MonoBehaviour
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
-        UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ItemScript>().Name;
+		UITargetOtherBar.GetComponent<Image>().color = GlobalsScript.RarityToColor(objectToShow.GetComponent<ItemScript>().Rarity);
+		UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<ItemScript>().Name;
     }
 
-    private void OnMouseEnter()
+	private void UpdateNPCUI(GameObject objectToShow)
+	{
+		UITargetHPBar.GetComponent<Image>().fillAmount = 0;
+		UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
+		UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
+		UITargetOtherBar.GetComponent<Image>().color = Color.green;
+		UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<NPCScript>().Name;
+	}
+
+	private void OnMouseEnter()
     {
         Debug.Log("qweqweqwe");
     }

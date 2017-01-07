@@ -49,11 +49,12 @@ public class PlayerScript : UnitScript {
                 case "Item":
                     PickUpItem(Target);
                     break;
-
                 case "Chest":
                     OpenChest(Target);
                     break;
-
+				case "NPC":
+		            InteractWithNPC(Target);
+					break;
                 default:
                     Debug.Log("DEFAULT playerscript switch");
                     break;

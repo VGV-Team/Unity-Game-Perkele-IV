@@ -9,6 +9,7 @@ TagManager:
   - Chest
   - Item
   - StatUpgrade
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Minimap Layer
   - Terrain
   - Ignore Input Raycast
-  - Character Panel Visible
+  - 
   - 
   - 
   - 

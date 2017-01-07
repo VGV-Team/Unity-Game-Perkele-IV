@@ -368,9 +368,32 @@ public class UnitScript : EntityScript
 				Scrap -= chest.GetComponent<ChestScript>().ScrapRequired;
 				StopMovement();
 				chest.GetComponent<ChestScript>().OpenChest();
+				this.Target = null;
 			}
 
 		}
+	}
+
+	protected void InteractWithNPC(GameObject NPC)
+	{
+		// TODO: change to player touching
+		/*
+		if (NPC.GetComponent<NPCScript>().PlayerTouching)
+		{
+			Debug.Log("Starting NPC conversation");
+		}
+		*/
+		if (Vector3.Distance(NPC.transform.position, GameObject.Find("Player").transform.position) < 2)
+		{
+			Debug.Log("Starting NPC conversation");
+			StopMovement();
+
+			NPC.GetComponent<NPCScript>().StartConversation(this.gameObject);
+
+
+			this.Target = null;
+		}
+
 	}
 
 	public void EnableTriggerCollider()
@@ -539,7 +562,7 @@ public class UnitScript : EntityScript
                 InventoryItemsList.Remove(item);
 
                 Transform amuletLight = this.transform.FindChild("Amulet Light");
-                if (amuletLight != null) amuletLight.gameObject.active = true;
+                if (amuletLight != null) amuletLight.gameObject.SetActive(true);
 
                 break;
 
@@ -577,7 +600,7 @@ public class UnitScript : EntityScript
                 EquippedItems.AmuletSlot = null;
 
                 Transform amuletLight = this.transform.FindChild("Amulet Light");
-                if (amuletLight != null) amuletLight.gameObject.active = false;
+                if (amuletLight != null) amuletLight.gameObject.SetActive(false);
 
                 break;
 
