@@ -61,8 +61,9 @@ public class UnitScript : EntityScript
     // Equiped items
     //public List<GameObject> EquippedItemsList = new List<GameObject>();
 	public EquippedItemsStruct EquippedItems;
-	
-	
+
+	public List<QuestScript> QuestList = new List<QuestScript>();
+
 	public new void Start()
     {
         base.Start();
@@ -375,12 +376,19 @@ public class UnitScript : EntityScript
 	protected void InteractWithNPC(GameObject NPC)
 	{
 		// TODO: change to player touching
-		/*
+		
 		if (NPC.GetComponent<NPCScript>().PlayerTouching)
 		{
 			Debug.Log("Starting NPC conversation");
+			Debug.Log("Starting NPC conversation");
+			StopMovement();
+
+			NPC.GetComponent<NPCScript>().StartConversation(this.gameObject);
+
+			this.Target = null;
 		}
-		*/
+		
+		/*
 		if (Vector3.Distance(NPC.transform.position, GameObject.Find("Player").transform.position) < 2)
 		{
 			Debug.Log("Starting NPC conversation");
@@ -391,6 +399,7 @@ public class UnitScript : EntityScript
 
 			this.Target = null;
 		}
+		*/
 
 	}
 

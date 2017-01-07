@@ -84,9 +84,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1402253821531590}
-  m_LocalRotation: {x: -0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 51.11001, y: -9.85, z: 8.855484}
-  m_LocalScale: {x: 2.268265, y: 2.268255, z: 2.2682526}
+  m_LocalScale: {x: 2.268266, y: 2.268256, z: 2.2682526}
   m_Children:
   - {fileID: 4726465749396610}
   - {fileID: 4152736580713656}
@@ -252,5 +252,7 @@ MonoBehaviour:
   Damage: 0
   CriticalChance: 0
   CriticalDamage: 0
+  AttackSpeed: 0
+  Armor: 10
   Rarity: 2
   ScrapValue: 300

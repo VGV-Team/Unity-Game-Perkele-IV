@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1231432625040744}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 57.59, y: -9.85, z: 8.855484}
-  m_LocalScale: {x: 2.268271, y: 2.268261, z: 2.26825}
+  m_LocalScale: {x: 2.268272, y: 2.268262, z: 2.26825}
   m_Children:
   - {fileID: 4952600475154226}
   - {fileID: 4390859624715620}
@@ -252,5 +252,7 @@ MonoBehaviour:
   Damage: 0
   CriticalChance: 0
   CriticalDamage: 0
+  AttackSpeed: 0
+  Armor: 5
   Rarity: 1
   ScrapValue: 75

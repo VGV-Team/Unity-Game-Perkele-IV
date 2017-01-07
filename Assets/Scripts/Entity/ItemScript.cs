@@ -11,8 +11,13 @@ public class ItemScript : EntityScript
     public float CriticalChance = 0;
     public float CriticalDamage = 0;
 
-    public RarityType Rarity = RarityType.Common;
+	public float AttackSpeed = 0;
+	public float Armor = 0;
+
+	public RarityType Rarity = RarityType.Common;
 
     public int ScrapValue = 0;
+
+	public int Discovery = 0;
 
 }

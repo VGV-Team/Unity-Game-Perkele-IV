@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class InputHandlerScript : MonoBehaviour
 {
@@ -56,7 +57,11 @@ public class InputHandlerScript : MonoBehaviour
 
 
 
-
+	    if (Input.GetKeyDown(KeyCode.Escape))
+	    {
+		    
+			SceneManager.LoadScene("MainMenuScene");
+	    }
 
 
         if (Input.GetKeyDown(KeyCode.A))

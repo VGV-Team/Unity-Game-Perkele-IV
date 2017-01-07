@@ -39,4 +39,7 @@ public class GlobalsScript{
     }
 
 
+
+	public static bool IsPerkeleAlive = true;
+	public static bool IsLieutenantAlive = true;
 }
