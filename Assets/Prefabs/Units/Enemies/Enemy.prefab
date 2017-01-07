@@ -1969,6 +1969,7 @@ MonoBehaviour:
   Armor: 0
   Strength: 0
   AttackSpeed: 0
+  CriticalChance: 10
   Discovery: 0
   MovementSpeed: 100
   Level: 1

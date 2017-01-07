@@ -1096,16 +1096,6 @@ Prefab:
       propertyPath: CenterCameraObject
       value: 
       objectReference: {fileID: 1402290825}
-    - target: {fileID: 20249512691363452, guid: acbd830b1aea80e4fb946f2e91adf096,
-        type: 2}
-      propertyPath: m_CullingMask.m_Bits
-      value: 4294965192
-      objectReference: {fileID: 0}
-    - target: {fileID: 20249512691363452, guid: acbd830b1aea80e4fb946f2e91adf096,
-        type: 2}
-      propertyPath: m_RenderingPath
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: acbd830b1aea80e4fb946f2e91adf096, type: 2}
   m_IsPrefabParent: 0
