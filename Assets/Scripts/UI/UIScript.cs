@@ -491,7 +491,9 @@ public class UIScript : MonoBehaviour
         {
             GameObject goButton = (GameObject)Instantiate(inventoryItemButton);
             goButton.transform.SetParent(UIInventoryItemsContent.transform, false);
-            goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Rarity);
+	        goButton.transform.FindChild("Image").GetComponent<Image>().overrideSprite = ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().ImageToShow;
+
+			goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Rarity);
             goButton.transform.FindChild("Text").GetComponent<Text>().text = ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Name;
             Button tempButton = goButton.GetComponent<Button>();
             int i1 = i;
