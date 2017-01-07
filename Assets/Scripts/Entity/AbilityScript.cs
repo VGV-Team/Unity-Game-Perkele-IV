@@ -164,10 +164,10 @@ public class AbilityScript
     }
     private void AbilityTypeBasicImpact(GameObject caster, GameObject target)
     {
-        int hp = target.GetComponent<UnitScript>().HP;
-        int shield = target.GetComponent<UnitScript>().Shield;
+		float hp = target.GetComponent<UnitScript>().HP;
+		float shield = target.GetComponent<UnitScript>().Shield;
 
-        int casterStrength = caster.GetComponent<UnitScript>().Strength;
+		float casterStrength = caster.GetComponent<UnitScript>().Strength;
 
         //TODO: monster armor is not takein into account?
         if (shield < BasePower + casterStrength)
@@ -218,10 +218,10 @@ public class AbilityScript
     }
     private void AbilityTypeRangeImpact(GameObject caster, GameObject target)
     {
-        int hp = target.GetComponent<UnitScript>().HP;
-        int shield = target.GetComponent<UnitScript>().Shield;
+        float hp = target.GetComponent<UnitScript>().HP;
+		float shield = target.GetComponent<UnitScript>().Shield;
 
-        int casterStrength = caster.GetComponent<UnitScript>().Strength;
+		float casterStrength = caster.GetComponent<UnitScript>().Strength;
 
         if (shield < BasePower + casterStrength)
         {

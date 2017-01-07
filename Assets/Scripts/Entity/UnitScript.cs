@@ -16,24 +16,25 @@ public class UnitScript : EntityScript
 	}
 	
 
-	public int MaxHP = 100;
-    public int HP = 100;
-    public int HPChange = 1;
-    public int MaxShield = 20;
-    public int Shield = 20;
-    public int ShieldChange = 2;
-    public int MaxFury = 50;
-    public int Fury = 0;
-    public int FuryChange = -2;
-    public int MaxMana = 50;
-    public int Mana = 50;
-    public int ManaChange = 1;
+	public float MaxHP = 100;
+    public float HP = 100;
+    public float HPChange = 1;
+    public float MaxShield = 20;
+    public float Shield = 20;
+    public float ShieldChange = 2;
+    public float MaxFury = 50;
+    public float Fury = 0;
+    public float FuryChange = -2;
+    public float MaxMana = 50;
+    public float Mana = 50;
+    public float ManaChange = 1;
 
-    public int Armor = 1;
-    public int Strength = 10;
-    public int AttackSpeed = 100;
-    public int Discovery = 20;
-	public int MovementSpeed = 100;
+    public float Armor = 1;
+    public float Strength = 10;
+    public float AttackSpeed = 100;
+	public float CriticalChance = 10;
+    public float Discovery = 20;
+	public float MovementSpeed = 100;
 
     public int Level = 1;
     public int Xp = 0;
@@ -44,8 +45,7 @@ public class UnitScript : EntityScript
 	public int Gold = 0;
     public int AbilityPoints = 0;
 
-    // need to add critical
-    // need to add discovery
+    
     // abilities should check for this values
     // abilities should also check for equipped items
 
@@ -70,19 +70,19 @@ public class UnitScript : EntityScript
         MovementInit();
     }
 
-    private double timePassed = 0;
+    //private double timePassed = 0;
     public void Update()
     {
         UpdateAbilities();
 
         UpdateMovement();
 
-        timePassed += Time.deltaTime;
-        if (timePassed > 1)
-        {
-            UpdateStatsRefresh();
-            timePassed -= 1;
-        }
+        //timePassed += Time.deltaTime;
+        //if (timePassed > 1)
+        //{
+        UpdateStatsRefresh();
+        //    timePassed -= 1;
+       // }
 
         CheckLevelUp();
     }
@@ -114,19 +114,19 @@ public class UnitScript : EntityScript
     // This should be called once every second
     private void UpdateStatsRefresh()
     {
-        HP += HPChange;
+        HP += HPChange * Time.deltaTime;
         if (HP > MaxHP) HP = MaxHP;
         if (HP < 0) HP = 0;
 
-        Shield += ShieldChange;
+        Shield += ShieldChange * Time.deltaTime;
         if (Shield > MaxShield) Shield = MaxShield;
         if (Shield < 0) Shield = 0;
 
-        Fury += FuryChange;
+        Fury += FuryChange * Time.deltaTime;
         if (Fury > MaxFury) Fury = MaxFury;
         if (Fury < 0) Fury = 0;
 
-        Mana += ManaChange;
+        Mana += ManaChange * Time.deltaTime;
         if (Mana > MaxMana) Mana = MaxMana;
         if (Mana < 0) Mana = 0;
     }
@@ -632,6 +632,9 @@ public class UnitScript : EntityScript
 				break;
 			case "AttackSpeed":
 				AttackSpeed = (int)(AttackSpeed * 1.1);
+				break;
+			case "CriticalChance":
+				CriticalChance = (int)(CriticalChance * 1.1);
 				break;
 			case "Discovery":
 				Discovery = (int)(Discovery * 1.1);

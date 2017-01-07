@@ -1046,7 +1046,7 @@ Camera:
   m_Depth: -5
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4
+    m_Bits: 2052
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 305a64c3e4234b74db3f9e4b9541ec56, type: 2}
   m_TargetDisplay: 0
@@ -1379,6 +1379,7 @@ MonoBehaviour:
   Armor: 1
   Strength: 9
   AttackSpeed: 100
+  CriticalChance: 10
   Discovery: 20
   MovementSpeed: 100
   Level: 1

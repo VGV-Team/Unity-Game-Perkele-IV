@@ -60,7 +60,8 @@ public class UIScript : MonoBehaviour
     public GameObject UICharacterStatsArmorLabel;
     public GameObject UICharacterStatsStrengthLabel;
     public GameObject UICharacterStatsAttackSpeedLabel;
-    public GameObject UICharacterStatsDiscoveryLabel;
+	public GameObject UICharacterStatsCriticalChanceLabel;
+	public GameObject UICharacterStatsDiscoveryLabel;
 	public GameObject UICharacterStatsMovementSpeedLabel;
 	public GameObject UICharacterStatsLevelLabel;
 	public GameObject UICharacterStatsXPLabel;
@@ -135,7 +136,7 @@ public class UIScript : MonoBehaviour
             HPScale = 0;
         }
         UIHPBar.GetComponent<Image>().fillAmount = HPScale;
-        UIHPValueLabel.GetComponent<Text>().text = ActivePlayer.HP + " / " + ActivePlayer.MaxHP;
+        UIHPValueLabel.GetComponent<Text>().text = ActivePlayer.HP.ToString("####") + " / " + ActivePlayer.MaxHP.ToString("F0");
 
         // Update Shield bar
         float shieldScale = ActivePlayer.Shield / (float)ActivePlayer.MaxShield;
@@ -148,7 +149,7 @@ public class UIScript : MonoBehaviour
             shieldScale = 0;
         }
         UIShieldBar.GetComponent<Image>().fillAmount = shieldScale;
-        UIShieldValueLabel.GetComponent<Text>().text = ActivePlayer.Shield + " / " + ActivePlayer.MaxShield;
+        UIShieldValueLabel.GetComponent<Text>().text = ActivePlayer.Shield.ToString("####") + " / " + ActivePlayer.MaxShield.ToString("F0");
 
         // Update Mana bar
         float manaScale = ActivePlayer.Mana / (float)ActivePlayer.MaxMana;
@@ -161,7 +162,7 @@ public class UIScript : MonoBehaviour
             manaScale = 0;
         }
         UIManaBar.GetComponent<Image>().fillAmount = manaScale;
-        UIManaValueLabel.GetComponent<Text>().text = ActivePlayer.Mana + " / " + ActivePlayer.MaxMana;
+        UIManaValueLabel.GetComponent<Text>().text = ActivePlayer.Mana.ToString("####") + " / " + ActivePlayer.MaxMana.ToString("F0");
 
         // Update Fury bar
         float furyScale = ActivePlayer.Fury / (float)ActivePlayer.MaxFury;
@@ -174,7 +175,7 @@ public class UIScript : MonoBehaviour
             furyScale = 0;
         }
         UIFuryBar.GetComponent<Image>().fillAmount = furyScale;
-        UIFuryValueLabel.GetComponent<Text>().text = ActivePlayer.Fury + " / " + ActivePlayer.MaxFury;
+        UIFuryValueLabel.GetComponent<Text>().text = ActivePlayer.Fury.ToString("####") + " / " + ActivePlayer.MaxFury.ToString("F0");
 
         // Update Xp bar
         float XPScale = ActivePlayer.Xp / (float)ActivePlayer.MaxXp;
@@ -187,7 +188,7 @@ public class UIScript : MonoBehaviour
             XPScale = 0;
         }
         UIXPBar.GetComponent<Image>().fillAmount = XPScale;
-        UIXPValueLabel.GetComponent<Text>().text = ActivePlayer.Xp + " / " + ActivePlayer.MaxXp;
+        UIXPValueLabel.GetComponent<Text>().text = ActivePlayer.Xp.ToString("####") + " / " + ActivePlayer.MaxXp.ToString("F0");
 
 
         // Updating of target bar
@@ -249,27 +250,29 @@ public class UIScript : MonoBehaviour
 
         #region Update character stats
 
-        UICharacterStatsMaxHPLabel.GetComponent<Text>().text = ActivePlayer.MaxHP.ToString();
-        UICharacterStatsHPLabel.GetComponent<Text>().text = ActivePlayer.HP.ToString();
-        UICharacterStatsHPChangeLabel.GetComponent<Text>().text = ActivePlayer.HPChange.ToString();
-        UICharacterStatsMaxShieldLabel.GetComponent<Text>().text = ActivePlayer.MaxShield.ToString();
-        UICharacterStatsShieldLabel.GetComponent<Text>().text = ActivePlayer.Shield.ToString();
-        UICharacterStatsShieldChangeLabel.GetComponent<Text>().text = ActivePlayer.ShieldChange.ToString();
-        UICharacterStatsMaxFuryLabel.GetComponent<Text>().text = ActivePlayer.MaxFury.ToString();
-        UICharacterStatsFuryLabel.GetComponent<Text>().text = ActivePlayer.Fury.ToString();
-        UICharacterStatsFuryChangeLabel.GetComponent<Text>().text = ActivePlayer.FuryChange.ToString();
-        UICharacterStatsMaxManaLabel.GetComponent<Text>().text = ActivePlayer.MaxMana.ToString();
-        UICharacterStatsManaLabel.GetComponent<Text>().text = ActivePlayer.Mana.ToString();
-        UICharacterStatsManaChangeLabel.GetComponent<Text>().text = ActivePlayer.ManaChange.ToString();
-        UICharacterStatsArmorLabel.GetComponent<Text>().text = ActivePlayer.Armor.ToString();
-        UICharacterStatsStrengthLabel.GetComponent<Text>().text = ActivePlayer.Strength.ToString();
-        UICharacterStatsAttackSpeedLabel.GetComponent<Text>().text = ActivePlayer.AttackSpeed.ToString();
-        UICharacterStatsDiscoveryLabel.GetComponent<Text>().text = ActivePlayer.Discovery.ToString();
-		UICharacterStatsLevelLabel.GetComponent<Text>().text = ActivePlayer.Level.ToString();
-		UICharacterStatsXPLabel.GetComponent<Text>().text = ActivePlayer.Xp.ToString();
-		UICharacterStatsMaxXPLabel.GetComponent<Text>().text = ActivePlayer.MaxXp.ToString();
-		UICharacterStatsScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString();
-		UICharacterStatsGoldLabel.GetComponent<Text>().text = ActivePlayer.Gold.ToString();
+        UICharacterStatsMaxHPLabel.GetComponent<Text>().text = ActivePlayer.MaxHP.ToString("F0");
+        UICharacterStatsHPLabel.GetComponent<Text>().text = ActivePlayer.HP.ToString("F0");
+        UICharacterStatsHPChangeLabel.GetComponent<Text>().text = ActivePlayer.HPChange.ToString("F0");
+        UICharacterStatsMaxShieldLabel.GetComponent<Text>().text = ActivePlayer.MaxShield.ToString("F0");
+        UICharacterStatsShieldLabel.GetComponent<Text>().text = ActivePlayer.Shield.ToString("F0");
+        UICharacterStatsShieldChangeLabel.GetComponent<Text>().text = ActivePlayer.ShieldChange.ToString("F0");
+        UICharacterStatsMaxFuryLabel.GetComponent<Text>().text = ActivePlayer.MaxFury.ToString("F0");
+        UICharacterStatsFuryLabel.GetComponent<Text>().text = ActivePlayer.Fury.ToString("F0");
+        UICharacterStatsFuryChangeLabel.GetComponent<Text>().text = ActivePlayer.FuryChange.ToString("F0");
+        UICharacterStatsMaxManaLabel.GetComponent<Text>().text = ActivePlayer.MaxMana.ToString("F0");
+        UICharacterStatsManaLabel.GetComponent<Text>().text = ActivePlayer.Mana.ToString("F0");
+        UICharacterStatsManaChangeLabel.GetComponent<Text>().text = ActivePlayer.ManaChange.ToString("F0");
+        UICharacterStatsArmorLabel.GetComponent<Text>().text = ActivePlayer.Armor.ToString("F0");
+        UICharacterStatsStrengthLabel.GetComponent<Text>().text = ActivePlayer.Strength.ToString("F0");
+        UICharacterStatsAttackSpeedLabel.GetComponent<Text>().text = ActivePlayer.AttackSpeed.ToString("F0");
+		UICharacterStatsCriticalChanceLabel.GetComponent<Text>().text = ActivePlayer.CriticalChance.ToString("F0");
+		UICharacterStatsDiscoveryLabel.GetComponent<Text>().text = ActivePlayer.Discovery.ToString("F0");
+		UICharacterStatsMovementSpeedLabel.GetComponent<Text>().text = ActivePlayer.MovementSpeed.ToString("F0");
+		UICharacterStatsLevelLabel.GetComponent<Text>().text = ActivePlayer.Level.ToString("F0");
+		UICharacterStatsXPLabel.GetComponent<Text>().text = ActivePlayer.Xp.ToString("F0");
+		UICharacterStatsMaxXPLabel.GetComponent<Text>().text = ActivePlayer.MaxXp.ToString("F0");
+		UICharacterStatsScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString("F0");
+		UICharacterStatsGoldLabel.GetComponent<Text>().text = ActivePlayer.Gold.ToString("F0");
 
 	    if (ActivePlayer.AbilityPoints > 0)
 	    {
@@ -536,7 +539,7 @@ public class UIScript : MonoBehaviour
 
 		#endregion
 
-		UIInventoryScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString();
+		UIInventoryScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString("F0");
 	    selectedItem = null;
 	    UpdateUIInventorySelectedItemLabels(null, null);
     }
@@ -567,12 +570,12 @@ public class UIScript : MonoBehaviour
         {
             UIInventorySelectedItemNameLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Name;
             UIInventorySelectedItemTypeLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Type.ToString();
-            UIInventorySelectedItemDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("####");
-            UIInventorySelectedItemAttackSpeedLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("####");
-            UIInventorySelectedItemCriticalChanceLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalChance.ToString("####");
-            UIInventorySelectedItemCriticalDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalDamage.ToString("####");
+			UIInventorySelectedItemDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("F0");
+            UIInventorySelectedItemAttackSpeedLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("F0");
+            UIInventorySelectedItemCriticalChanceLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalChance.ToString("F0");
+            UIInventorySelectedItemCriticalDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalDamage.ToString("F0");
             UIInventorySelectedItemRarityLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Rarity.ToString();
-            UIInventorySelectedItemScrapValueLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().ScrapValue.ToString();
+            UIInventorySelectedItemScrapValueLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().ScrapValue.ToString("F0");
             UIInventorySelectedItemPanel.SetActive(true);
 
 			if (isEquippedItem == true)
@@ -624,7 +627,6 @@ public class UIScript : MonoBehaviour
 
 	public void StatsUpgrade(string statName)
 	{
-		Debug.Log(statName);
 		ActivePlayer.StatsUpgrade(statName);
 	}
 
