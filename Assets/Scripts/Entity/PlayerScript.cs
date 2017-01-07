@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerScript : UnitScript {
-
-
-    
+public class PlayerScript : UnitScript
+{
+	public GameObject pointLight;
+	public float pointLightMaxIntensity = 3;
 
 	// Use this for initialization
     new void Start ()
@@ -29,6 +28,9 @@ public class PlayerScript : UnitScript {
 	{
         if (Active != true) return;
         base.Update();
+
+		if (HP <= 0) pointLight.GetComponent<Light>().intensity = 0;
+		else pointLight.GetComponent<Light>().intensity = HP / MaxHP * pointLightMaxIntensity;
 
         #region Target Checking
 

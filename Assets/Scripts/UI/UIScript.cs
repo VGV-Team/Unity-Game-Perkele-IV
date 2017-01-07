@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking.NetworkSystem;
@@ -18,6 +18,7 @@ public class UIScript : MonoBehaviour
     // Prefabs
     public GameObject abilityChooseButton;
     public GameObject inventoryItemButton;
+	public GameObject questListItemRow;
 
     // bars
     public GameObject UIHPBar;
@@ -40,9 +41,12 @@ public class UIScript : MonoBehaviour
     public GameObject UIInventorySelectedItemAttackSpeedLabel;
     public GameObject UIInventorySelectedItemCriticalChanceLabel;
     public GameObject UIInventorySelectedItemCriticalDamageLabel;
-    public GameObject UIInventorySelectedItemRarityLabel;
+	public GameObject UIInventorySelectedItemArmorLabel;
+	public GameObject UIInventorySelectedItemRarityLabel;
     public GameObject UIInventorySelectedItemScrapValueLabel;
-    public GameObject UIInventoryScrapLabel;
+	public GameObject UIInventorySelectedItemDiscoveryLabel;
+	public GameObject UIInventoryScrapLabel;
+
 
     // character stats
     public GameObject UICharacterStatsMaxHPLabel;
@@ -79,7 +83,10 @@ public class UIScript : MonoBehaviour
 	public GameObject UIInventoryPanel;
 	public GameObject UIInventoryItemsContent;
 	public GameObject UIInventorySelectedItemPanel;
+	public GameObject UIInventoryCenterItemCameraPanel;
 	public GameObject UICharacterPanel;
+	public GameObject UINPCConversationPanel;
+	public GameObject UIQuestListPanel;
 
 	// Equipped items
 	public GameObject UIInventoryEquippedItemsWeaponButton;
@@ -291,8 +298,32 @@ public class UIScript : MonoBehaviour
 				item.transform.FindChild("UICharacterStatsUpgradeButton").gameObject.SetActive(false);
 			}
 		}
-		
-		
+
+
+
+		#endregion
+
+		#region Update quest panel
+
+		int size = UIQuestListPanel.transform.childCount;
+		for (int i = 0; i < size; i++)
+		{
+			Destroy(UIQuestListPanel.transform.GetChild(i).gameObject);
+		}
+		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && !q.Completed).ToList())
+		{
+			GameObject questRow = (GameObject)Instantiate(questListItemRow);
+			questRow.transform.SetParent(UIQuestListPanel.transform, false);
+			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite; // active quest image
+			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title;
+		}
+		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && q.Completed).ToList())
+		{
+			GameObject questRow = (GameObject)Instantiate(questListItemRow);
+			questRow.transform.SetParent(UIQuestListPanel.transform, false);
+			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite; // finished quest image
+			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title;
+		}
 
 		#endregion
 	}
@@ -454,8 +485,8 @@ public class UIScript : MonoBehaviour
         {
             GameObject goButton = (GameObject)Instantiate(abilityChooseButton);
             goButton.transform.SetParent(UISkillConfigurePanel.transform, false);
-            goButton.transform.position = UISkillConfigurePanel.transform.position + new Vector3(
-                5 + (width + 5) * (i % AbilitiesPerRow),
+			goButton.transform.localPosition = new Vector3(
+				5 + (width + 5) * (i % AbilitiesPerRow),
                 5 + (height + 5) * (i / AbilitiesPerRow),
                 0);
 
@@ -588,13 +619,16 @@ public class UIScript : MonoBehaviour
             UIInventorySelectedItemNameLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Name;
             UIInventorySelectedItemTypeLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Type.ToString();
 			UIInventorySelectedItemDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("F0");
-            UIInventorySelectedItemAttackSpeedLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Damage.ToString("F0");
+            UIInventorySelectedItemAttackSpeedLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().AttackSpeed.ToString("F0");
             UIInventorySelectedItemCriticalChanceLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalChance.ToString("F0");
             UIInventorySelectedItemCriticalDamageLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().CriticalDamage.ToString("F0");
-            UIInventorySelectedItemRarityLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Rarity.ToString();
+			UIInventorySelectedItemArmorLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Armor.ToString("F0");
+			UIInventorySelectedItemRarityLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Rarity.ToString();
             UIInventorySelectedItemScrapValueLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().ScrapValue.ToString("F0");
-            UIInventorySelectedItemPanel.SetActive(true);
+			UIInventorySelectedItemDiscoveryLabel.GetComponent<Text>().text = item.GetComponent<ItemScript>().Discovery.ToString("F0");
 
+			UIInventorySelectedItemPanel.SetActive(true);
+			UIInventoryCenterItemCameraPanel.SetActive(false);
 			if (isEquippedItem == true)
 			{
 				UIInventoryUnequipButton.SetActive(true);
@@ -611,6 +645,7 @@ public class UIScript : MonoBehaviour
         else
         {
             UIInventorySelectedItemPanel.SetActive(false);
+			UIInventoryCenterItemCameraPanel.SetActive(true);
 
 			UIInventoryUnequipButton.SetActive(false);
 			UIInventoryEquipButton.SetActive(false);

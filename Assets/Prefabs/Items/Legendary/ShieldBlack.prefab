@@ -84,9 +84,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1402253821531590}
-  m_LocalRotation: {x: -0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 51.11001, y: -9.85, z: 8.855484}
-  m_LocalScale: {x: 2.268265, y: 2.268255, z: 2.2682526}
+  m_LocalScale: {x: 2.268266, y: 2.268256, z: 2.2682526}
   m_Children:
   - {fileID: 4726465749396610}
   - {fileID: 4152736580713656}
@@ -101,7 +101,7 @@ Transform:
   m_GameObject: {fileID: 1328264215807258}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.22043392, y: 0.22043295, z: 0.220434}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4453233473676358}
   m_RootOrder: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ca98b119d3b1248bfe5640f4220b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImageToShow: {fileID: 21300000, guid: 95f9a996221921d48aea8f5090d2b2b8, type: 3}
+  ImageToShow: {fileID: 21300000, guid: a1a33483459c4f94c8bd43ace122bbf5, type: 3}
   Name: Black Knight Shield
   Active: 1
   PlayerTouching: 0
@@ -252,5 +252,8 @@ MonoBehaviour:
   Damage: 0
   CriticalChance: 0
   CriticalDamage: 0
+  AttackSpeed: 0
+  Armor: 10
   Rarity: 2
   ScrapValue: 300
+  Discovery: 0
