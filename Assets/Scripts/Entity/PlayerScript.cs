@@ -14,8 +14,11 @@ public class PlayerScript : UnitScript {
 	{
 	    base.Start();
         Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Fireball", AbilityType.Fireball, 5, 0, 10, 10, 20, GameObject.Find("UISpritesFireball").transform.GetComponent<SpriteRenderer>().sprite));
         Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 5, 0, 10, 0, 20, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
-        Abilities.Add(new AbilityScript("Whatever Ability", AbilityType.RangeAttack, 10, 10, 0, 10, 20, GameObject.Find("UISpritesWhatever").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Fire Explosion", AbilityType.FireExplosion, 10, 0, 0, 10, 20, GameObject.Find("UISpritesFireExplosion").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Flamethrower", AbilityType.Flamethrower, 10, 0, 0, 10, 80, GameObject.Find("UISpritesFlamethrower").transform.GetComponent<SpriteRenderer>().sprite));
+
 
         // Set starting level maxXP
         MaxXp = GlobalsScript.XPCurve[Level - 1];
