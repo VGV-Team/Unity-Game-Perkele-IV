@@ -237,28 +237,33 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    caster.GetComponent<UnitScript>().Target = null;
-                    target.GetComponent<UnitScript>().Active = false;
-                    target.GetComponent<UnitScript>().Die();
-
-
-
-                    // Loot drops and XP
-                    if (caster.tag == "Player")
+                    if (target.name == "Crate")
+                        target.GetComponent<CrateScript>().DestroyCrate();
+                    else
                     {
+                        caster.GetComponent<UnitScript>().Target = null;
+                        target.GetComponent<UnitScript>().Active = false;
+                        target.GetComponent<UnitScript>().Die();
 
-                        // Give XP to caster
-                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
 
-                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                            (int)caster.GetComponent<UnitScript>().Discovery,
-                            50,
-                            30,
-                            20,
-                            target.transform);
+                        // Loot drops and XP
+                        if (caster.tag == "Player")
+                        {
+
+                            // Give XP to caster
+                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                                (int)caster.GetComponent<UnitScript>().Discovery,
+                                50,
+                                30,
+                                20,
+                                target.transform);
+                        }
+
                     }
-
                 }
             }
             else shield -= (damage);
@@ -305,28 +310,33 @@ public class AbilityScript
                     shield = 0;
                     if (hp <= 0)
                     {
-                        caster.GetComponent<UnitScript>().Target = null;
-                        target.GetComponent<UnitScript>().Active = false;
-                        target.GetComponent<UnitScript>().Die();
-
-
-
-                        // Loot drops and XP
-                        if (caster.tag == "Player")
+                        if (target.name == "Crate")
+                            target.GetComponent<CrateScript>().DestroyCrate();
+                        else
                         {
+                            caster.GetComponent<UnitScript>().Target = null;
+                            target.GetComponent<UnitScript>().Active = false;
+                            target.GetComponent<UnitScript>().Die();
 
-                            // Give XP to caster
-                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
 
-                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                                (int)caster.GetComponent<UnitScript>().Discovery,
-                                50,
-                                30,
-                                20,
-                                target.transform);
+                            // Loot drops and XP
+                            if (caster.tag == "Player")
+                            {
+
+                                // Give XP to caster
+                                caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                                GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                                    (int)caster.GetComponent<UnitScript>().Discovery,
+                                    50,
+                                    30,
+                                    20,
+                                    target.transform);
+                            }
+
                         }
-
                     }
                 }
                 else shield -= (BasePower + casterStrength);
@@ -381,7 +391,7 @@ public class AbilityScript
 
             float casterStrength = caster.GetComponent<UnitScript>().Strength;
 
-            
+
 
             //TODO: monster armor is not taken into account?
             if (shield < BasePower + casterStrength)
@@ -390,35 +400,41 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    caster.GetComponent<UnitScript>().Target = null;
-                    target.GetComponent<UnitScript>().Active = false;
-                    target.GetComponent<UnitScript>().Die();
-
-                   
-
-                    // Loot drops and XP
-                    if (caster.tag == "Player")
+                    if (target.name == "Crate")
+                        target.GetComponent<CrateScript>().DestroyCrate();
+                    else
                     {
+                        caster.GetComponent<UnitScript>().Target = null;
+                        target.GetComponent<UnitScript>().Active = false;
+                        target.GetComponent<UnitScript>().Die();
 
-                        // Give XP to caster
-                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
 
-                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                            (int)caster.GetComponent<UnitScript>().Discovery,
-                            50,
-                            30,
-                            20,
-                            target.transform);
+                        // Loot drops and XP
+                        if (caster.tag == "Player")
+                        {
+
+                            // Give XP to caster
+                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                                (int)caster.GetComponent<UnitScript>().Discovery,
+                                50,
+                                30,
+                                20,
+                                target.transform);
+                        }
+
                     }
-
                 }
                 else if (target.tag == "Enemy")
                 {
                     //target.GetComponent<UnitScript>().Target = caster;
                     target.GetComponent<UnitScript>().SetWaypoint(caster.transform.position);
                 }
-            }
+                }
+            
             else shield -= (BasePower + casterStrength);
             target.GetComponent<UnitScript>().HP = hp;
             target.GetComponent<UnitScript>().Shield = shield;
@@ -444,6 +460,9 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
+                if (target.name == "Crate")
+                    target.GetComponent<CrateScript>().DestroyCrate();
+                else { 
                 caster.GetComponent<UnitScript>().Target = null;
                 target.GetComponent<UnitScript>().Active = false;
                 target.GetComponent<UnitScript>().Die();
@@ -464,7 +483,7 @@ public class AbilityScript
                         20,
                         target.transform);
                 }
-
+              }
             }
         }
         else shield -= (BasePower + casterStrength);
@@ -492,9 +511,14 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
-                caster.GetComponent<UnitScript>().Target = null;
-                target.GetComponent<UnitScript>().Active = false;
-                target.GetComponent<UnitScript>().StartDeathAnimation();
+                if (target.name == "Crate")
+                    target.GetComponent<CrateScript>().DestroyCrate();
+                else
+                {
+                    caster.GetComponent<UnitScript>().Target = null;
+                    target.GetComponent<UnitScript>().Active = false;
+                    target.GetComponent<UnitScript>().StartDeathAnimation();
+                }
             }
         }
         else shield -= (BasePower + casterStrength);

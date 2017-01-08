@@ -40,16 +40,17 @@ public class PlayerScript : UnitScript
             switch (Target.tag)
             {
                 case "Enemy":
+                    
                     foreach (var ability in Abilities)
-                    {
-                        if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
                         {
-                            // TODO: should we click for basic attack? If yes then break
-                            break;
-                            //Target = null;
+                            if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
+                            {
+                                // TODO: should we click for basic attack? If yes then break
+                                break;
+                                //Target = null;
+                            }
                         }
-                    }
-                    break;
+                        break;
 
                 case "Item":
                     PickUpItem(Target);
@@ -60,6 +61,9 @@ public class PlayerScript : UnitScript
 				case "NPC":
 		            InteractWithNPC(Target);
 					break;
+                /*case "Crate":
+                    DestroyCrate(Target);
+                    break;*/
                 default:
                     Debug.Log("DEFAULT playerscript switch");
                     break;
