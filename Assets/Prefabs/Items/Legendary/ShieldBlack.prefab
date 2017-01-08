@@ -101,7 +101,7 @@ Transform:
   m_GameObject: {fileID: 1328264215807258}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: -0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.22043392, y: 0.22043295, z: 0.220434}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 4453233473676358}
   m_RootOrder: 0
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ca98b119d3b1248bfe5640f4220b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImageToShow: {fileID: 21300000, guid: 95f9a996221921d48aea8f5090d2b2b8, type: 3}
+  ImageToShow: {fileID: 21300000, guid: a1a33483459c4f94c8bd43ace122bbf5, type: 3}
   Name: Black Knight Shield
   Active: 1
   PlayerTouching: 0
@@ -256,3 +256,4 @@ MonoBehaviour:
   Armor: 10
   Rarity: 2
   ScrapValue: 300
+  Discovery: 0

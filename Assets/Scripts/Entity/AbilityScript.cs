@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DigitalRuby.PyroParticles;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
@@ -9,12 +10,15 @@ public enum AbilityType
     None,
     BasicAttack,
     RangeAttack,
+    Fireball,
+    FireExplosion,
+    Flamethrower,
     Heal
 }
 
 public class AbilityScript
 {
-
+    
     public string Name;
     public AbilityType Type;
     public double Cooldown;
@@ -105,11 +109,13 @@ public class AbilityScript
 
     public bool Use(GameObject caster, GameObject target = null)
     {
+        //Debug.Log("Trying to use ability: " + Name + " type: " + Type);
+
         if (CanUseAbility(caster, target))
         {
             //Temporary, move this to approprita ability types
             LookAtTarget(caster, target);
-            //caster.GetComponent<UnitScript>().StopMovement();
+            
 
             switch (Type)
             {
@@ -118,8 +124,21 @@ public class AbilityScript
                     AbilityTypeBasic(caster, target);
                     break;
                 case AbilityType.RangeAttack:
+                    // TODO temporary?
                     if (target == null) return false;
                     AbilityTypeRange(caster, target);
+                    break;
+                case AbilityType.Fireball:
+                    caster.GetComponent<UnitScript>().StopMovement();
+                    AbilityTypeFireball(caster);
+                    break;
+                case AbilityType.FireExplosion:
+                    caster.GetComponent<UnitScript>().StopMovement();
+                    AbilityTypeFireExplosion(caster);
+                    break;
+                case AbilityType.Flamethrower:
+                    caster.GetComponent<UnitScript>().StopMovement();
+                    AbilityTypeFlamethrower(caster);
                     break;
                 case AbilityType.Heal:
                     AbilityTypeHeal(caster);
@@ -140,6 +159,7 @@ public class AbilityScript
 
     public void AbilityImpact(GameObject caster, GameObject target)
     {
+        Debug.Log(Name);
         switch (Type)
         {
             case AbilityType.BasicAttack:
@@ -150,12 +170,260 @@ public class AbilityScript
                 if (target == null) return;
                 AbilityTypeRangeImpact(caster, target);
                 break;
+            case AbilityType.Fireball:
+                AbilityTypeFireballCast(caster);
+                break;
             case AbilityType.Heal:
                 AbilityTypeHealImpact(caster);
                 break;
         }
     }
 
+    private void AbilityTypeFlamethrower(GameObject caster)
+    {
+        AbilityTypeFlamethrowerCast(caster);
+    }
+    private void AbilityTypeFlamethrowerCast(GameObject caster)
+    {
+        Debug.Log("Casting flamethrower!");
+
+        Vector3 targetPosition, sourcePosition;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 100))
+        {
+
+            targetPosition = hit.point;
+            sourcePosition = caster.transform.position;
+            targetPosition.y = sourcePosition.y;
+
+            caster.transform.LookAt(targetPosition);
+
+
+            //Finally cast fireball in the direction of source to target
+            GameObject flame = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().FlamethrowerEffect);
+            Vector3 pos = caster.transform.position;
+            pos.y += 2.0f;
+
+            Vector3 direction = (targetPosition - sourcePosition).normalized;
+            flame.transform.parent = caster.transform;
+            flame.transform.position = Vector3.zero;
+            flame.transform.localPosition = Vector3.zero;
+            //flame.transform.rotation = Quaternion.Euler(new Vector3(0, 180.0f, 0));
+
+            flame.GetComponent<FireBaseScript>().Ability = this;
+            flame.GetComponent<FireBaseScript>().Caster = caster;
+            flame.GetComponent<FlamethrowerCollisionScript>().Ability = this;
+            flame.GetComponent<FlamethrowerCollisionScript>().Caster = caster;
+            flame.transform.position = pos + direction.normalized/2;
+        }
+    }
+    public void AbilityTypeFlamethrowerImpact(GameObject caster, GameObject target)
+    {
+        Debug.Log("FLAMETHROWER IMPACT");
+        if (target.tag == "Enemy" || target.tag == "Player")
+        {
+            float hp = target.GetComponent<UnitScript>().HP;
+            float shield = target.GetComponent<UnitScript>().Shield;
+
+            float damage = BasePower * Time.deltaTime;
+
+            //TODO: monster armor is not taken into account?
+            if (shield < damage)
+            {
+                hp -= (damage - shield); // no casterstrength
+                shield = 0;
+                if (hp <= 0)
+                {
+                    caster.GetComponent<UnitScript>().Target = null;
+                    target.GetComponent<UnitScript>().Active = false;
+                    target.GetComponent<UnitScript>().Die();
+
+
+
+                    // Loot drops and XP
+                    if (caster.tag == "Player")
+                    {
+
+                        // Give XP to caster
+                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                            (int)caster.GetComponent<UnitScript>().Discovery,
+                            50,
+                            30,
+                            20,
+                            target.transform);
+                    }
+
+                }
+            }
+            else shield -= (damage);
+            target.GetComponent<UnitScript>().HP = hp;
+            target.GetComponent<UnitScript>().Shield = shield;
+        }
+
+    }
+
+    private void AbilityTypeFireExplosion(GameObject caster)
+    {
+        AbilityTypeFireExplosionCast(caster);
+    }
+    private void AbilityTypeFireExplosionCast(GameObject caster)
+    {
+        //Particle effect
+        Debug.Log("Casting Fire explosion!");
+        GameObject explosionEffect = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().FireExplosionEffect);
+        explosionEffect.transform.parent = caster.transform;
+        explosionEffect.transform.position = Vector3.zero;
+        explosionEffect.transform.localPosition = Vector3.zero;
+        explosionEffect.GetComponent<FireBaseScript>().Caster = caster;
+        explosionEffect.GetComponent<FireBaseScript>().Ability = this;
+    }
+    public void AbilityTypeFireExplosionImpact(GameObject caster, Collider[] objects)
+    {
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if ((caster.tag != "Player" && objects[i].gameObject.tag == "Player") ||  //if enemy used ability (no friendly fire)
+                (caster.tag == "Player" && objects[i].gameObject.tag == "Enemy") ) //if player used ability and hit an enemy
+            {
+
+                GameObject target = objects[i].gameObject;
+
+                float hp = target.GetComponent<UnitScript>().HP;
+                float shield = target.GetComponent<UnitScript>().Shield;
+
+                float casterStrength = caster.GetComponent<UnitScript>().Strength;
+
+                //TODO: monster armor is not taken into account?
+                if (shield < BasePower + casterStrength)
+                {
+                    hp -= (BasePower + casterStrength - shield);
+                    shield = 0;
+                    if (hp <= 0)
+                    {
+                        caster.GetComponent<UnitScript>().Target = null;
+                        target.GetComponent<UnitScript>().Active = false;
+                        target.GetComponent<UnitScript>().Die();
+
+
+
+                        // Loot drops and XP
+                        if (caster.tag == "Player")
+                        {
+
+                            // Give XP to caster
+                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                                (int)caster.GetComponent<UnitScript>().Discovery,
+                                50,
+                                30,
+                                20,
+                                target.transform);
+                        }
+
+                    }
+                }
+                else shield -= (BasePower + casterStrength);
+                target.GetComponent<UnitScript>().HP = hp;
+                target.GetComponent<UnitScript>().Shield = shield;
+            }
+        }
+    }
+
+    private void AbilityTypeFireball(GameObject caster)
+    {
+        caster.GetComponent<UnitScript>().StartFireballAnimation();
+    }
+    private void AbilityTypeFireballCast(GameObject caster)
+    {
+        Debug.Log("Casting fireball!");
+
+        Vector3 targetPosition, sourcePosition;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, 100))
+        {
+
+            targetPosition = hit.point;
+            sourcePosition = caster.transform.position;
+            targetPosition.y = sourcePosition.y;
+
+            caster.transform.LookAt(targetPosition);
+
+
+            //Finally cast fireball in the direction of source to target
+            GameObject fireball = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().FireballEffect);
+            Vector3 pos = caster.transform.position;
+            pos.y += 1.0f;
+            Vector3 direction = (targetPosition - sourcePosition).normalized;
+            fireball.GetComponent<FireProjectileScript>().ProjectileDirection = direction;
+            fireball.GetComponent<FireProjectileScript>().Ability = this;
+            fireball.GetComponent<FireProjectileScript>().Caster = caster;
+            fireball.transform.position = pos + direction.normalized*2;
+            fireball.transform.FindChild("FireboltCollider").GetComponent<Collider>().enabled = true;
+        }
+    }
+    public void AbilityTypeFireballImpact(GameObject target, GameObject caster)
+    {
+        if (target == null) return;
+        if (target.tag == "Enemy" || target.tag == "Player")
+        {
+            float hp = target.GetComponent<UnitScript>().HP;
+            float shield = target.GetComponent<UnitScript>().Shield;
+
+            float casterStrength = caster.GetComponent<UnitScript>().Strength;
+
+            
+
+            //TODO: monster armor is not taken into account?
+            if (shield < BasePower + casterStrength)
+            {
+                hp -= (BasePower + casterStrength - shield);
+                shield = 0;
+                if (hp <= 0)
+                {
+                    caster.GetComponent<UnitScript>().Target = null;
+                    target.GetComponent<UnitScript>().Active = false;
+                    target.GetComponent<UnitScript>().Die();
+
+                   
+
+                    // Loot drops and XP
+                    if (caster.tag == "Player")
+                    {
+
+                        // Give XP to caster
+                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                            (int)caster.GetComponent<UnitScript>().Discovery,
+                            50,
+                            30,
+                            20,
+                            target.transform);
+                    }
+
+                }
+                else if (target.tag == "Enemy")
+                {
+                    //target.GetComponent<UnitScript>().Target = caster;
+                    target.GetComponent<UnitScript>().SetWaypoint(caster.transform.position);
+                }
+            }
+            else shield -= (BasePower + casterStrength);
+            target.GetComponent<UnitScript>().HP = hp;
+            target.GetComponent<UnitScript>().Shield = shield;
+        }
+    }
 
     private void AbilityTypeBasic(GameObject caster, GameObject target)
     {
@@ -207,8 +475,9 @@ public class AbilityScript
 
     private void AbilityTypeRange(GameObject caster, GameObject target)
     {
+        Debug.Log("Using ranged ability: " + this.Name);
         caster.GetComponent<UnitScript>().StartRangeAttackAnimation();
-        target.GetComponent<UnitScript>().StartHitAnimation();
+        //target.GetComponent<UnitScript>().StartHitAnimation();
     }
     private void AbilityTypeRangeImpact(GameObject caster, GameObject target)
     {
@@ -235,7 +504,7 @@ public class AbilityScript
 
     private void AbilityTypeHeal(GameObject caster)
     {
-        caster.GetComponent<UnitScript>().StartHealAnimation();
+        AbilityTypeHealImpact(caster);
     }
     private void AbilityTypeHealImpact(GameObject caster)
     {
@@ -244,5 +513,13 @@ public class AbilityScript
         {
             caster.GetComponent<UnitScript>().HP = caster.GetComponent<UnitScript>().MaxHP;
         }
+
+        //Particle effect
+        GameObject healEffect = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().HealEffect);
+        healEffect.transform.parent = caster.transform;
+        healEffect.transform.position = Vector3.zero;
+        healEffect.transform.localPosition = Vector3.zero;
+
     }
+
 }

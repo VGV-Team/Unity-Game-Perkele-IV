@@ -37,22 +37,22 @@ public class InputHandlerScript : MonoBehaviour
         if (Input.GetKeyDown("1"))
         {
             Debug.Log("1");
-            AbilityUse(0);
+            AbilityUse(1);
         }
         if (Input.GetKeyDown("2"))
         {
             Debug.Log("2");
-            AbilityUse(1);
+            AbilityUse(2);
         }
         if (Input.GetKeyDown("3"))
         {
             Debug.Log("3");
-            AbilityUse(2);
+            AbilityUse(3);
         }
         if (Input.GetKeyDown("4"))
         {
             Debug.Log("4");
-            AbilityUse(3);
+            AbilityUse(4);
         }
 
 

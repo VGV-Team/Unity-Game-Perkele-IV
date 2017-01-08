@@ -207,6 +207,7 @@ public class UnitScript : EntityScript
 
         walkAnim = false;
         Destroy(waypoint);
+        waypoint = null;
     }
 
     public void StartMovement()
@@ -242,6 +243,9 @@ public class UnitScript : EntityScript
                 break;
             case "RangedAttack":
                 aType = AbilityType.RangeAttack;
+                break;
+            case "AbilityFireball":
+                aType = AbilityType.Fireball;
                 break;
             default:
                 break;
@@ -280,10 +284,16 @@ public class UnitScript : EntityScript
 
         
     }
+    
+    public void StartFireballAnimation()
+    {
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("fireball", animationFadeFactor);
+    }
 
     public void StartRangeAttackAnimation()
     {
         // TODO: this
+        
     }
 
     public void StartHealAnimation()
