@@ -81,9 +81,12 @@ public class ItemPoolScript : MonoBehaviour {
             //item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
 
             //Randomize attributes +/- 15%
-            item.GetComponent<ItemScript>().Damage *= (Random.Range(-15, 15) / 100.0f);
-            item.GetComponent<ItemScript>().CriticalChance *= (Random.Range(-15, 15) / 100.0f);
-            item.GetComponent<ItemScript>().CriticalDamage *= (Random.Range(-15, 15) / 100.0f);
+            item.GetComponent<ItemScript>().Damage += (item.GetComponent<ItemScript>().Damage * Random.Range(-15, 15) / 100.0f);
+            item.GetComponent<ItemScript>().CriticalChance += (item.GetComponent<ItemScript>().CriticalChance * Random.Range(-15, 15) / 100.0f);
+            item.GetComponent<ItemScript>().CriticalDamage += (item.GetComponent<ItemScript>().CriticalDamage * Random.Range(-15, 15) / 100.0f);
+            item.GetComponent<ItemScript>().AttackSpeed += (item.GetComponent<ItemScript>().AttackSpeed * Random.Range(-15, 15) / 100.0f);
+            item.GetComponent<ItemScript>().Armor += (item.GetComponent<ItemScript>().Armor * Random.Range(-15, 15) / 100.0f);
+
 
             if (velocity == Vector3.zero) velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
 

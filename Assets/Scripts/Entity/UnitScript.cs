@@ -266,6 +266,7 @@ public class UnitScript : EntityScript
         this.GetComponent<NavMeshAgent>().enabled = false;
         this.GetComponent<Collider>().enabled = false;
         this.transform.FindChild("Minimap Marker").gameObject.SetActive(false);
+        if (waypoint) Destroy(waypoint);
 
     }
 
