@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking.NetworkSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIScript : MonoBehaviour
@@ -93,6 +94,12 @@ public class UIScript : MonoBehaviour
 	public GameObject UIInventoryEquippedItemsShieldButton;
 	public GameObject UIInventoryEquippedItemsAmuletButton;
 
+	public GameObject UISpritesDefault;
+	public GameObject UISpritesDisabled;
+	public GameObject UISpritesCheckboxChecked;
+	public GameObject UISpritesCheckboxUnchecked;
+	public GameObject UISpritesAbilityUpgrade;
+
 	#endregion
 
 	public int AbilitiesPerRow = 3;
@@ -143,7 +150,7 @@ public class UIScript : MonoBehaviour
             HPScale = 0;
         }
         UIHPBar.GetComponent<Image>().fillAmount = HPScale;
-        UIHPValueLabel.GetComponent<Text>().text = ActivePlayer.HP.ToString("####") + " / " + ActivePlayer.MaxHP.ToString("F0");
+        UIHPValueLabel.GetComponent<Text>().text = ActivePlayer.HP.ToString("F0") + " / " + ActivePlayer.MaxHP.ToString("F0");
 
         // Update Shield bar
         float shieldScale = ActivePlayer.Shield / (float)ActivePlayer.MaxShield;
@@ -156,7 +163,7 @@ public class UIScript : MonoBehaviour
             shieldScale = 0;
         }
         UIShieldBar.GetComponent<Image>().fillAmount = shieldScale;
-        UIShieldValueLabel.GetComponent<Text>().text = ActivePlayer.Shield.ToString("####") + " / " + ActivePlayer.MaxShield.ToString("F0");
+        UIShieldValueLabel.GetComponent<Text>().text = ActivePlayer.Shield.ToString("F0") + " / " + ActivePlayer.MaxShield.ToString("F0");
 
         // Update Mana bar
         float manaScale = ActivePlayer.Mana / (float)ActivePlayer.MaxMana;
@@ -169,7 +176,7 @@ public class UIScript : MonoBehaviour
             manaScale = 0;
         }
         UIManaBar.GetComponent<Image>().fillAmount = manaScale;
-        UIManaValueLabel.GetComponent<Text>().text = ActivePlayer.Mana.ToString("####") + " / " + ActivePlayer.MaxMana.ToString("F0");
+        UIManaValueLabel.GetComponent<Text>().text = ActivePlayer.Mana.ToString("F0") + " / " + ActivePlayer.MaxMana.ToString("F0");
 
         // Update Fury bar
         float furyScale = ActivePlayer.Fury / (float)ActivePlayer.MaxFury;
@@ -182,7 +189,7 @@ public class UIScript : MonoBehaviour
             furyScale = 0;
         }
         UIFuryBar.GetComponent<Image>().fillAmount = furyScale;
-        UIFuryValueLabel.GetComponent<Text>().text = ActivePlayer.Fury.ToString("####") + " / " + ActivePlayer.MaxFury.ToString("F0");
+        UIFuryValueLabel.GetComponent<Text>().text = ActivePlayer.Fury.ToString("F0") + " / " + ActivePlayer.MaxFury.ToString("F0");
 
         // Update Xp bar
         float XPScale = ActivePlayer.Xp / (float)ActivePlayer.MaxXp;
@@ -195,7 +202,7 @@ public class UIScript : MonoBehaviour
             XPScale = 0;
         }
         UIXPBar.GetComponent<Image>().fillAmount = XPScale;
-        UIXPValueLabel.GetComponent<Text>().text = ActivePlayer.Xp.ToString("####") + " / " + ActivePlayer.MaxXp.ToString("F0");
+        UIXPValueLabel.GetComponent<Text>().text = ActivePlayer.Xp.ToString("F0") + " / " + ActivePlayer.MaxXp.ToString("F0");
 
 
         // Updating of target bar
@@ -245,7 +252,7 @@ public class UIScript : MonoBehaviour
         {
             if (abilitiesList[i] == null)
             {
-                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite;
+                GameObject.Find("UIAbilityPanel").transform.GetChild(i).GetComponent<Image>().overrideSprite = UISpritesDisabled.transform.GetComponent<SpriteRenderer>().sprite;
             }
             else
             {
@@ -314,14 +321,14 @@ public class UIScript : MonoBehaviour
 		{
 			GameObject questRow = (GameObject)Instantiate(questListItemRow);
 			questRow.transform.SetParent(UIQuestListPanel.transform, false);
-			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite; // active quest image
+			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = UISpritesCheckboxUnchecked.transform.GetComponent<SpriteRenderer>().sprite; // active quest image
 			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title;
 		}
 		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && q.Completed).ToList())
 		{
 			GameObject questRow = (GameObject)Instantiate(questListItemRow);
 			questRow.transform.SetParent(UIQuestListPanel.transform, false);
-			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDisabled").transform.GetComponent<SpriteRenderer>().sprite; // finished quest image
+			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = UISpritesCheckboxChecked.transform.GetComponent<SpriteRenderer>().sprite; // finished quest image
 			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title;
 		}
 
@@ -471,8 +478,9 @@ public class UIScript : MonoBehaviour
         int size = UISkillConfigurePanel.transform.childCount;
         for (int i = 0; i < size; i++)
         {
-            Destroy(UISkillConfigurePanel.transform.GetChild(i).gameObject);
-        }
+	        GameObject child = UISkillConfigurePanel.transform.GetChild(i).gameObject;
+			if(child.name != "FancyImage") Destroy(child);
+		}
 
         int abilityCount = ActivePlayer.Abilities.Count;
         int numOfCols = (int)Mathf.Ceil((float)abilityCount / AbilitiesPerRow);
@@ -494,7 +502,7 @@ public class UIScript : MonoBehaviour
             if (ActivePlayer.Abilities[i].ImageToShow != null)
                 imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
             else
-                imageComponent.overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
+                imageComponent.overrideSprite = UISpritesDefault.transform.GetComponent<SpriteRenderer>().sprite;
 
             Button tempButton = goButton.GetComponent<Button>();
             int i1 = i;
@@ -539,7 +547,7 @@ public class UIScript : MonoBehaviour
             goButton.transform.SetParent(UIInventoryItemsContent.transform, false);
 	        goButton.transform.FindChild("Image").GetComponent<Image>().overrideSprite = ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().ImageToShow;
 
-			goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Rarity);
+			//goButton.transform.GetComponent<Image>().color = GlobalsScript.RarityToColor(ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Rarity);
             goButton.transform.FindChild("Text").GetComponent<Text>().text = ActivePlayer.InventoryItemsList[i].GetComponent<ItemScript>().Name;
             Button tempButton = goButton.GetComponent<Button>();
             int i1 = i;
@@ -553,36 +561,39 @@ public class UIScript : MonoBehaviour
 			UIInventoryEquippedItemsWeaponButton.GetComponent<Image>().overrideSprite = ActivePlayer.EquippedItems.WeaponSlot.GetComponent<ItemScript>().ImageToShow;
 			UIInventoryEquippedItemsWeaponButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			UIInventoryEquippedItemsWeaponButton.GetComponent<Button>().onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItems.WeaponSlot, true, UIInventoryEquippedItemsWeaponButton));
+			UIInventoryEquippedItemsWeaponButton.SetActive(true);
 		}
 		else
 		{
 			UIInventoryEquippedItemsWeaponButton.GetComponent<Button>().onClick.RemoveAllListeners();
-			UIInventoryEquippedItemsWeaponButton.GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
-
+			UIInventoryEquippedItemsWeaponButton.GetComponent<Image>().overrideSprite = UISpritesDefault.transform.GetComponent<SpriteRenderer>().sprite;
+			UIInventoryEquippedItemsWeaponButton.SetActive(false);
 		}
 		if (ActivePlayer.EquippedItems.ShieldSlot != null)
 		{
 			UIInventoryEquippedItemsShieldButton.GetComponent<Image>().overrideSprite = ActivePlayer.EquippedItems.ShieldSlot.GetComponent<ItemScript>().ImageToShow;
 			UIInventoryEquippedItemsShieldButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			UIInventoryEquippedItemsShieldButton.GetComponent<Button>().onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItems.ShieldSlot, true, UIInventoryEquippedItemsWeaponButton));
+			UIInventoryEquippedItemsShieldButton.SetActive(true);
 		}
 		else
 		{
 			UIInventoryEquippedItemsShieldButton.GetComponent<Button>().onClick.RemoveAllListeners();
-			UIInventoryEquippedItemsShieldButton.GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
-
+			UIInventoryEquippedItemsShieldButton.GetComponent<Image>().overrideSprite = UISpritesDefault.transform.GetComponent<SpriteRenderer>().sprite;
+			UIInventoryEquippedItemsShieldButton.SetActive(false);
 		}
 		if (ActivePlayer.EquippedItems.AmuletSlot != null)
 		{
 			UIInventoryEquippedItemsAmuletButton.GetComponent<Image>().overrideSprite = ActivePlayer.EquippedItems.AmuletSlot.GetComponent<ItemScript>().ImageToShow;
 			UIInventoryEquippedItemsAmuletButton.GetComponent<Button>().onClick.RemoveAllListeners();
 			UIInventoryEquippedItemsAmuletButton.GetComponent<Button>().onClick.AddListener(() => SelectItemToShow(ActivePlayer.EquippedItems.AmuletSlot, true, UIInventoryEquippedItemsWeaponButton));
+			UIInventoryEquippedItemsAmuletButton.SetActive(true);
 		}
 		else
 		{
 			UIInventoryEquippedItemsAmuletButton.GetComponent<Button>().onClick.RemoveAllListeners();
-			UIInventoryEquippedItemsAmuletButton.GetComponent<Image>().overrideSprite = GameObject.Find("UISpritesDefault").transform.GetComponent<SpriteRenderer>().sprite;
-
+			UIInventoryEquippedItemsAmuletButton.GetComponent<Image>().overrideSprite = UISpritesDefault.transform.GetComponent<SpriteRenderer>().sprite;
+			UIInventoryEquippedItemsAmuletButton.SetActive(false);
 		}
 
 		#endregion
@@ -682,6 +693,10 @@ public class UIScript : MonoBehaviour
 		ActivePlayer.StatsUpgrade(statName);
 	}
 
+	public void QuitGameButton()
+	{
+		SceneManager.LoadScene("MainMenuScene");
+	}
 }
 
 #region Old
