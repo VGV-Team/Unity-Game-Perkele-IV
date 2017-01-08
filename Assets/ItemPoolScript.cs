@@ -52,13 +52,20 @@ public class ItemPoolScript : MonoBehaviour {
         return itemPool[r];
     }
 
-    public void LootDrop(int discovery, int rareChance, int legendaryChance, int epicChance, Transform spawnPosition, [Optional] Vector3 velocity)
+    public void LootDrop(GameObject looter, int discoveryBonus, int rareChance, int legendaryChance, int epicChance, Transform spawnPosition, [Optional] Vector3 velocity)
     {
-        StartCoroutine(LootDropWithDelay(discovery, rareChance, legendaryChance, epicChance, spawnPosition, velocity));
+        StartCoroutine(LootDropWithDelay(looter, discoveryBonus, rareChance, legendaryChance, epicChance, spawnPosition, velocity));
     }
 
-    IEnumerator LootDropWithDelay(int discovery, int rareChance, int legendaryChance, int epicChance, Transform spawnPosition, [Optional] Vector3 velocity)
+    IEnumerator LootDropWithDelay(GameObject looter, int discoveryBonus, int rareChance, int legendaryChance, int epicChance, Transform spawnPosition, [Optional] Vector3 velocity)
     {
+
+        int discovery = (int)looter.GetComponent<UnitScript>().Discovery + discoveryBonus;
+        if (looter.tag == "Player" && looter.GetComponent<UnitScript>().EquippedItems.AmuletSlot)
+        {
+            discovery += looter.GetComponent<UnitScript>().EquippedItems.AmuletSlot.GetComponent<ItemScript>().Discovery;
+        }
+
         int maxItems = 0;
         int minItems = 0;
         if (discovery < 20) { maxItems = 1; }
@@ -86,7 +93,7 @@ public class ItemPoolScript : MonoBehaviour {
             item.GetComponent<ItemScript>().CriticalDamage += (item.GetComponent<ItemScript>().CriticalDamage * Random.Range(-15, 15) / 100.0f);
             item.GetComponent<ItemScript>().AttackSpeed += (item.GetComponent<ItemScript>().AttackSpeed * Random.Range(-15, 15) / 100.0f);
             item.GetComponent<ItemScript>().Armor += (item.GetComponent<ItemScript>().Armor * Random.Range(-15, 15) / 100.0f);
-
+            item.GetComponent<ItemScript>().Discovery += (int)(item.GetComponent<ItemScript>().Discovery * Random.Range(-15, 15) / 100.0f);
 
             if (velocity == Vector3.zero) velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
 

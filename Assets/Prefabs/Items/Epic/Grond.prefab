@@ -249,10 +249,10 @@ MonoBehaviour:
   Active: 1
   PlayerTouching: 0
   Type: 0
-  Damage: 90
-  CriticalChance: 0
+  Damage: 300
+  CriticalChance: 50
   CriticalDamage: 0
-  AttackSpeed: 4
+  AttackSpeed: -50
   Armor: 0
   Rarity: 3
   ScrapValue: 500

@@ -118,7 +118,7 @@ public class InputHandlerScript : MonoBehaviour
 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            LayerMask layerMask = ~(1 << 10);
+            LayerMask layerMask = ~(1 << 2);
 
             GameObject.Find("Player").GetComponent<PlayerScript>().DisableTriggerCollider();
 

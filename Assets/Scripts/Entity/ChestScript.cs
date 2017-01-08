@@ -43,6 +43,7 @@ public class ChestScript : EntityScript
         thisVelocity.y = 2.0f;
 
         GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                    GameObject.Find("Player"),
                     100,
                     100,
                     60,

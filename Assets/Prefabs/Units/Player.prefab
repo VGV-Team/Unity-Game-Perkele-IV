@@ -305,6 +305,7 @@ GameObject:
   - component: {fileID: 195107127162930142}
   - component: {fileID: 114142482976153738}
   - component: {fileID: 65683452450249878}
+  - component: {fileID: 65169583470966236}
   m_Layer: 2
   m_Name: Player
   m_TagString: Player
@@ -1283,7 +1284,7 @@ BoxCollider:
   m_GameObject: {fileID: 1903465268535652}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -1295,10 +1296,22 @@ BoxCollider:
   m_GameObject: {fileID: 1067566134934672}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65169583470966236
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1701654349923216}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.47, y: 1.11, z: 0.58}
+  m_Center: {x: 0.014893825, y: 0.6, z: -0.042504415}
 --- !u!65 &65683452450249878
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1309,7 +1322,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 1.2980489, z: 0.97}
+  m_Size: {x: 0.9, y: 1.36, z: 0.97}
   m_Center: {x: 0.014893825, y: 0.69344383, z: -0.042504415}
 --- !u!81 &81382007513906448
 AudioListener:
@@ -1428,11 +1441,11 @@ MonoBehaviour:
   Name: Test Player
   Active: 1
   PlayerTouching: 0
-  MaxHP: 100
-  HP: 100
+  MaxHP: 1000
+  HP: 1000
   HPChange: 1
-  MaxShield: 15
-  Shield: 15
+  MaxShield: 30
+  Shield: 30
   ShieldChange: 2
   MaxFury: 50
   Fury: 0
@@ -1440,12 +1453,12 @@ MonoBehaviour:
   MaxMana: 50
   Mana: 50
   ManaChange: 1
-  Armor: 1
-  Strength: 9
+  Armor: 0
+  Strength: 10
   AttackSpeed: 100
   CriticalChance: 10
   Discovery: 20
-  MovementSpeed: 100
+  MovementSpeed: 1000
   Level: 1
   Xp: 0
   MaxXp: 100
@@ -1453,6 +1466,7 @@ MonoBehaviour:
   Scrap: 100
   Gold: 0
   AbilityPoints: 1
+  FallbackDistance: 6
   Target: {fileID: 0}
   InventoryItemsList: []
   waypoint: {fileID: 0}
@@ -1561,7 +1575,7 @@ NavMeshAgent:
   m_Radius: 0.4
   m_Speed: 8
   m_Acceleration: 9999
-  avoidancePriority: 50
+  avoidancePriority: 10
   m_AngularSpeed: 1000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
