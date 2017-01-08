@@ -219,7 +219,9 @@ public class UIScript : MonoBehaviour
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
-        UITargetValueLabel.GetComponent<Text>().text = "";
+	    //UITargetOtherBar.GetComponent<Image>().color = Color.clear;
+
+		UITargetValueLabel.GetComponent<Text>().text = "";
 
         if (objectToShow != null)
         {
