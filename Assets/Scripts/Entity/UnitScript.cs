@@ -389,7 +389,8 @@ public class UnitScript : EntityScript
 		}
 	}
 
-	protected void InteractWithNPC(GameObject NPC)
+
+    protected void InteractWithNPC(GameObject NPC)
 	{
 		// TODO: change to player touching
 		

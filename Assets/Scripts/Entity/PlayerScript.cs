@@ -57,7 +57,6 @@ public class PlayerScript : UnitScript
                         }
                     }
                     break;
-
                 case "Item":
                     PickUpItem(Target);
                     break;
@@ -67,6 +66,9 @@ public class PlayerScript : UnitScript
 				case "NPC":
 		            InteractWithNPC(Target);
 					break;
+                /*case "Crate":
+                    DestroyCrate(Target);
+                    break;*/
                 default:
                     Debug.Log("DEFAULT playerscript switch");
                     break;

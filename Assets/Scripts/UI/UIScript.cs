@@ -240,6 +240,9 @@ public class UIScript : MonoBehaviour
 				case "NPC":
 		            UpdateNPCUI(objectToShow);
 		            break;
+                case "Crate":
+                    UpdateCrateUI(objectToShow);
+                    break;
                 default:
                     break;
             }
@@ -409,6 +412,17 @@ public class UIScript : MonoBehaviour
 
         UITargetOtherBar.GetComponent<Image>().fillAmount = 0;
         UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<UnitScript>().Name;
+    }
+
+    private void UpdateCrateUI(GameObject objectToShow)
+    {
+        UITargetHPBar.GetComponent<Image>().fillAmount = 0;
+        UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
+        UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
+        UITargetOtherBar.GetComponent<Image>().color = Color.red;
+
+        string nameToShow = objectToShow.GetComponent<CrateScript>().Name;
+        UITargetValueLabel.GetComponent<Text>().text = nameToShow;
     }
 
     private void UpdateChestUI(GameObject objectToShow)
