@@ -419,6 +419,7 @@ MonoBehaviour:
   IsProjectile: 1
   ManualParticleSystems:
   - {fileID: 198433055538279670}
+  Caster: {fileID: 0}
   ProjectileColliderObject: {fileID: 1626191573838336}
   ProjectileCollisionSound: {fileID: 82879599005585298}
   ProjectileExplosionParticleSystem: {fileID: 198433055538279670}
@@ -429,10 +430,9 @@ MonoBehaviour:
   ProjectileDirection: {x: 0, y: 0, z: 1}
   ProjectileCollisionLayers:
     serializedVersion: 2
-    m_Bits: 4294967039
+    m_Bits: 4294958847
   ProjectileDestroyParticleSystemsOnCollision:
   - {fileID: 198851320549205270}
-  Caster: {fileID: 0}
 --- !u!114 &114721386853408076
 MonoBehaviour:
   m_ObjectHideFlags: 1

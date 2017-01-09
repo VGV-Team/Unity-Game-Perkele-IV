@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4634641304728110}
   - component: {fileID: 33704447708590854}
   - component: {fileID: 23393037930157866}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 65550915273013622}
   - component: {fileID: 54859853603637194}
   - component: {fileID: 114393983087448964}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Mithril Axe
   m_TagString: Item
   m_Icon: {fileID: 0}

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65769869614232038}
   - component: {fileID: 54890694898142422}
   - component: {fileID: 114966236203008246}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Mace
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 4085280240342192}
   - component: {fileID: 33149350229648582}
   - component: {fileID: 23144611065067504}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}

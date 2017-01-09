@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4152736580713656}
   - component: {fileID: 33808748939544860}
   - component: {fileID: 23799861907263700}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 65741906490601180}
   - component: {fileID: 54502263412375846}
   - component: {fileID: 114839791049950624}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ShieldBlack
   m_TagString: Item
   m_Icon: {fileID: 0}
