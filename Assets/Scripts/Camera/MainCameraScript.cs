@@ -75,7 +75,7 @@ public class MainCameraScript : MonoBehaviour
         // GOTO VICTORY SCENE
         GlobalsScript.IsGameOver = false;
 
-		GameObject.Find("UI").GetComponent<UIScript>().ShowGameWonScreen();
+        GameObject.Find("UI").transform.FindChild("UI Handler").GetComponent<UIScript>().ShowGameWonScreen();
         //SceneManager.LoadScene("GameWonScene");
     }
 

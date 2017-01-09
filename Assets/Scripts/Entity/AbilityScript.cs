@@ -172,12 +172,8 @@ public class AbilityScript
 
             }
 
-            caster.GetComponent<UnitScript>().Fury -= FuryRequired;
-            caster.GetComponent<UnitScript>().Mana -= ManaRequired;
-            caster.GetComponent<UnitScript>().HP -= HPRequired;
-            caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
-
-            TimeToReady = Cooldown;
+            
+            
             
                 
         }
@@ -206,6 +202,12 @@ public class AbilityScript
                 AbilityTypeHealImpact(caster);
                 break;
         }
+
+        caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+        caster.GetComponent<UnitScript>().HP -= HPRequired;
+        caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+
+        TimeToReady = Cooldown;
     }
 
     private void AbilityTypeFlamethrower(GameObject caster)
@@ -251,6 +253,8 @@ public class AbilityScript
             flame.transform.position = pos + direction.normalized/2;
             targetPosition.y = flame.transform.position.y;
             flame.transform.LookAt(targetPosition);
+
+            caster.GetComponent<UnitScript>().Fury -= FuryRequired;
         }
     }
     public void AbilityTypeFlamethrowerImpact(GameObject caster, GameObject target)
@@ -338,6 +342,7 @@ public class AbilityScript
         explosionEffect.transform.localPosition = Vector3.zero;
         explosionEffect.GetComponent<FireBaseScript>().Caster = caster;
         explosionEffect.GetComponent<FireBaseScript>().Ability = this;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
     }
     public void AbilityTypeFireExplosionImpact(GameObject caster, Collider[] objects)
     {
@@ -465,6 +470,7 @@ public class AbilityScript
         fireball.GetComponent<FireProjectileScript>().Caster = caster;
         fireball.transform.position = pos + direction.normalized * 2;
         fireball.transform.FindChild("FireboltCollider").GetComponent<Collider>().enabled = true;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
 
 
     }
@@ -635,6 +641,7 @@ public class AbilityScript
         else shield -= (damage);
         target.GetComponent<UnitScript>().HP = hp;
         target.GetComponent<UnitScript>().Shield = shield;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
     }
 
 
@@ -693,6 +700,7 @@ public class AbilityScript
         healEffect.transform.parent = caster.transform;
         healEffect.transform.position = Vector3.zero;
         healEffect.transform.localPosition = Vector3.zero;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
 
     }
 
