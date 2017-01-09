@@ -154,8 +154,8 @@ public class UIScript : MonoBehaviour
     {
         yield return new WaitForSeconds(8.0f);
         GlobalsScript.IsPlayerAlive = true;
-        SceneManager.LoadScene("GameLostScene");
-		//ShowGameLostScreen();
+        //SceneManager.LoadScene("GameLostScene");
+		ShowGameLostScreen();
     }
 
     private bool once = false;
@@ -404,6 +404,7 @@ public class UIScript : MonoBehaviour
 
 	public void ShowGameWonScreen()
 	{
+		SceneManager.LoadScene("GameWonScene");
 		GlobalsScript.IsGameOver = false;
 		GlobalsScript.IsPlayerAlive = true;
 		GameObject.Find("UIGameWon").transform.FindChild("EventSystem").GetComponent<EventSystem>().enabled = true;
@@ -412,6 +413,7 @@ public class UIScript : MonoBehaviour
 
 	public void ShowGameLostScreen()
 	{
+		SceneManager.LoadScene("GameLostScene");
 		print("lost");
 		GlobalsScript.IsGameOver = false;
 		GlobalsScript.IsPlayerAlive = true;
