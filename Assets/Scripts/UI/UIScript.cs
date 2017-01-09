@@ -319,19 +319,35 @@ public class UIScript : MonoBehaviour
 		{
 			Destroy(UIQuestListPanel.transform.GetChild(i).gameObject);
 		}
-		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && !q.Completed).ToList())
+
+		
+		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && !q.Completed && q.Target.GetComponent<UnitScript>().Active).ToList())
 		{
 			GameObject questRow = (GameObject)Instantiate(questListItemRow);
 			questRow.transform.SetParent(UIQuestListPanel.transform, false);
 			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = UISpritesCheckboxUnchecked.transform.GetComponent<SpriteRenderer>().sprite; // active quest image
 			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title;
+			questRow.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
 		}
+
+		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && !q.Completed && !q.Target.GetComponent<UnitScript>().Active).ToList())
+		{
+			GameObject questRow = (GameObject)Instantiate(questListItemRow);
+			questRow.transform.SetParent(UIQuestListPanel.transform, false);
+			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = UISpritesCheckboxUnchecked.transform.GetComponent<SpriteRenderer>().sprite; // finished quest image
+			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title + "\nReturn to NPC to finish quest.";
+			questRow.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Italic;
+		}
+
 		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && q.Completed).ToList())
 		{
 			GameObject questRow = (GameObject)Instantiate(questListItemRow);
 			questRow.transform.SetParent(UIQuestListPanel.transform, false);
 			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = UISpritesCheckboxChecked.transform.GetComponent<SpriteRenderer>().sprite; // finished quest image
 			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title;
+			questRow.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Normal;
+			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title + "\nQuest completed.";
+			questRow.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Italic;
 		}
 
 		#endregion

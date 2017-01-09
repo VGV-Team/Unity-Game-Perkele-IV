@@ -14,7 +14,7 @@ public class NPCScript : EntityScript
 	// Use this for initialization
 	new void Start () {
 		base.Start();
-
+		/*
 		questList.Add(new QuestScript(
 			QuestType.Kill,
 			"Kill Perkele",
@@ -23,7 +23,7 @@ public class NPCScript : EntityScript
 			false,
 			GameObject.Find("Perkele")
 		));
-
+		*/
 		questList.Add(new QuestScript(
 			QuestType.Kill,
 			"Find and kill his lieutenant",

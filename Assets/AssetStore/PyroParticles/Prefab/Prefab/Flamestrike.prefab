@@ -324,7 +324,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -348,7 +348,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
 --- !u!82 &8256478
 AudioSource:
   m_ObjectHideFlags: 1
@@ -422,7 +422,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -446,7 +446,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
 --- !u!108 &10819714
 Light:
   m_ObjectHideFlags: 1
@@ -517,6 +517,7 @@ MonoBehaviour:
   IsProjectile: 0
   ManualParticleSystems:
   - {fileID: 19822170}
+  Caster: {fileID: 0}
   ProjectileColliderObject: {fileID: 101140}
   ProjectileCollisionSound: {fileID: 8256478}
   ProjectileExplosionParticleSystem: {fileID: 19822170}
@@ -525,7 +526,9 @@ MonoBehaviour:
   ProjectileColliderDelay: 0.9
   ProjectileColliderSpeed: 450
   ProjectileDirection: {x: 0, y: -1, z: 0}
-  ProjectileCollisionLayers: {}
+  ProjectileCollisionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
   ProjectileDestroyParticleSystemsOnCollision: []
 --- !u!114 &11483642
 MonoBehaviour:

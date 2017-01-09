@@ -10,7 +10,7 @@ GameObject:
   - component: {fileID: 403168}
   - component: {fileID: 19922014}
   - component: {fileID: 19818194}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SmallFiresSparksParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ GameObject:
   m_Component:
   - component: {fileID: 437396}
   - component: {fileID: 10880456}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SmallFiresLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 437804}
   - component: {fileID: 19963694}
   - component: {fileID: 19830650}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SmallFiresSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 411110}
   - component: {fileID: 19809690}
   - component: {fileID: 19907964}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SmallFiresParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   m_Component:
   - component: {fileID: 429132}
   - component: {fileID: 8233310}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SmallFiresSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 458676}
   - component: {fileID: 11426332}
   - component: {fileID: 11437672}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SmallFires
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,6 +352,7 @@ MonoBehaviour:
   ForceRadius: 0
   IsProjectile: 0
   ManualParticleSystems: []
+  Caster: {fileID: 0}
 --- !u!114 &11437672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -365,7 +366,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Seed: 100
   IntensityModifier: 2
-  IntensityMaxRange: {x: 0, y: 8}
+  IntensityMaxRange:
+    Minimum: 0
+    Maximum: 8
 --- !u!198 &19809690
 ParticleSystem:
   m_ObjectHideFlags: 1
