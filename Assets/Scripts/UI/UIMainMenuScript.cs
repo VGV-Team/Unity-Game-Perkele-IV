@@ -10,6 +10,11 @@ public class UIMainMenuScript : MonoBehaviour
 	public GameObject VolumeSlider;
 	public GameObject LoadingSlider;
 
+	void Start()
+	{
+		VolumeSlider.GetComponent<Slider>().value = AudioListener.volume;
+	}
+
 	// Update is called once per frame
 	void Update ()
 	{

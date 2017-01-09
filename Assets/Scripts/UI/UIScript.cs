@@ -137,6 +137,17 @@ public class UIScript : MonoBehaviour
 
     private void UpdateUI()
     {
+	    if (GlobalsScript.IsPlayerAlive == false)
+	    {
+			// TODO: this
+			SceneManager.LoadScene("GameLostScene");
+		}
+	    if (GlobalsScript.IsGameOver == true)
+	    {
+			// TODO: this
+			SceneManager.LoadScene("GameWonScene");
+		}
+
         #region Update main UI bars
 
         // Update Hp bar
@@ -435,7 +446,7 @@ public class UIScript : MonoBehaviour
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
-        UITargetOtherBar.GetComponent<Image>().color = Color.red;
+        UITargetOtherBar.GetComponent<Image>().color = GlobalsScript.CrateColor;
 
         string nameToShow = objectToShow.GetComponent<CrateScript>().Name;
         UITargetValueLabel.GetComponent<Text>().text = nameToShow;
@@ -446,16 +457,20 @@ public class UIScript : MonoBehaviour
         UITargetHPBar.GetComponent<Image>().fillAmount = 0;
         UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
         UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
-		UITargetOtherBar.GetComponent<Image>().color = Color.yellow;
+		UITargetOtherBar.GetComponent<Image>().color = GlobalsScript.ChestColor;
 
 
 		string nameToShow = objectToShow.GetComponent<ChestScript>().Name;
         if (objectToShow.GetComponent<ChestScript>().Opened)
         {
-            nameToShow += " (Open)";
+            nameToShow += " (Opened)";
         }
         else
         {
+	        if (objectToShow.GetComponent<ChestScript>().ScrapRequired > ActivePlayer.Scrap)
+	        {
+				UITargetOtherBar.GetComponent<Image>().color = GlobalsScript.ChestNotEnoughScrapColor;
+			}
             nameToShow += " (" + objectToShow.GetComponent<ChestScript>().ScrapRequired + " Scrap)";
         }
         UITargetValueLabel.GetComponent<Text>().text = nameToShow;
@@ -475,7 +490,7 @@ public class UIScript : MonoBehaviour
 		UITargetHPBar.GetComponent<Image>().fillAmount = 0;
 		UITargetShieldBar.GetComponent<Image>().fillAmount = 0;
 		UITargetOtherBar.GetComponent<Image>().fillAmount = 1;
-		UITargetOtherBar.GetComponent<Image>().color = Color.green;
+		UITargetOtherBar.GetComponent<Image>().color = GlobalsScript.NPCColor;
 		UITargetValueLabel.GetComponent<Text>().text = objectToShow.GetComponent<NPCScript>().Name;
 	}
 
@@ -493,15 +508,17 @@ public class UIScript : MonoBehaviour
             abilitiesList[id] = selectedAbility;
             for (int i = 0; i < UISkillConfigurePanel.transform.childCount; i++)
             {
-                UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+                UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = GlobalsScript.DefaultColor;
             }
             selectedAbility = null;
         }
         else
         {
-            if (abilitiesList[id] != null)
-                GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
-        }
+			//if (abilitiesList[id] != null)
+			//    GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
+			abilitiesList[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+
+		}
     }
 
     public void UpdateAbilityOptionsPopup()
@@ -553,9 +570,9 @@ public class UIScript : MonoBehaviour
         int size = UISkillConfigurePanel.transform.childCount;
         for (int i = 0; i < size; i++)
         {
-            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = Color.white;
+            UISkillConfigurePanel.transform.GetChild(i).GetComponent<Image>().color = GlobalsScript.DefaultColor;
         }
-        if (e != null) e.GetComponent<Image>().color = Color.cyan;
+        if (e != null) e.GetComponent<Image>().color = GlobalsScript.SelectedAbilityColor;
         selectedAbility = ability;
     }
 

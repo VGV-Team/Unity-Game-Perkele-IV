@@ -9,3 +9,7 @@ EditorBuildSettings:
     path: Assets/Visual Assets/Scenes/MainMenuScene.unity
   - enabled: 1
     path: Assets/Visual Assets/Scenes/MainScene.unity
+  - enabled: 1
+    path: Assets/Visual Assets/Scenes/GameWonScene.unity
+  - enabled: 1
+    path: Assets/Visual Assets/Scenes/GameLostScene.unity

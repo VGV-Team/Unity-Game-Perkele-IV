@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,33 +38,53 @@ public class InputHandlerScript : MonoBehaviour
         if (Input.GetKeyDown("1"))
         {
             Debug.Log("1");
-            AbilityUse(1);
+	        GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(0);
+			//AbilityUse(1);
         }
         if (Input.GetKeyDown("2"))
         {
             Debug.Log("2");
-            AbilityUse(2);
+			GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(1);
+			//AbilityUse(2);
         }
         if (Input.GetKeyDown("3"))
         {
             Debug.Log("3");
-            AbilityUse(3);
-        }
+			GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(2);
+			//AbilityUse(3);
+		}
         if (Input.GetKeyDown("4"))
         {
             Debug.Log("4");
-            AbilityUse(4);
+			GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(3);
+			//AbilityUse(4);
         }
 
 
+		if (Input.GetKeyDown("i"))
+		{
+			Debug.Log("i");
+			GameObject.Find("UI Handler").GetComponent<UIScript>().ToggleActiveInactive(GameObject.Find("UI Handler").GetComponent<UIScript>().UIInventoryPanel);
+		}
+		if (Input.GetKeyDown("c"))
+		{
+			Debug.Log("c");
+			GameObject.Find("UI Handler").GetComponent<UIScript>().ToggleActiveInactive(GameObject.Find("UI Handler").GetComponent<UIScript>().UICharacterPanel);
+		}
+		if (Input.GetKeyDown("a"))
+		{
+			Debug.Log("a");
+			GameObject.Find("UI Handler").GetComponent<UIScript>().ToggleActiveInactive(GameObject.Find("UI Handler").GetComponent<UIScript>().UISkillConfigurePanel);
+		}
 
-	    if (Input.GetKeyDown(KeyCode.Escape))
+
+		if (Input.GetKeyDown(KeyCode.Escape))
 	    {
 		    
 			SceneManager.LoadScene("MainMenuScene");
 	    }
 
-
+		/*
         if (Input.GetKeyDown(KeyCode.A))
         {
             Debug.Log("A");
@@ -74,8 +95,6 @@ public class InputHandlerScript : MonoBehaviour
             Debug.Log("S");
             GameObject.Find("Player").GetComponent<UnitScript>().Abilities[2].Use(GameObject.Find("Player"));
         }
-
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("P");
@@ -83,14 +102,17 @@ public class InputHandlerScript : MonoBehaviour
             GameObject.Find("Player").GetComponent<PlayerScript>().Abilities.Add(new AbilityScript("wuuut mate", AbilityType.None, 5,1,1,10, 10));
             //GameObject.Find("UI Handler").GetComponent<UIScript>().UpdateAbilityList();
         }
+		*/
     }
 
-    public void AbilityUse(int id)
+	[Obsolete]
+	public void AbilityUse(int id)
     {
         if (id >= GameObject.Find("Player").GetComponent<UnitScript>().Abilities.Count) return;
         GameObject.Find("Player").GetComponent<UnitScript>().Abilities[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
     }
 
+	[Obsolete]
     public void AbilityUse(AbilityScript ability)
     {
         ability.Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);

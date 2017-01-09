@@ -24,7 +24,7 @@ public enum ItemType
     Amulet
 }
 
-public class GlobalsScript{
+public static class GlobalsScript{
 
     public static int[] XPCurve = { 250, 1000, 2500, 5000, 10000, 25000, 100000 };
 
@@ -38,8 +38,17 @@ public class GlobalsScript{
         return Color.black;
     }
 
+	public static Color ChestNotEnoughScrapColor = Color.grey;
+	public static Color ChestColor = Color.yellow;
+	public static Color NPCColor = Color.green;
+	public static Color CrateColor = Color.red;
 
+	public static Color SelectedAbilityColor = Color.cyan;
+	public static Color DefaultColor = Color.white;
 
-	public static bool IsPerkeleAlive = true;
-	public static bool IsLieutenantAlive = true;
+	public static Color WaypointColor = Color.red;
+
+	public static bool IsPlayerAlive = true;
+	public static bool IsGameOver = false;
+
 }

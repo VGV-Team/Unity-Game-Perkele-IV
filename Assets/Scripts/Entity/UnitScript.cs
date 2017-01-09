@@ -273,6 +273,11 @@ public class UnitScript : EntityScript
         this.transform.FindChild("Minimap Marker").gameObject.SetActive(false);
         if (waypoint) Destroy(waypoint);
 
+	    if (this.gameObject.tag == "Player")
+	    {
+		    GlobalsScript.IsPlayerAlive = false;
+	    }
+
     }
 
     public void StartBasicAttackAnimation(float attackCooldown = -1)
@@ -328,7 +333,7 @@ public class UnitScript : EntityScript
         // Set a waypoint, player update will move the player to the waypoint
         GameObject waypointTmp = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         waypointTmp.name = "Waypoint from " + Name;
-        waypointTmp.GetComponent<Renderer>().material.color = Color.red;
+        waypointTmp.GetComponent<Renderer>().material.color = GlobalsScript.WaypointColor;
         waypointTmp.GetComponent<Collider>().enabled = false;
         waypointTmp.transform.position = point;
 
