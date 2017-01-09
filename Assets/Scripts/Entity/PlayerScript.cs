@@ -17,16 +17,16 @@ public class PlayerScript : UnitScript
     new void Start ()
 	{
 	    base.Start();
-        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, -10, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
 		Abilities.LastOrDefault().Description = "Exceptionally magnificent skill that owns everything";
-		Abilities.Add(new AbilityScript("Fireball", AbilityType.Fireball, 5, 0, 10, 10, 20, GameObject.Find("UISpritesFireball").transform.GetComponent<SpriteRenderer>().sprite));
-		Abilities.LastOrDefault().Description = "The most magnificent fireball that will kill balls";
-		Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 5, 0, 10, 0, 50, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
+		Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 10, 0, 25, 0, 50, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
 		Abilities.LastOrDefault().Description = "Magnificent heal for magnificent owner";
-		Abilities.Add(new AbilityScript("Fire Explosion", AbilityType.FireExplosion, 10, 0, 0, 10, 20, GameObject.Find("UISpritesFireExplosion").transform.GetComponent<SpriteRenderer>().sprite));
-		Abilities.LastOrDefault().Description = "Special magnificent fire explosion that will kill something";
-		Abilities.Add(new AbilityScript("Flamethrower", AbilityType.Flamethrower, 10, 0, 0, 10, 80, GameObject.Find("UISpritesFlamethrower").transform.GetComponent<SpriteRenderer>().sprite));
-		Abilities.LastOrDefault().Description = "Flame and freedom all in one magnificent skil";
+
+		
+
+		
+
+		
 
 		// Set starting level maxXP
 		MaxXp = GlobalsScript.XPCurve[Level - 1];

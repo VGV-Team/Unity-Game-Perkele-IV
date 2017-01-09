@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -113,7 +114,19 @@ public class UnitScript : EntityScript
             }
 
             AbilityPoints += 1;
-        }
+
+	        if (this.tag=="Player" && Level == 2)
+	        {
+				Abilities.Add(new AbilityScript("Fire Explosion", AbilityType.FireExplosion, 15, 10, 0, 15, 20, GameObject.Find("UISpritesFireExplosion").transform.GetComponent<SpriteRenderer>().sprite));
+				Abilities.LastOrDefault().Description = "Special magnificent fire explosion that will kill something";
+			}
+			if (this.tag == "Player" && Level == 3)
+			{
+				Abilities.Add(new AbilityScript("Flamethrower", AbilityType.Flamethrower, 20, 10, 0, 20, 80, GameObject.Find("UISpritesFlamethrower").transform.GetComponent<SpriteRenderer>().sprite));
+				Abilities.LastOrDefault().Description = "Flame and freedom all in one magnificent skil";
+			}
+
+		}
     }
 
 
