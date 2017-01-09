@@ -151,7 +151,7 @@ public class UnitScript : EntityScript
     
     public GameObject waypoint;
     bool SampleWaypointPosition = false;
-    bool walkAnim;
+    protected bool walkAnim;
     Transform model; // TODO: Should we move model or player?
     //private Animation animation;
     float animationFadeFactor;

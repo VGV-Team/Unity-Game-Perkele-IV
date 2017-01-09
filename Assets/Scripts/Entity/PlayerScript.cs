@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class PlayerScript : UnitScript
@@ -9,7 +10,10 @@ public class PlayerScript : UnitScript
 	public GameObject pointLight;
 	public float pointLightMaxIntensity = 3;
 
-	// Use this for initialization
+
+    private NavMeshAgent agent;
+
+    // Use this for initialization
     new void Start ()
 	{
 	    base.Start();
@@ -26,6 +30,8 @@ public class PlayerScript : UnitScript
 
 		// Set starting level maxXP
 		MaxXp = GlobalsScript.XPCurve[Level - 1];
+
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -36,6 +42,24 @@ public class PlayerScript : UnitScript
 
 		if (HP <= 0) pointLight.GetComponent<Light>().intensity = 0;
 		else pointLight.GetComponent<Light>().intensity = HP / MaxHP * pointLightMaxIntensity;
+
+
+        #region Out Of Bounds Fix
+        // OUT OF BOUNDS WAYPOINT FIX
+        NavMeshPath path = new NavMeshPath();
+        if (waypoint)
+        {
+            agent.CalculatePath(waypoint.transform.position, path);
+            if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+            {
+                Debug.Log("Out of bounds!");
+                //if waypoint not reachable, stop
+                StopMovement();
+            }
+        }
+
+        #endregion
+
 
         #region Target Checking
 

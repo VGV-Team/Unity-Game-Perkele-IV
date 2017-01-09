@@ -12,9 +12,14 @@ public class BossScript : MonoBehaviour {
     public bool Necromancer = false;
     private GameObject NecromancerUnit;
 
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
-	// Use this for initialization
-	void Start () {
+
+    List<GameObject> SpawnedMinions;
+
+    // Use this for initialization
+    void Start () {
         Boss = GameObject.Find("Boss");
         ES = Boss.GetComponent<EnemyScript>();
 
@@ -24,11 +29,25 @@ public class BossScript : MonoBehaviour {
         ES.MeleeAttack = true;
 
         NecromancerUnit = GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().NecromancerUnit;
+
+        initialPosition = Boss.transform.position;
+        initialRotation = Boss.transform.rotation;
+
+        SpawnedMinions = new List<GameObject>();
     }
 	
 	// Update is called once per frame
 	void Update () {
 		
+        if (Boss.GetComponent<UnitScript>().HP <= 0)
+        {
+            Boss.GetComponent<UnitScript>().HPChange = 0;
+            for (int i = 0; i < SpawnedMinions.Count; i++)
+            {
+                Destroy(SpawnedMinions[i]);
+            }
+        }
+
         if (Phase == 1)
         {
             if (ES.HP < 2 * ES.MaxHP / 3)
@@ -63,6 +82,13 @@ public class BossScript : MonoBehaviour {
                     }
                 }
 
+                //SOUND EFFECT
+                //TODO
+
+                //Teleport
+                Boss.transform.position = initialPosition;
+                Boss.transform.rotation = initialRotation;
+
             }
         }
 
@@ -90,14 +116,23 @@ public class BossScript : MonoBehaviour {
                             t[i].gameObject.layer = 0;
                         }
                     }
+                    if (child.name == "Shield")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
                 }
 
                 //NECROMANCER
                 ES.RangedAttack = false;
                 ES.Necromancer = true;
 
-                //TODO: SOUND EFFECT, TLELEPORT TO CENTER OF ROOM
+                //TODO: SOUND EFFECT
                 ///sadasd
+                ///
+
+                //Teleport
+                Boss.transform.position = initialPosition;
+                Boss.transform.rotation = initialRotation;
 
                 StartCoroutine(NecromancerAbility());
 
@@ -109,21 +144,25 @@ public class BossScript : MonoBehaviour {
 
     IEnumerator NecromancerAbility()
     {
-        
+        if (Boss.GetComponent<UnitScript>().HP <= 0) yield return new WaitForSeconds(0);
 
         ES.StartHealAnimation();
 
         GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 0.0f, 2.0f);
+        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, 2.0f);
+        SpawnedMinions.Add(newUnit);
 
         newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 0.0f, -2.0f);
+        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, -2.0f);
+        SpawnedMinions.Add(newUnit);
 
         newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 0.0f, 2.0f);
+        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, 2.0f);
+        SpawnedMinions.Add(newUnit);
 
         newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 0.0f, -2.0f);
+        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
+        SpawnedMinions.Add(newUnit);
 
         yield return new WaitForSeconds(10);
 

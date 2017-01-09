@@ -230,11 +230,15 @@ public class AbilityScript
             flame.transform.localPosition = Vector3.zero;
             //flame.transform.rotation = Quaternion.Euler(new Vector3(0, 180.0f, 0));
 
+            Debug.Log(direction.normalized/2);
+
             flame.GetComponent<FireBaseScript>().Ability = this;
             flame.GetComponent<FireBaseScript>().Caster = caster;
             flame.GetComponent<FlamethrowerCollisionScript>().Ability = this;
             flame.GetComponent<FlamethrowerCollisionScript>().Caster = caster;
             flame.transform.position = pos + direction.normalized/2;
+            targetPosition.y = flame.transform.position.y;
+            flame.transform.LookAt(targetPosition);
         }
     }
     public void AbilityTypeFlamethrowerImpact(GameObject caster, GameObject target)

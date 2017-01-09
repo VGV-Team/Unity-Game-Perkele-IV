@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyScript : UnitScript
 {
@@ -12,7 +13,7 @@ public class EnemyScript : UnitScript
     public bool MeleeAttack = true;
     public bool RangedAttack = false;
     public bool Necromancer = false;
-    
+
 
     // Use this for initialization
     new void Start ()
@@ -39,7 +40,7 @@ public class EnemyScript : UnitScript
         if (Target != null)
         {
             float distance = Vector3.Distance(this.transform.position, Target.transform.position);
-            Debug.Log(distance);
+            //Debug.Log(distance);
             // out of view range
             bool canSee = CheckVisibility();
             if (distance > ViewRange || !canSee)
@@ -66,8 +67,26 @@ public class EnemyScript : UnitScript
                         Vector3 fallbackWaypoint;
                         fallbackWaypoint = this.transform.position - Player.transform.position;
                         fallbackWaypoint = this.transform.position + fallbackWaypoint * 1.0f;
-                        SetWaypoint(fallbackWaypoint);
-                        fallingBack = true;
+                        
+                        // Check if can fall back
+                        NavMeshAgent agent = this.GetComponent<NavMeshAgent>();
+
+                        NavMeshPath path = new NavMeshPath();
+                        agent.CalculatePath(fallbackWaypoint, path);
+                        if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+                        {
+                            Debug.Log("Out of bounds!");
+                            //if waypoint not reachable, stop
+                            //StopMovement();
+                            fallingBack = false;
+                        }
+                        else
+                        {
+                            SetWaypoint(fallbackWaypoint);
+                            fallingBack = true;
+                        }
+
+                        
                     }
                     else
                     {
@@ -90,7 +109,14 @@ public class EnemyScript : UnitScript
                         if (RangedAttack && ability.Type != AbilityType.Fireball) continue;
                         Debug.Log(ability.Name + " " + distance);
                         ok = true;
+                        if (ability.Type == AbilityType.BasicAttack)
+                        {
+                            Destroy(waypoint);
+                            waypoint = null;
+                        }
+                        
                         ability.Use(this.gameObject, Target);
+                        
                         break;
                     }
                 }
