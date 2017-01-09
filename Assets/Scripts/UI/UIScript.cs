@@ -154,8 +154,8 @@ public class UIScript : MonoBehaviour
     {
         yield return new WaitForSeconds(8.0f);
         GlobalsScript.IsPlayerAlive = true;
-        //SceneManager.LoadScene("GameLostScene");
-		ShowGameLostScreen();
+        SceneManager.LoadScene("GameLostScene");
+		//ShowGameLostScreen();
     }
 
     private bool once = false;
@@ -169,12 +169,13 @@ public class UIScript : MonoBehaviour
             once = true;
             AudioManager.PlayAmbientDefeatAudio();
             StartCoroutine(Defeat());
-            
+			GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
+
 		}
 	    if (GlobalsScript.IsGameOver == true && !once)
 	    {
             once = true;
-            GameObject.Find("Canvas").GetComponent<Canvas>().enabled = false;
+            GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
             GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
             
 		}
@@ -403,12 +404,19 @@ public class UIScript : MonoBehaviour
 
 	public void ShowGameWonScreen()
 	{
-		
+		GlobalsScript.IsGameOver = false;
+		GlobalsScript.IsPlayerAlive = true;
+		GameObject.Find("UIGameWon").transform.FindChild("EventSystem").GetComponent<EventSystem>().enabled = true;
+		GameObject.Find("UIGameWon").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = true;
 	}
 
 	public void ShowGameLostScreen()
 	{
-
+		print("lost");
+		GlobalsScript.IsGameOver = false;
+		GlobalsScript.IsPlayerAlive = true;
+		GameObject.Find("UIGameLost").transform.FindChild("EventSystem").GetComponent<EventSystem>().enabled = true;
+		GameObject.Find("UIGameLost").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = true;
 	}
 
 
