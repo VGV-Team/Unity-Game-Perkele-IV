@@ -73,6 +73,7 @@ public class UIScript : MonoBehaviour
 	public GameObject UICharacterStatsMaxXPLabel;
 	public GameObject UICharacterStatsScrapLabel;
 	public GameObject UICharacterStatsGoldLabel;
+	public GameObject UICharacterStatsAbilityPointsLabel;
 
 	// Buttons
 	public GameObject UIInventoryUnequipButton;
@@ -320,8 +321,10 @@ public class UIScript : MonoBehaviour
 		UICharacterStatsMaxXPLabel.GetComponent<Text>().text = ActivePlayer.MaxXp.ToString("F0");
 		UICharacterStatsScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString("F0");
 		UICharacterStatsGoldLabel.GetComponent<Text>().text = ActivePlayer.Gold.ToString("F0");
+		UICharacterStatsAbilityPointsLabel.GetComponent<Text>().text = ActivePlayer.AbilityPoints.ToString("F0");
 
-	    if (ActivePlayer.AbilityPoints > 0)
+
+		if (ActivePlayer.AbilityPoints > 0)
 	    {
 		    foreach (var item in GameObject.FindGameObjectsWithTag("StatUpgrade"))
 		    {
