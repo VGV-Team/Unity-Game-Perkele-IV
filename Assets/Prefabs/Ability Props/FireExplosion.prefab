@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 11444152}
   - component: {fileID: 8229636}
   - component: {fileID: 11450062}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 408734}
   - component: {fileID: 19868290}
   - component: {fileID: 19945006}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireShrapnel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   m_Component:
   - component: {fileID: 477072}
   - component: {fileID: 10875142}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: FireBallLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ GameObject:
   - component: {fileID: 496920}
   - component: {fileID: 19834194}
   - component: {fileID: 19979720}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Explosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}

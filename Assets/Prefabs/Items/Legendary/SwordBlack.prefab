@@ -251,8 +251,8 @@ MonoBehaviour:
   Type: 0
   Damage: 50
   CriticalChance: 50
-  CriticalDamage: 100
-  AttackSpeed: 0
+  CriticalDamage: 0
+  AttackSpeed: 40
   Armor: 0
   Rarity: 2
   ScrapValue: 250

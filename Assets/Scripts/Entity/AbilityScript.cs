@@ -32,6 +32,8 @@ public class AbilityScript
 
     public int BasePower;
 
+    private float CasterAttackSpeed;
+
     public AbilityScript()
     {
         this.Name = "";
@@ -80,8 +82,17 @@ public class AbilityScript
     
     public void Update()
     {
-        if (TimeToReady > 0) TimeToReady -= Time.deltaTime;
-        if (TimeToReady < 0) TimeToReady = 0;
+        if (this.Type == AbilityType.BasicAttack)
+        {
+            if (TimeToReady < 0) TimeToReady = 0;
+            else TimeToReady -= Time.deltaTime * (CasterAttackSpeed / 100.0f);  
+        }
+        else
+        {
+            if (TimeToReady > 0) TimeToReady -= Time.deltaTime;
+            if (TimeToReady < 0) TimeToReady = 0;
+        }
+       
     }
 
     public bool CanUseAbility(GameObject caster, GameObject target)
@@ -121,6 +132,7 @@ public class AbilityScript
             {
                 case AbilityType.BasicAttack:
                     if (target == null) return false;
+                    CasterAttackSpeed = caster.GetComponent<UnitScript>().AttackSpeed;
                     AbilityTypeBasic(caster, target);
                     break;
                 case AbilityType.RangeAttack:
@@ -150,7 +162,10 @@ public class AbilityScript
             caster.GetComponent<UnitScript>().Mana -= ManaRequired;
             caster.GetComponent<UnitScript>().HP -= HPRequired;
             caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+
             TimeToReady = Cooldown;
+            
+                
         }
         else return false;
 
@@ -230,6 +245,21 @@ public class AbilityScript
 
             float damage = BasePower * Time.deltaTime;
 
+            //Armor
+            float armor = target.GetComponent<UnitScript>().Armor;
+            if (target.tag == "Player")
+            {
+                if (target.GetComponent<UnitScript>().EquippedItems.ShieldSlot)
+                    armor += target.GetComponent<UnitScript>().EquippedItems.ShieldSlot.GetComponent<ItemScript>().Armor;
+            }
+            while (armor >= 100)
+            {
+                armor -= 100;
+                damage *= 0.5f;
+            }
+            damage -= ((damage / 2) * (armor / 100));
+
+
             //TODO: monster armor is not taken into account?
             if (shield < damage)
             {
@@ -237,28 +267,36 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    caster.GetComponent<UnitScript>().Target = null;
-                    target.GetComponent<UnitScript>().Active = false;
-                    target.GetComponent<UnitScript>().Die();
-
-
-
-                    // Loot drops and XP
-                    if (caster.tag == "Player")
+                    if (target.name == "Crate")
+                        target.GetComponent<CrateScript>().DestroyCrate();
+                    else
                     {
+                        caster.GetComponent<UnitScript>().Target = null;
+                        target.GetComponent<UnitScript>().Active = false;
+                        target.GetComponent<UnitScript>().Die();
 
-                        // Give XP to caster
-                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
 
-                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                            (int)caster.GetComponent<UnitScript>().Discovery,
-                            50,
-                            30,
-                            20,
-                            target.transform);
+                        // Loot drops and XP
+                        if (caster.tag == "Player")
+                        {
+
+                            // Give XP to caster
+                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+
+                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                                caster,
+                                0,
+                                50,
+                                30,
+                                20,
+                                target.transform);
+                         }
+
+
                     }
-
                 }
             }
             else shield -= (damage);
@@ -298,38 +336,62 @@ public class AbilityScript
 
                 float casterStrength = caster.GetComponent<UnitScript>().Strength;
 
-                //TODO: monster armor is not taken into account?
-                if (shield < BasePower + casterStrength)
+                float damage = BasePower + casterStrength;
+
+                //Armor
+                float armor = target.GetComponent<UnitScript>().Armor;
+                if (target.tag == "Player")
                 {
-                    hp -= (BasePower + casterStrength - shield);
+                    if (target.GetComponent<UnitScript>().EquippedItems.ShieldSlot)
+                        armor += target.GetComponent<UnitScript>().EquippedItems.ShieldSlot.GetComponent<ItemScript>().Armor;
+                }
+                while (armor >= 100)
+                {
+                    armor -= 100;
+                    damage *= 0.5f;
+                }
+                damage -= ((damage / 2) * (armor / 100));
+
+                //TODO: monster armor is not taken into account?
+                if (shield < damage)
+                {
+                    hp -= (damage - shield);
                     shield = 0;
                     if (hp <= 0)
                     {
-                        caster.GetComponent<UnitScript>().Target = null;
-                        target.GetComponent<UnitScript>().Active = false;
-                        target.GetComponent<UnitScript>().Die();
-
-
-
-                        // Loot drops and XP
-                        if (caster.tag == "Player")
+                        if (target.name == "Crate")
+                            target.GetComponent<CrateScript>().DestroyCrate();
+                        else
                         {
+                            caster.GetComponent<UnitScript>().Target = null;
+                            target.GetComponent<UnitScript>().Active = false;
+                            target.GetComponent<UnitScript>().Die();
 
-                            // Give XP to caster
-                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
+
+                            // Loot drops and XP
+                            if (caster.tag == "Player")
+                            {
+
+                                // Give XP to caster
+                                caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+
 
 
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                                (int)caster.GetComponent<UnitScript>().Discovery,
+                                caster,
+                                0,
                                 50,
                                 30,
                                 20,
                                 target.transform);
                         }
 
+
+                        }
                     }
                 }
-                else shield -= (BasePower + casterStrength);
+                else shield -= (damage);
                 target.GetComponent<UnitScript>().HP = hp;
                 target.GetComponent<UnitScript>().Shield = shield;
             }
@@ -345,35 +407,53 @@ public class AbilityScript
         Debug.Log("Casting fireball!");
 
         Vector3 targetPosition, sourcePosition;
+        GameObject fireball;
 
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 100))
+        if (caster.tag == "Player")
         {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
 
-            targetPosition = hit.point;
+            if (Physics.Raycast(ray, out hit, 100))
+            {
+
+                targetPosition = hit.point;
+                sourcePosition = caster.transform.position;
+                targetPosition.y = sourcePosition.y;
+                fireball = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().FireballEffect);
+            }
+            else
+                return;
+        }
+        else
+        {
+            GameObject Target = caster.GetComponent<UnitScript>().Target;
+            if (Target == null) return;
+            targetPosition = Target.transform.position;
             sourcePosition = caster.transform.position;
             targetPosition.y = sourcePosition.y;
-
-            caster.transform.LookAt(targetPosition);
-
-
-            //Finally cast fireball in the direction of source to target
-            GameObject fireball = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().FireballEffect);
-            Vector3 pos = caster.transform.position;
-            pos.y += 1.0f;
-            Vector3 direction = (targetPosition - sourcePosition).normalized;
-            fireball.GetComponent<FireProjectileScript>().ProjectileDirection = direction;
-            fireball.GetComponent<FireProjectileScript>().Ability = this;
-            fireball.GetComponent<FireProjectileScript>().Caster = caster;
-            fireball.transform.position = pos + direction.normalized*2;
-            fireball.transform.FindChild("FireboltCollider").GetComponent<Collider>().enabled = true;
+            fireball = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().FireballEnemyEffect);
         }
+
+        caster.transform.LookAt(targetPosition);
+
+        //Finally cast fireball in the direction of source to target
+        
+        Vector3 pos = caster.transform.position;
+        pos.y += 1.0f;
+        Vector3 direction = (targetPosition - sourcePosition).normalized;
+        fireball.GetComponent<FireProjectileScript>().ProjectileDirection = direction;
+        fireball.GetComponent<FireProjectileScript>().Ability = this;
+        fireball.GetComponent<FireProjectileScript>().Caster = caster;
+        fireball.transform.position = pos + direction.normalized * 2;
+        fireball.transform.FindChild("FireboltCollider").GetComponent<Collider>().enabled = true;
+
+
     }
     public void AbilityTypeFireballImpact(GameObject target, GameObject caster)
     {
         if (target == null) return;
+        if (caster.tag == "Enemy" && target.tag == "Enemy") return; //no friendly fire
         if (target.tag == "Enemy" || target.tag == "Player")
         {
             float hp = target.GetComponent<UnitScript>().HP;
@@ -381,37 +461,52 @@ public class AbilityScript
 
             float casterStrength = caster.GetComponent<UnitScript>().Strength;
 
-            
+
+            float damage = casterStrength + BasePower;
+
+            //Armor
+            float armor = target.GetComponent<UnitScript>().Armor;
+            if (target.tag == "Player")
+            {
+                if (target.GetComponent<UnitScript>().EquippedItems.ShieldSlot)
+                    armor += target.GetComponent<UnitScript>().EquippedItems.ShieldSlot.GetComponent<ItemScript>().Armor;
+            }
+            while (armor >= 100)
+            {
+                armor -= 100;
+                damage *= 0.5f;
+            }
+            damage -= ((damage / 2) * (armor / 100));
+
 
             //TODO: monster armor is not taken into account?
-            if (shield < BasePower + casterStrength)
+            if (shield < damage)
             {
-                hp -= (BasePower + casterStrength - shield);
+                hp -= (damage - shield);
                 shield = 0;
                 if (hp <= 0)
                 {
-                    caster.GetComponent<UnitScript>().Target = null;
-                    target.GetComponent<UnitScript>().Active = false;
-                    target.GetComponent<UnitScript>().Die();
-
-                   
-
-                    // Loot drops and XP
-                    if (caster.tag == "Player")
+                    if (target.name == "Crate")
+                        target.GetComponent<CrateScript>().DestroyCrate();
+                    else
                     {
-
-                        // Give XP to caster
-                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
-
-
-                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                            (int)caster.GetComponent<UnitScript>().Discovery,
-                            50,
-                            30,
-                            20,
-                            target.transform);
+                        caster.GetComponent<UnitScript>().Target = null;
+                        target.GetComponent<UnitScript>().Active = false;
+                        target.GetComponent<UnitScript>().Die();
+                        // Loot drops and XP
+                        if (caster.tag == "Player")
+                        {
+                            // Give XP to caster
+                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                                caster,
+                                0,
+                                50,
+                                30,
+                                20,
+                                target.transform);
+                        }
                     }
-
                 }
                 else if (target.tag == "Enemy")
                 {
@@ -419,14 +514,15 @@ public class AbilityScript
                     target.GetComponent<UnitScript>().SetWaypoint(caster.transform.position);
                 }
             }
-            else shield -= (BasePower + casterStrength);
+            else shield -= (damage); 
+
             target.GetComponent<UnitScript>().HP = hp;
             target.GetComponent<UnitScript>().Shield = shield;
         }
     }
 
     private void AbilityTypeBasic(GameObject caster, GameObject target)
-    {
+   { 
         caster.GetComponent<UnitScript>().StartBasicAttackAnimation((float) this.Cooldown);
         target.GetComponent<UnitScript>().StartHitAnimation();
     }
@@ -437,37 +533,78 @@ public class AbilityScript
 
 		float casterStrength = caster.GetComponent<UnitScript>().Strength;
 
-        //TODO: monster armor is not takein into account?
-        if (shield < BasePower + casterStrength)
+        if (Vector3.Distance(caster.transform.position, target.transform.position) > Range)
         {
-            hp -= (BasePower + casterStrength - shield);
+            // Target too far away - miss
+            Debug.Log(caster.name + ": Basic attack MISS!");
+            return;
+        }
+
+        float damage = BasePower + casterStrength;
+        float criticalChance = caster.GetComponent<UnitScript>().CriticalChance;
+
+        //If player, check items
+        if (caster.tag == "Player")
+        {
+            if (caster.GetComponent<UnitScript>().EquippedItems.WeaponSlot)
+            {
+                damage += caster.GetComponent<UnitScript>().EquippedItems.WeaponSlot.GetComponent<ItemScript>().Damage;
+                criticalChance += caster.GetComponent<UnitScript>().EquippedItems.WeaponSlot.GetComponent<ItemScript>().CriticalChance;
+            }
+        }
+
+        //Armor
+        float armor = target.GetComponent<UnitScript>().Armor;
+        if (target.tag == "Player")
+        {
+            if (target.GetComponent<UnitScript>().EquippedItems.ShieldSlot)
+                armor += target.GetComponent<UnitScript>().EquippedItems.ShieldSlot.GetComponent<ItemScript>().Armor;
+        }
+        while (armor >= 100)
+        {
+            armor -= 100;
+            damage *= 0.5f;
+        }
+        damage -= ((damage / 2) * (armor / 100));
+
+        int r = Random.Range(0, 100);
+        if (criticalChance > r) damage *= 2;
+
+        //TODO: monster armor is not takein into account?
+        if (shield < damage)
+        {
+            hp -= (damage - shield);
             shield = 0;
             if (hp <= 0)
             {
-                caster.GetComponent<UnitScript>().Target = null;
-                target.GetComponent<UnitScript>().Active = false;
-                target.GetComponent<UnitScript>().Die();
+                if (target.name == "Crate")
+                    target.GetComponent<CrateScript>().DestroyCrate();
+                else
+                { 
+                    caster.GetComponent<UnitScript>().Target = null;
+                    target.GetComponent<UnitScript>().Active = false;
+                    target.GetComponent<UnitScript>().Die();
 
 
-                // Loot drops and XP
-                if (caster.tag == "Player")
-                {
+                    // Loot drops and XP
+                    if (caster.tag == "Player")
+                    {
 
-                    // Give XP to caster
-                    caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
+                        // Give XP to caster
+                        caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
-
-                    GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                        (int)caster.GetComponent<UnitScript>().Discovery,
-                        50,
-                        30,
-                        20,
-                        target.transform);
+                        GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+                            caster,
+                            0,
+                            50,
+                            30,
+                            20,
+                            target.transform);
+                    }
                 }
-
             }
         }
-        else shield -= (BasePower + casterStrength);
+        else shield -= (damage);
         target.GetComponent<UnitScript>().HP = hp;
         target.GetComponent<UnitScript>().Shield = shield;
     }
@@ -481,6 +618,7 @@ public class AbilityScript
     }
     private void AbilityTypeRangeImpact(GameObject caster, GameObject target)
     {
+        // NOT USED
         float hp = target.GetComponent<UnitScript>().HP;
 		float shield = target.GetComponent<UnitScript>().Shield;
 
@@ -492,9 +630,14 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
-                caster.GetComponent<UnitScript>().Target = null;
-                target.GetComponent<UnitScript>().Active = false;
-                target.GetComponent<UnitScript>().StartDeathAnimation();
+                if (target.name == "Crate")
+                    target.GetComponent<CrateScript>().DestroyCrate();
+                else
+                {
+                    caster.GetComponent<UnitScript>().Target = null;
+                    target.GetComponent<UnitScript>().Active = false;
+                    target.GetComponent<UnitScript>().StartDeathAnimation();
+                }
             }
         }
         else shield -= (BasePower + casterStrength);

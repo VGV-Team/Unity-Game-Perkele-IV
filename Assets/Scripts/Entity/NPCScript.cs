@@ -11,6 +11,8 @@ public class NPCScript : EntityScript
 	//public bool QuestInProgres2 = false;
 	public List<QuestScript> questList = new List<QuestScript>();
 
+	public GameObject QuestTarget1;
+
 	// Use this for initialization
 	new void Start () {
 		base.Start();
@@ -30,7 +32,7 @@ public class NPCScript : EntityScript
 			"His minions are strong. Killing their leaders will make them weaker.",
 			true,
 			false,
-			GameObject.Find("Enemy Lieutenant")
+			QuestTarget1
 		));
 	}
 

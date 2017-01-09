@@ -37,20 +37,26 @@ public class PlayerScript : UnitScript
         if (Target != null)
         {
 
+            float distance = Vector3.Distance(this.transform.position, Target.transform.position);
+
             switch (Target.tag)
             {
                 case "Enemy":
                     foreach (var ability in Abilities)
                     {
-                        if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
+                        //if (ability.Type == AbilityType.BasicAttack && ability.Use(this.gameObject, Target))
+                        if (ability.Type == AbilityType.BasicAttack && distance <= ability.Range)
                         {
+                            Destroy(waypoint);
+                            waypoint = null;
+                            if (ability.Use(this.gameObject, Target)) break;
                             // TODO: should we click for basic attack? If yes then break
-                            break;
+
+                            //break;
                             //Target = null;
                         }
                     }
                     break;
-
                 case "Item":
                     PickUpItem(Target);
                     break;
@@ -60,6 +66,9 @@ public class PlayerScript : UnitScript
 				case "NPC":
 		            InteractWithNPC(Target);
 					break;
+                /*case "Crate":
+                    DestroyCrate(Target);
+                    break;*/
                 default:
                     Debug.Log("DEFAULT playerscript switch");
                     break;

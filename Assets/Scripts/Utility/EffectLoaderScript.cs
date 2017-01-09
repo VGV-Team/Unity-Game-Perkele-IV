@@ -5,9 +5,12 @@ using UnityEngine;
 public class EffectLoaderScript : MonoBehaviour {
 
     public GameObject FireballEffect;
+    public GameObject FireballEnemyEffect;
     public GameObject HealEffect;
     public GameObject FireExplosionEffect;
     public GameObject FlamethrowerEffect;
+
+    public GameObject NecromancerUnit;
 
 	// Use this for initialization
 	void Start () {

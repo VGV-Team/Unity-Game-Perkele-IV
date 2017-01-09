@@ -45,7 +45,10 @@ public class UnitScript : EntityScript
 	public int Gold = 0;
     public int AbilityPoints = 0;
 
-    
+    protected bool fallingBack = false;
+    public float FallbackDistance = 6.0f;
+
+
     // abilities should check for this values
     // abilities should also check for equipped items
 
@@ -166,9 +169,11 @@ public class UnitScript : EntityScript
     // TODO: split logic for movement and attacking/actions
     void UpdateMovement()
     {
+        model.GetComponent<NavMeshAgent>().speed = MovementSpeed/100;
+
         if (waypoint)
         {
-            if (Target != null)
+            if (Target != null && !fallingBack)
             {
                 waypoint.transform.position = Target.transform.position;
             }
@@ -276,9 +281,9 @@ public class UnitScript : EntityScript
         StopMovement();
         if (attackCooldown != -1)
         {
-
+            attackCooldown = attackCooldown / (AttackSpeed / 100.0f);
             AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
-            state.speed = state.length / attackCooldown;
+            state.speed = (state.length+4*animationFadeFactor) / attackCooldown;
             model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
            
         }
@@ -384,7 +389,8 @@ public class UnitScript : EntityScript
 		}
 	}
 
-	protected void InteractWithNPC(GameObject NPC)
+
+    protected void InteractWithNPC(GameObject NPC)
 	{
 		// TODO: change to player touching
 		
@@ -600,18 +606,36 @@ public class UnitScript : EntityScript
 			Debug.Log("Invalid equip item");
 			return;
 		}
-
-		switch (itemScript.Type)
+        Component[] children;
+        switch (itemScript.Type)
 		{
 			case ItemType.Melee:
 				InventoryItemsList.Add(item);
 				EquippedItems.WeaponSlot = null;
-				break;
+                children = GetComponentsInChildren<Transform>();
+                foreach (Transform child in children)
+                {
+                    if (child.CompareTag("Item") && child.name == "Sword")
+                    {
+                        Destroy(child.gameObject);
+                        break;
+                    }
+                }
+                break;
 
 			case ItemType.Shield:
 				InventoryItemsList.Add(item);
 				EquippedItems.ShieldSlot = null;
-				break;
+                children = GetComponentsInChildren<Transform>();
+                foreach (Transform child in children)
+                {
+                    if (child.CompareTag("Item") && child.name == "Shield")
+                    {
+                        Destroy(child.gameObject);
+                        break;
+                    }
+                }
+                break;
 
             case ItemType.Amulet:
                 InventoryItemsList.Add(item);
