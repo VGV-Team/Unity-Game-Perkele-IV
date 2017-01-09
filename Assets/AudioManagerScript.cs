@@ -16,8 +16,10 @@ public class AudioManagerScript : MonoBehaviour {
     public AudioClip AmbientDefault;
 
     public AudioClip ItemDrop;
+    public AudioClip ItemDropLegendary;
     public AudioClip PickupItem;
 
+    public AudioClip BossTeleport;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +31,11 @@ public class AudioManagerScript : MonoBehaviour {
 		
 	}
 
+    public void PlayBossTeleportAudio(AudioSource AS)
+    {
+        AS.PlayOneShot(BossTeleport);
+    }
+
     public void PlayPickupItemAudio(AudioSource AS)
     {
         AS.PlayOneShot(PickupItem);
@@ -37,6 +44,10 @@ public class AudioManagerScript : MonoBehaviour {
     public void PlayItemDropAudio(AudioSource AS)
     {
         AS.PlayOneShot(ItemDrop);
+    }
+    public void PlayItemDropLegendaryAudio(AudioSource AS)
+    {
+        AS.PlayOneShot(ItemDropLegendary);
     }
 
     public void PlayAmbientDefaultAudio(AudioSource AS)

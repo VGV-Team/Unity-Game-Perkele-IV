@@ -88,7 +88,14 @@ public class ItemPoolScript : MonoBehaviour {
             item.transform.position += new Vector3(0, 3, 0);
             //item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
 
-            AudioManager.PlayItemDropAudio(looter.GetComponent<AudioSource>());
+
+            //AUDIO
+            if (item.GetComponent<ItemScript>().Rarity == RarityType.Legendary ||
+                item.GetComponent<ItemScript>().Rarity == RarityType.Epic)
+                AudioManager.PlayItemDropLegendaryAudio(looter.GetComponent<AudioSource>());
+            else
+                AudioManager.PlayItemDropAudio(looter.GetComponent<AudioSource>());
+                
 
             //Randomize attributes +/- 15%
             item.GetComponent<ItemScript>().Damage += (item.GetComponent<ItemScript>().Damage * Random.Range(-15, 15) / 100.0f);

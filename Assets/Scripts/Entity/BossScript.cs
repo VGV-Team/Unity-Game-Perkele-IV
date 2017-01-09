@@ -18,6 +18,8 @@ public class BossScript : MonoBehaviour {
 
     List<GameObject> SpawnedMinions;
 
+    private AudioManagerScript AudioManager;
+
     // Use this for initialization
     void Start () {
         Boss = GameObject.Find("Boss");
@@ -34,6 +36,8 @@ public class BossScript : MonoBehaviour {
         initialRotation = Boss.transform.rotation;
 
         SpawnedMinions = new List<GameObject>();
+
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
 	
 	// Update is called once per frame
@@ -83,7 +87,7 @@ public class BossScript : MonoBehaviour {
                 }
 
                 //SOUND EFFECT
-                //TODO
+                AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
 
                 //Teleport
                 Boss.transform.position = initialPosition;
@@ -127,15 +131,14 @@ public class BossScript : MonoBehaviour {
                 ES.Necromancer = true;
 
                 //TODO: SOUND EFFECT
-                ///sadasd
-                ///
+                AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
 
                 //Teleport
                 Boss.transform.position = initialPosition;
                 Boss.transform.rotation = initialRotation;
 
                 StartCoroutine(NecromancerAbility());
-
+                ES.StartHealAnimation();
             }
         }
         
@@ -145,27 +148,28 @@ public class BossScript : MonoBehaviour {
     IEnumerator NecromancerAbility()
     {
         if (Boss.GetComponent<UnitScript>().HP <= 0) yield return new WaitForSeconds(0);
+        else
+        {
+            GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, 2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        ES.StartHealAnimation();
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, -2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, 2.0f);
-        SpawnedMinions.Add(newUnit);
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, 2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, -2.0f);
-        SpawnedMinions.Add(newUnit);
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, 2.0f);
-        SpawnedMinions.Add(newUnit);
+            yield return new WaitForSeconds(10);
 
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
-        SpawnedMinions.Add(newUnit);
-
-        yield return new WaitForSeconds(10);
-
-        StartCoroutine(NecromancerAbility());
+            StartCoroutine(NecromancerAbility());
+        }
+        
     }
 }
