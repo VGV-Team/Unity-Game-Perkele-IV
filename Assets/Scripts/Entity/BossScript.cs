@@ -18,6 +18,10 @@ public class BossScript : MonoBehaviour {
 
     List<GameObject> SpawnedMinions;
 
+    private AudioManagerScript AudioManager;
+
+    GameObject particle4;
+
     // Use this for initialization
     void Start () {
         Boss = GameObject.Find("Boss");
@@ -34,18 +38,43 @@ public class BossScript : MonoBehaviour {
         initialRotation = Boss.transform.rotation;
 
         SpawnedMinions = new List<GameObject>();
+
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+
+        particle4 = GameObject.Find("ParticlePhase4");
+        particle4.SetActive(false);
     }
-	
+
+    bool dead = false;
+
+    IEnumerator BossDead()
+    {
+        yield return new WaitForSeconds(7.0f);
+        AudioManager.PlayBossTeleportAudio(GameObject.Find("Player").GetComponent<AudioSource>());
+       
+        //GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
+
+        GlobalsScript.IsGameOver = true;
+
+        this.gameObject.SetActive(false);
+        
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
-        if (Boss.GetComponent<UnitScript>().HP <= 0)
+        if (!dead && Boss.GetComponent<UnitScript>().HP <= 0)
         {
+            dead = true;
             Boss.GetComponent<UnitScript>().HPChange = 0;
+            particle4.SetActive(true);
+            AudioManager.PlayAmbientVictoryAudio();
             for (int i = 0; i < SpawnedMinions.Count; i++)
             {
                 Destroy(SpawnedMinions[i]);
             }
+            StartCoroutine(BossDead());
+            
         }
 
         if (Phase == 1)
@@ -83,7 +112,7 @@ public class BossScript : MonoBehaviour {
                 }
 
                 //SOUND EFFECT
-                //TODO
+                AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
 
                 //Teleport
                 Boss.transform.position = initialPosition;
@@ -127,15 +156,16 @@ public class BossScript : MonoBehaviour {
                 ES.Necromancer = true;
 
                 //TODO: SOUND EFFECT
-                ///sadasd
-                ///
+                AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
+                
+
 
                 //Teleport
                 Boss.transform.position = initialPosition;
                 Boss.transform.rotation = initialRotation;
 
                 StartCoroutine(NecromancerAbility());
-
+                ES.StartHealAnimation();
             }
         }
         
@@ -145,27 +175,28 @@ public class BossScript : MonoBehaviour {
     IEnumerator NecromancerAbility()
     {
         if (Boss.GetComponent<UnitScript>().HP <= 0) yield return new WaitForSeconds(0);
+        else
+        {
+            GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, 2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        ES.StartHealAnimation();
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, -2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, 2.0f);
-        SpawnedMinions.Add(newUnit);
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, 2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, -2.0f);
-        SpawnedMinions.Add(newUnit);
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
+            SpawnedMinions.Add(newUnit);
 
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, 2.0f);
-        SpawnedMinions.Add(newUnit);
+            yield return new WaitForSeconds(10);
 
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
-        SpawnedMinions.Add(newUnit);
-
-        yield return new WaitForSeconds(10);
-
-        StartCoroutine(NecromancerAbility());
+            StartCoroutine(NecromancerAbility());
+        }
+        
     }
 }

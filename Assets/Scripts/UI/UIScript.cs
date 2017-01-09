@@ -124,7 +124,7 @@ public class UIScript : MonoBehaviour
     private GameObject selectedItem = null;
     //private List<GameObject> selectedItemList = null;
 
-	
+	private AudioManagerScript AudioManager;
 
 
 	// Use this for initialization
@@ -141,6 +141,7 @@ public class UIScript : MonoBehaviour
         #endregion
 
         UpdateAbilityOptionsPopup();
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
 	
 	// Update is called once per frame
@@ -149,18 +150,33 @@ public class UIScript : MonoBehaviour
         UpdateUI();
     }
 
+    IEnumerator Defeat()
+    {
+        yield return new WaitForSeconds(8.0f);
+        GlobalsScript.IsPlayerAlive = true;
+        //SceneManager.LoadScene("GameLostScene");
+		ShowGameLostScreen();
+    }
+
+    private bool once = false;
 
     private void UpdateUI()
     {
-	    if (GlobalsScript.IsPlayerAlive == false)
+
+	    if (GlobalsScript.IsPlayerAlive == false && !once)
 	    {
-			// TODO: this
-			SceneManager.LoadScene("GameLostScene");
+
+            once = true;
+            AudioManager.PlayAmbientDefeatAudio();
+            StartCoroutine(Defeat());
+            
 		}
-	    if (GlobalsScript.IsGameOver == true)
+	    if (GlobalsScript.IsGameOver == true && !once)
 	    {
-			// TODO: this
-			SceneManager.LoadScene("GameWonScene");
+            once = true;
+            GameObject.Find("Canvas").GetComponent<Canvas>().enabled = false;
+            GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
+            
 		}
 
         #region Update main UI bars
@@ -385,11 +401,22 @@ public class UIScript : MonoBehaviour
 	}
 
 
-    /// <summary>
-    /// Called by button to toggle objectToToggle state between active and inactive
-    /// </summary>
-    /// <param name="objectToToggle">GameObject to toggle</param>
-    public void ToggleActiveInactive(GameObject objectToToggle)
+	public void ShowGameWonScreen()
+	{
+		
+	}
+
+	public void ShowGameLostScreen()
+	{
+
+	}
+
+
+	/// <summary>
+	/// Called by button to toggle objectToToggle state between active and inactive
+	/// </summary>
+	/// <param name="objectToToggle">GameObject to toggle</param>
+	public void ToggleActiveInactive(GameObject objectToToggle)
     {
         // if we are showing ability list window then update list first
         if (objectToToggle.name == "UISkillConfigurePanel")

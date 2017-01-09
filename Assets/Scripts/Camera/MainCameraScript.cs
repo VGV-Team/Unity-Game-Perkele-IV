@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainCameraScript : MonoBehaviour
 {
@@ -39,22 +40,43 @@ public class MainCameraScript : MonoBehaviour
         }
     }
 
+    private bool endGame = false;
+
     // Use this for initialization
     void Start ()
     {
         MainCameraObject = GameObject.Find("Main Camera");
         CenterCameraObject = GameObject.Find("Player").transform;
         CameraOffset = new Vector3(-0.0f, 8.0f, -8.0f);
+        this.GetComponent<Animator>().enabled = false;
     }
 	
 	// Update is called once per frame
 	void Update ()
 	{
-	    if (CenterCameraObject != null)
+
+	    if (CenterCameraObject != null && !endGame)
 	    {
             X = CenterCameraObject.transform.position.x + CameraOffset.x;
 	        Y = CenterCameraObject.transform.position.y + CameraOffset.y;
 	        Z = CenterCameraObject.transform.position.z + CameraOffset.z;
 	    }
     }
+
+    public void EndGame()
+    {
+        this.GetComponent<Animator>().enabled = true;
+        StartCoroutine(ChangeScene());
+    }
+
+    IEnumerator ChangeScene()
+    {
+        yield return new WaitForSeconds(14.0f);
+        // GOTO VICTORY SCENE
+        GlobalsScript.IsGameOver = false;
+
+		GameObject.Find("UI").GetComponent<UIScript>().ShowGameWonScreen();
+        //SceneManager.LoadScene("GameWonScene");
+    }
+
 }
