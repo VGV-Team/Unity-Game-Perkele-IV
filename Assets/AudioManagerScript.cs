@@ -21,7 +21,7 @@ public class AudioManagerScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        PlayAmbientDefaultAudio(GameObject.Find("Player").GetComponent<AudioSource>());
+        //PlayAmbientDefaultAudio(GameObject.Find("Player").GetComponent<AudioSource>());
 	}
 	
 	// Update is called once per frame

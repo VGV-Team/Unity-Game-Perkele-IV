@@ -63,13 +63,14 @@ public class NPCScript : EntityScript
 			print("hi");
 			FirstConversation = false;
 
-			// play sound
-
 			interactor.GetComponent<UnitScript>().Abilities.Add(new AbilityScript("Fireball", AbilityType.Fireball, 5, -15, 10, 10, 20, GameObject.Find("UISpritesFireball").transform.GetComponent<SpriteRenderer>().sprite));
 			interactor.GetComponent<UnitScript>().Abilities.LastOrDefault().Description = "The most magnificent fireball that will kill balls";
+
+			// TODO: play sound
 		}
 		else
 		{
+			bool anyQuestCompleted = false;
 			foreach (var quest in interactor.GetComponent<UnitScript>().QuestList)
 			{
 				if (quest.Type == QuestType.Kill && quest.Target!=null && !quest.Target.GetComponent<UnitScript>().Active && quest.Completed != true)
@@ -82,11 +83,20 @@ public class NPCScript : EntityScript
 					{
 						interactor.GetComponent<UnitScript>().InventoryItemsList.Add(QuestReward1);
 						interactor.GetComponent<UnitScript>().AbilityPoints += 2;
+
+						// TODO: play sound
 					}
+
+					anyQuestCompleted = true;
 				}
 			}
 
-			print("go to work");
+			if (!anyQuestCompleted)
+			{
+				// TODO: play sound
+				print("go to work");
+			}
+			
 
 			// play some other sound
 		}

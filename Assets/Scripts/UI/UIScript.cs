@@ -536,15 +536,16 @@ public class UIScript : MonoBehaviour
         {
 			//if (abilitiesList[id] != null)
 			//    GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
-			abilitiesList[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+			if(abilitiesList[id] != null)
+				abilitiesList[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
 
 		}
     }
 
     public void UpdateAbilityOptionsPopup()
     {
-        // Remove any previous abilities
-        int size = UISkillConfigurePanel.transform.childCount;
+		// Remove any previous abilities
+		int size = UISkillConfigurePanel.transform.childCount;
         for (int i = 0; i < size; i++)
         {
 	        GameObject child = UISkillConfigurePanel.transform.GetChild(i).gameObject;
