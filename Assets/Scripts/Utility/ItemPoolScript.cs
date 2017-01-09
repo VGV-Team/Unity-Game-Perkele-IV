@@ -11,9 +11,11 @@ public class ItemPoolScript : MonoBehaviour {
     public List<GameObject> LegendaryItemPool;
     public List<GameObject> EpicItemPool;
 
+    private AudioManagerScript AudioManager;
+
     // Use this for initialization
     void Start () {
-		
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
 	}
 	
 	// Update is called once per frame
@@ -45,7 +47,6 @@ public class ItemPoolScript : MonoBehaviour {
             //Common
             itemPool = CommonItemPool;
         }
-
 
 
         r = Random.Range(0, itemPool.Count);
@@ -87,6 +88,8 @@ public class ItemPoolScript : MonoBehaviour {
             item.transform.position += new Vector3(0, 3, 0);
             //item.GetComponent<ItemScript>().Name += " " + Random.Range(1000, 5555);
 
+            AudioManager.PlayItemDropAudio(looter.GetComponent<AudioSource>());
+
             //Randomize attributes +/- 15%
             item.GetComponent<ItemScript>().Damage += (item.GetComponent<ItemScript>().Damage * Random.Range(-15, 15) / 100.0f);
             item.GetComponent<ItemScript>().CriticalChance += (item.GetComponent<ItemScript>().CriticalChance * Random.Range(-15, 15) / 100.0f);
@@ -95,7 +98,7 @@ public class ItemPoolScript : MonoBehaviour {
             item.GetComponent<ItemScript>().Armor += (item.GetComponent<ItemScript>().Armor * Random.Range(-15, 15) / 100.0f);
             item.GetComponent<ItemScript>().Discovery += (int)(item.GetComponent<ItemScript>().Discovery * Random.Range(-15, 15) / 100.0f);
 
-            if (velocity == Vector3.zero) velocity = new Vector3(Random.Range(-5, 5), Random.Range(1, 5), Random.Range(-5, 5));
+            if (velocity == Vector3.zero) velocity = new Vector3(Random.Range(-1, 1), Random.Range(1, 1), Random.Range(-1, 1));
 
             item.GetComponent<Rigidbody>().velocity = velocity;
 

@@ -36,6 +36,13 @@ public class AbilityScript
 
     private float CasterAttackSpeed;
 
+    public AudioManagerScript AudioManager;
+
+
+    private int rareChance = 50;
+    private int legendaryChance = 25;
+    private int epicChance = 0;
+
     public AbilityScript()
     {
         this.Name = "";
@@ -49,6 +56,7 @@ public class AbilityScript
         this.Range = 0;
         this.BasePower = 0;
         this.ImageToShow = null;
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
 
     public AbilityScript(string name, AbilityType type , double cooldown, int furyRequired, int manaRequired, double range, int basePower, Sprite imageToShow = null)
@@ -64,6 +72,7 @@ public class AbilityScript
         this.Range = range;
         this.BasePower = basePower;
         this.ImageToShow = imageToShow;
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
 
     }
 
@@ -80,6 +89,7 @@ public class AbilityScript
         this.Range = range;
         this.BasePower = basePower;
         this.ImageToShow = imageToShow;
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
     
     public void Update()
@@ -295,9 +305,9 @@ public class AbilityScript
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                                 caster,
                                 0,
-                                50,
-                                30,
-                                20,
+                                rareChance,
+                                legendaryChance,
+                                epicChance,
                                 target.transform);
                          }
 
@@ -387,9 +397,9 @@ public class AbilityScript
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                                 caster,
                                 0,
-                                50,
-                                30,
-                                20,
+                                rareChance,
+                                legendaryChance,
+                                epicChance,
                                 target.transform);
                         }
 
@@ -507,9 +517,9 @@ public class AbilityScript
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                                 caster,
                                 0,
-                                50,
-                                30,
-                                20,
+                                rareChance,
+                                legendaryChance,
+                                epicChance,
                                 target.transform);
                         }
                     }
@@ -576,6 +586,16 @@ public class AbilityScript
         int r = Random.Range(0, 100);
         if (criticalChance > r) damage *= 2;
 
+        //Play audio
+        if (target.tag == "Enemy")
+        {
+            AudioManager.PlayPlayerBasicAttackImpact(target.GetComponent<AudioSource>());
+        }
+        else if (target.tag == "Player")
+        {
+            AudioManager.PlayEnemyBasicAttackImpact(target.GetComponent<AudioSource>());
+            AudioManager.PlayPlayerGetHitImpact(target.GetComponent<AudioSource>());
+        }
         //TODO: monster armor is not takein into account?
         if (shield < damage)
         {
@@ -602,9 +622,9 @@ public class AbilityScript
                         GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                             caster,
                             0,
-                            50,
-                            30,
-                            20,
+                            rareChance,
+                            legendaryChance,
+                            epicChance,
                             target.transform);
                     }
                 }
@@ -657,11 +677,14 @@ public class AbilityScript
     }
     private void AbilityTypeHealImpact(GameObject caster)
     {
-        caster.GetComponent<UnitScript>().HP += BasePower;
+        caster.GetComponent<UnitScript>().HP += caster.GetComponent<UnitScript>().MaxHP * (BasePower / 100.0f);
         if (caster.GetComponent<UnitScript>().HP > caster.GetComponent<UnitScript>().MaxHP)
         {
             caster.GetComponent<UnitScript>().HP = caster.GetComponent<UnitScript>().MaxHP;
         }
+
+        //Audio
+        AudioManager.PlayPlayerHealAudio(caster.GetComponent<AudioSource>());
 
         //Particle effect
         GameObject healEffect = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().HealEffect);

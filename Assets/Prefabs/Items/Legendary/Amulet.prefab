@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4956806162778700}
   - component: {fileID: 33718344182137586}
   - component: {fileID: 23406311712501254}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 65051852730834944}
   - component: {fileID: 54681599710439114}
   - component: {fileID: 114714108650963374}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Amulet
   m_TagString: Item
   m_Icon: {fileID: 0}

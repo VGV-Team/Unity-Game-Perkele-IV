@@ -70,7 +70,9 @@ public class UnitScript : EntityScript
 	public new void Start()
     {
         base.Start();
-        
+
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+
         MovementInit();
     }
 
@@ -356,13 +358,15 @@ public class UnitScript : EntityScript
 
 
 
-
+    protected AudioManagerScript AudioManager;
 
 	protected void PickUpItem(GameObject item)
 	{
 		// if in range, try to pick up
 		if (item.GetComponent<ItemScript>().PlayerTouching)
 		{
+            AudioManager.PlayPickupItemAudio(this.GetComponent<AudioSource>());
+
 			StopMovement();
 			InventoryItemsList.Add(item);
 			//Destroy(item);

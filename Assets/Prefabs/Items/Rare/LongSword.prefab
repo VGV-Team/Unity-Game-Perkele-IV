@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 4013760797884024}
   - component: {fileID: 33832835200147308}
   - component: {fileID: 23754335835974214}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 65781220091178228}
   - component: {fileID: 54905482603792098}
   - component: {fileID: 114702173906140142}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: LongSword
   m_TagString: Item
   m_Icon: {fileID: 0}

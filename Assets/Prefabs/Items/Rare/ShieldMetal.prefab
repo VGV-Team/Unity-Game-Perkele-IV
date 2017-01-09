@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 65013162705787986}
   - component: {fileID: 54890258939813168}
   - component: {fileID: 114128297634182854}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ShieldMetal
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 4390859624715620}
   - component: {fileID: 33073810757799626}
   - component: {fileID: 23134186568421030}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
