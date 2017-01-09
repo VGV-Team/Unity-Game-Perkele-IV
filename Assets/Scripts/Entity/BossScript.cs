@@ -157,15 +157,15 @@ public class BossScript : MonoBehaviour {
 
                 //TODO: SOUND EFFECT
                 AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
-                
 
+                ES.StartHealAnimation();
 
                 //Teleport
                 Boss.transform.position = initialPosition;
                 Boss.transform.rotation = initialRotation;
 
                 StartCoroutine(NecromancerAbility());
-                ES.StartHealAnimation();
+                
             }
         }
         

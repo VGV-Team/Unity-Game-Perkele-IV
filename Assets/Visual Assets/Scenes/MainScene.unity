@@ -3512,11 +3512,11 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 13.369629
   MaxDistance: 41.079773
   Pan2D: 0
-  rolloffMode: 2
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -3528,12 +3528,6 @@ AudioSource:
       value: 0.8216216
       inSlope: -3.0738475
       outSlope: -3.0738475
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 0.65091056
-      value: 0.3216216
-      inSlope: -0.7684619
-      outSlope: -0.7684619
       tangentMode: 0
     - serializedVersion: 2
       time: 1
@@ -3643,6 +3637,11 @@ Prefab:
     - target: {fileID: 4045018148785348, guid: d425bf33994227b47969aa10369fa176, type: 2}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 82933846603922662, guid: d425bf33994227b47969aa10369fa176,
+        type: 2}
+      propertyPath: spreadCustomCurve.m_RotationOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d425bf33994227b47969aa10369fa176, type: 2}
@@ -5753,7 +5752,7 @@ Prefab:
     - target: {fileID: 224507067478318368, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -42.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224698247986401534, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}
@@ -5773,7 +5772,7 @@ Prefab:
     - target: {fileID: 224698247986401534, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -82.5
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ad9154d1a9056b34d88085e7563d1958, type: 2}
