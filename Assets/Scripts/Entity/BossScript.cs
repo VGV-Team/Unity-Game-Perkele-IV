@@ -20,6 +20,8 @@ public class BossScript : MonoBehaviour {
 
     private AudioManagerScript AudioManager;
 
+    GameObject particle4;
+
     // Use this for initialization
     void Start () {
         Boss = GameObject.Find("Boss");
@@ -38,18 +40,41 @@ public class BossScript : MonoBehaviour {
         SpawnedMinions = new List<GameObject>();
 
         AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+
+        particle4 = GameObject.Find("ParticlePhase4");
+        particle4.SetActive(false);
     }
-	
+
+    bool dead = false;
+
+    IEnumerator BossDead()
+    {
+        yield return new WaitForSeconds(7.0f);
+        AudioManager.PlayBossTeleportAudio(GameObject.Find("Player").GetComponent<AudioSource>());
+       
+        //GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
+
+        GlobalsScript.IsGameOver = true;
+
+        this.gameObject.SetActive(false);
+        
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
-        if (Boss.GetComponent<UnitScript>().HP <= 0)
+        if (!dead && Boss.GetComponent<UnitScript>().HP <= 0)
         {
+            dead = true;
             Boss.GetComponent<UnitScript>().HPChange = 0;
+            particle4.SetActive(true);
+            AudioManager.PlayAmbientVictoryAudio();
             for (int i = 0; i < SpawnedMinions.Count; i++)
             {
                 Destroy(SpawnedMinions[i]);
             }
+            StartCoroutine(BossDead());
+            
         }
 
         if (Phase == 1)
@@ -132,6 +157,8 @@ public class BossScript : MonoBehaviour {
 
                 //TODO: SOUND EFFECT
                 AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
+                
+
 
                 //Teleport
                 Boss.transform.position = initialPosition;

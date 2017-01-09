@@ -14,6 +14,8 @@ public class AudioManagerScript : MonoBehaviour {
     public AudioClip UIButtonPress;
 
     public AudioClip AmbientDefault;
+    public AudioClip AmbientVictory;
+    public AudioClip AmbientDefeat;
 
     public AudioClip ItemDrop;
     public AudioClip ItemDropLegendary;
@@ -30,6 +32,7 @@ public class AudioManagerScript : MonoBehaviour {
 	void Update () {
 		
 	}
+
 
     public void PlayBossTeleportAudio(AudioSource AS)
     {
@@ -53,6 +56,16 @@ public class AudioManagerScript : MonoBehaviour {
     public void PlayAmbientDefaultAudio(AudioSource AS)
     {
         AS.PlayOneShot(AmbientDefault);
+    }
+    public void PlayAmbientVictoryAudio()
+    {
+        GameObject.Find("Player").GetComponent<AudioSource>().Stop();
+        GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(AmbientVictory);
+    }
+    public void PlayAmbientDefeatAudio()
+    {
+        GameObject.Find("Player").GetComponent<AudioSource>().Stop();
+        GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(AmbientDefeat);
     }
 
     public void PlayPlayerBasicAttackImpact(AudioSource AS)

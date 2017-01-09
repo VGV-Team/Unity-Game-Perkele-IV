@@ -134,6 +134,8 @@ public class AbilityScript
     {
         //Debug.Log("Trying to use ability: " + Name + " type: " + Type);
 
+        if (GlobalsScript.IsGameOver || !GlobalsScript.IsPlayerAlive) return false;
+
         if (CanUseAbility(caster, target))
         {
             //Temporary, move this to approprita ability types
