@@ -30,6 +30,8 @@ public class AbilityScript
     public double Range;
     public Sprite ImageToShow;
 
+	public string Description;
+
     public int BasePower;
 
     private float CasterAttackSpeed;

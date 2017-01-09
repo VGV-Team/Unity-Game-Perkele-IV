@@ -88,6 +88,7 @@ public class UIScript : MonoBehaviour
 	public GameObject UICharacterPanel;
 	public GameObject UINPCConversationPanel;
 	public GameObject UIQuestListPanel;
+	public GameObject UISkillConfigurePopupPanel;
 
 	// Equipped items
 	public GameObject UIInventoryEquippedItemsWeaponButton;
@@ -99,6 +100,19 @@ public class UIScript : MonoBehaviour
 	public GameObject UISpritesCheckboxChecked;
 	public GameObject UISpritesCheckboxUnchecked;
 	public GameObject UISpritesAbilityUpgrade;
+
+	// Ability labels
+	public GameObject UISkillConfigurePopupNameLabel;
+	public GameObject UISkillConfigureDescriptionLabel;
+	public GameObject UISkillConfigurePopupTypeLabel;
+	public GameObject UISkillConfigurePopupCooldownLabel;
+	public GameObject UISkillConfigurePopupBasePowerLabel;
+	public GameObject UISkillConfigurePopupRangeLabel;
+	public GameObject UISkillConfigurePopupHPRequiredLabel;
+	public GameObject UISkillConfigurePopupShieldRequiredLabel;
+	public GameObject UISkillConfigurePopupFuryRequiredLabel;
+	public GameObject UISkillConfigurePopupManaRequiredLabel;
+	public GameObject UISkillConfigurePopupImage;
 
 	#endregion
 
@@ -385,6 +399,7 @@ public class UIScript : MonoBehaviour
 
 			UIInventoryPanel.SetActive(false);
 			UICharacterPanel.SetActive(false);
+			UISkillConfigurePopupPanel.SetActive(false);
 		}
         if (objectToToggle.name == "UIInventoryPanel")
         {
@@ -395,6 +410,7 @@ public class UIScript : MonoBehaviour
 
 			UICharacterPanel.SetActive(false);
 			UISkillConfigurePanel.SetActive(false);
+			UISkillConfigurePopupPanel.SetActive(false);
 		}
 		if (objectToToggle.name == "UICharacterPanel")
 		{
@@ -405,6 +421,7 @@ public class UIScript : MonoBehaviour
 
 			UIInventoryPanel.SetActive(false);
 			UISkillConfigurePanel.SetActive(false);
+			UISkillConfigurePopupPanel.SetActive(false);
 		}
 
 		
@@ -547,6 +564,8 @@ public class UIScript : MonoBehaviour
                 5 + (height + 5) * (i / AbilitiesPerRow),
                 0);
 
+			
+
             Image imageComponent = goButton.GetComponent<Image>();
             if (ActivePlayer.Abilities[i].ImageToShow != null)
                 imageComponent.overrideSprite = ActivePlayer.Abilities[i].ImageToShow;
@@ -556,16 +575,46 @@ public class UIScript : MonoBehaviour
             Button tempButton = goButton.GetComponent<Button>();
             int i1 = i;
             tempButton.onClick.AddListener(() => SelectAbilityToChange(ActivePlayer.Abilities[i1], goButton));
+
+	        goButton.GetComponent<UIMouseEventScript>().Ability = ActivePlayer.Abilities[i1];
+	        goButton.GetComponent<UIMouseEventScript>().Script = this;
+
         }
+
+
+
     }
 
+	public void ShowAbilityPopup(AbilityScript ability)
+	{
+		UISkillConfigurePopupNameLabel.GetComponent<Text>().text = ability.Name;
+		UISkillConfigurePopupTypeLabel.GetComponent<Text>().text = string.Join("", ability.Type.ToString().Select(x => char.IsUpper(x) ? " " + x : x.ToString()).ToArray()).TrimStart(' ');
+		UISkillConfigureDescriptionLabel.GetComponent<Text>().text = ability.Description;
+		UISkillConfigurePopupImage.GetComponent<Image>().overrideSprite = ability.ImageToShow;
+		UISkillConfigurePopupCooldownLabel.GetComponent<Text>().text = ability.Cooldown.ToString("F0");
+		UISkillConfigurePopupBasePowerLabel.GetComponent<Text>().text = ability.BasePower.ToString("F0");
+		UISkillConfigurePopupRangeLabel.GetComponent<Text>().text = ability.Range.ToString("F0");
+		UISkillConfigurePopupHPRequiredLabel.GetComponent<Text>().text = ability.HPRequired.ToString("F0");
+		UISkillConfigurePopupShieldRequiredLabel.GetComponent<Text>().text = ability.ShieldRequired.ToString("F0");
+		UISkillConfigurePopupFuryRequiredLabel.GetComponent<Text>().text = ability.FuryRequired.ToString("F0");
+		UISkillConfigurePopupManaRequiredLabel.GetComponent<Text>().text = ability.ManaRequired.ToString("F0");
 
-    /// <summary>
-    /// Chooses active player ability ability to select to
-    /// </summary>
-    /// <param name="ability">Id of player ability we want to change to</param>
-    /// <param name="e">Button pressed for ability change</param>
-    private void SelectAbilityToChange(AbilityScript ability, GameObject e = null)
+
+
+		UISkillConfigurePopupPanel.SetActive(true);
+	}
+	public void HideAbilityPopup()
+	{
+		UISkillConfigurePopupPanel.SetActive(false);
+	}
+
+
+	/// <summary>
+	/// Chooses active player ability ability to select to
+	/// </summary>
+	/// <param name="ability">Id of player ability we want to change to</param>
+	/// <param name="e">Button pressed for ability change</param>
+	private void SelectAbilityToChange(AbilityScript ability, GameObject e = null)
     {
         int size = UISkillConfigurePanel.transform.childCount;
         for (int i = 0; i < size; i++)
