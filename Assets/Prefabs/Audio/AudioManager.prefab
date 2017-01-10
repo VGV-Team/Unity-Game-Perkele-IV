@@ -100,3 +100,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 0ba629cb390804a4988c44e84120bc32, type: 3}
   - {fileID: 8300000, guid: 3b1f9e54c39ed5442b04b943eba46097, type: 3}
   - {fileID: 8300000, guid: 40445a810018f7643a256a44460f66d8, type: 3}
+  CrateDestroy:
+  - {fileID: 8300000, guid: 15d259794eb82a54abe352e8ce46f828, type: 3}
+  - {fileID: 8300000, guid: e94848f83110fc54f9f1d97e6b93acd7, type: 3}
+  - {fileID: 8300000, guid: 0135229ee33cf5849a6869b0e57308fa, type: 3}
+  - {fileID: 8300000, guid: 32dcba934478bb04d8f27b9667896566, type: 3}
+  - {fileID: 8300000, guid: 0ec48b9eb9e3027469e5e7e2679b0543, type: 3}
+  - {fileID: 8300000, guid: cfb4b638faf5c794d99ffbeeb2ad878b, type: 3}
