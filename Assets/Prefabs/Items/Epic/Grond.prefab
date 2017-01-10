@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4229161952615810}
   - component: {fileID: 33622990109655014}
   - component: {fileID: 23813530924253660}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 65195656676402296}
   - component: {fileID: 54077726198010874}
   - component: {fileID: 114864903689605754}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Grond
   m_TagString: Item
   m_Icon: {fileID: 0}

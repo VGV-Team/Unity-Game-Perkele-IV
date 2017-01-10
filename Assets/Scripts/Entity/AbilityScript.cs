@@ -36,6 +36,13 @@ public class AbilityScript
 
     private float CasterAttackSpeed;
 
+    public AudioManagerScript AudioManager;
+
+
+    private int rareChance = 50;
+    private int legendaryChance = 25;
+    private int epicChance = 0;
+
     public AbilityScript()
     {
         this.Name = "";
@@ -49,6 +56,7 @@ public class AbilityScript
         this.Range = 0;
         this.BasePower = 0;
         this.ImageToShow = null;
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
 
     public AbilityScript(string name, AbilityType type , double cooldown, int furyRequired, int manaRequired, double range, int basePower, Sprite imageToShow = null)
@@ -64,6 +72,7 @@ public class AbilityScript
         this.Range = range;
         this.BasePower = basePower;
         this.ImageToShow = imageToShow;
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
 
     }
 
@@ -80,6 +89,7 @@ public class AbilityScript
         this.Range = range;
         this.BasePower = basePower;
         this.ImageToShow = imageToShow;
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
     
     public void Update()
@@ -124,6 +134,8 @@ public class AbilityScript
     {
         //Debug.Log("Trying to use ability: " + Name + " type: " + Type);
 
+        if (GlobalsScript.IsGameOver || !GlobalsScript.IsPlayerAlive) return false;
+
         if (CanUseAbility(caster, target))
         {
             //Temporary, move this to approprita ability types
@@ -149,23 +161,34 @@ public class AbilityScript
                 case AbilityType.FireExplosion:
                     caster.GetComponent<UnitScript>().StopMovement();
                     AbilityTypeFireExplosion(caster);
-                    break;
+
+					caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+					caster.GetComponent<UnitScript>().HP -= HPRequired;
+					caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+					TimeToReady = Cooldown;
+					break;
                 case AbilityType.Flamethrower:
                     caster.GetComponent<UnitScript>().StopMovement();
                     AbilityTypeFlamethrower(caster);
-                    break;
+
+					caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+					caster.GetComponent<UnitScript>().HP -= HPRequired;
+					caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+					TimeToReady = Cooldown;
+					break;
                 case AbilityType.Heal:
                     AbilityTypeHeal(caster);
-                    break;
+
+					caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+					caster.GetComponent<UnitScript>().HP -= HPRequired;
+					caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+					TimeToReady = Cooldown;
+					break;
 
             }
 
-            caster.GetComponent<UnitScript>().Fury -= FuryRequired;
-            caster.GetComponent<UnitScript>().Mana -= ManaRequired;
-            caster.GetComponent<UnitScript>().HP -= HPRequired;
-            caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
-
-            TimeToReady = Cooldown;
+            
+            
             
                 
         }
@@ -194,12 +217,19 @@ public class AbilityScript
                 AbilityTypeHealImpact(caster);
                 break;
         }
+
+        caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+        caster.GetComponent<UnitScript>().HP -= HPRequired;
+        caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+
+        TimeToReady = Cooldown;
     }
 
     private void AbilityTypeFlamethrower(GameObject caster)
     {
         AbilityTypeFlamethrowerCast(caster);
-    }
+
+	}
     private void AbilityTypeFlamethrowerCast(GameObject caster)
     {
         Debug.Log("Casting flamethrower!");
@@ -230,11 +260,17 @@ public class AbilityScript
             flame.transform.localPosition = Vector3.zero;
             //flame.transform.rotation = Quaternion.Euler(new Vector3(0, 180.0f, 0));
 
+            Debug.Log(direction.normalized/2);
+
             flame.GetComponent<FireBaseScript>().Ability = this;
             flame.GetComponent<FireBaseScript>().Caster = caster;
             flame.GetComponent<FlamethrowerCollisionScript>().Ability = this;
             flame.GetComponent<FlamethrowerCollisionScript>().Caster = caster;
             flame.transform.position = pos + direction.normalized/2;
+            targetPosition.y = flame.transform.position.y;
+            flame.transform.LookAt(targetPosition);
+
+            caster.GetComponent<UnitScript>().Fury -= FuryRequired;
         }
     }
     public void AbilityTypeFlamethrowerImpact(GameObject caster, GameObject target)
@@ -291,9 +327,9 @@ public class AbilityScript
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                                 caster,
                                 0,
-                                50,
-                                30,
-                                20,
+                                rareChance,
+                                legendaryChance,
+                                epicChance,
                                 target.transform);
                          }
 
@@ -304,6 +340,7 @@ public class AbilityScript
             else shield -= (damage);
             target.GetComponent<UnitScript>().HP = hp;
             target.GetComponent<UnitScript>().Shield = shield;
+
         }
 
     }
@@ -322,6 +359,7 @@ public class AbilityScript
         explosionEffect.transform.localPosition = Vector3.zero;
         explosionEffect.GetComponent<FireBaseScript>().Caster = caster;
         explosionEffect.GetComponent<FireBaseScript>().Ability = this;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
     }
     public void AbilityTypeFireExplosionImpact(GameObject caster, Collider[] objects)
     {
@@ -383,9 +421,9 @@ public class AbilityScript
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                                 caster,
                                 0,
-                                50,
-                                30,
-                                20,
+                                rareChance,
+                                legendaryChance,
+                                epicChance,
                                 target.transform);
                         }
 
@@ -449,6 +487,7 @@ public class AbilityScript
         fireball.GetComponent<FireProjectileScript>().Caster = caster;
         fireball.transform.position = pos + direction.normalized * 2;
         fireball.transform.FindChild("FireboltCollider").GetComponent<Collider>().enabled = true;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
 
 
     }
@@ -503,9 +542,9 @@ public class AbilityScript
                             GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                                 caster,
                                 0,
-                                50,
-                                30,
-                                20,
+                                rareChance,
+                                legendaryChance,
+                                epicChance,
                                 target.transform);
                         }
                     }
@@ -572,6 +611,16 @@ public class AbilityScript
         int r = Random.Range(0, 100);
         if (criticalChance > r) damage *= 2;
 
+        //Play audio
+        if (target.tag == "Enemy")
+        {
+            AudioManager.PlayPlayerBasicAttackImpact(target.GetComponent<AudioSource>());
+        }
+        else if (target.tag == "Player")
+        {
+            AudioManager.PlayEnemyBasicAttackImpact(target.GetComponent<AudioSource>());
+            AudioManager.PlayPlayerGetHitImpact(target.GetComponent<AudioSource>());
+        }
         //TODO: monster armor is not takein into account?
         if (shield < damage)
         {
@@ -598,9 +647,9 @@ public class AbilityScript
                         GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
                             caster,
                             0,
-                            50,
-                            30,
-                            20,
+                            rareChance,
+                            legendaryChance,
+                            epicChance,
                             target.transform);
                     }
                 }
@@ -609,6 +658,7 @@ public class AbilityScript
         else shield -= (damage);
         target.GetComponent<UnitScript>().HP = hp;
         target.GetComponent<UnitScript>().Shield = shield;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
     }
 
 
@@ -653,17 +703,21 @@ public class AbilityScript
     }
     private void AbilityTypeHealImpact(GameObject caster)
     {
-        caster.GetComponent<UnitScript>().HP += BasePower;
+        caster.GetComponent<UnitScript>().HP += caster.GetComponent<UnitScript>().MaxHP * (BasePower / 100.0f);
         if (caster.GetComponent<UnitScript>().HP > caster.GetComponent<UnitScript>().MaxHP)
         {
             caster.GetComponent<UnitScript>().HP = caster.GetComponent<UnitScript>().MaxHP;
         }
+
+        //Audio
+        AudioManager.PlayPlayerHealAudio(caster.GetComponent<AudioSource>());
 
         //Particle effect
         GameObject healEffect = GameObject.Instantiate(GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().HealEffect);
         healEffect.transform.parent = caster.transform;
         healEffect.transform.position = Vector3.zero;
         healEffect.transform.localPosition = Vector3.zero;
+        caster.GetComponent<UnitScript>().Fury -= FuryRequired;
 
     }
 

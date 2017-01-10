@@ -21,6 +21,7 @@ public class UIMouseEventScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
+		print(eventData.position);
 		Script.ShowAbilityPopup(Ability);
 	}
 	public void OnPointerExit(PointerEventData eventData)

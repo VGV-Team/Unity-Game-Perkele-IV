@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -67,10 +68,15 @@ public class UnitScript : EntityScript
 
 	public List<QuestScript> QuestList = new List<QuestScript>();
 
+    protected float attackAnimEnd;
+
 	public new void Start()
     {
         base.Start();
-        
+
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+        attackAnimEnd = Time.time;
+
         MovementInit();
     }
 
@@ -111,7 +117,19 @@ public class UnitScript : EntityScript
             }
 
             AbilityPoints += 1;
-        }
+
+	        if (this.tag=="Player" && Level == 2)
+	        {
+				Abilities.Add(new AbilityScript("Fire Explosion", AbilityType.FireExplosion, 15, 10, 0, 15, 20, GameObject.Find("UISpritesFireExplosion").transform.GetComponent<SpriteRenderer>().sprite));
+				Abilities.LastOrDefault().Description = "Special magnificent fire explosion that will kill something";
+			}
+			if (this.tag == "Player" && Level == 3)
+			{
+				Abilities.Add(new AbilityScript("Flamethrower", AbilityType.Flamethrower, 20, 10, 0, 20, 80, GameObject.Find("UISpritesFlamethrower").transform.GetComponent<SpriteRenderer>().sprite));
+				Abilities.LastOrDefault().Description = "Flame and freedom all in one magnificent skil";
+			}
+
+		}
     }
 
 
@@ -151,7 +169,7 @@ public class UnitScript : EntityScript
     
     public GameObject waypoint;
     bool SampleWaypointPosition = false;
-    bool walkAnim;
+    protected bool walkAnim;
     Transform model; // TODO: Should we move model or player?
     //private Animation animation;
     float animationFadeFactor;
@@ -215,6 +233,7 @@ public class UnitScript : EntityScript
         waypoint = null;
     }
 
+
     public void StartMovement()
     {
 
@@ -228,6 +247,11 @@ public class UnitScript : EntityScript
         model.FindChild("Model").GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
         model.FindChild("Model").GetComponent<Animation>().CrossFade("die", animationFadeFactor);
         
+    }
+
+    public void StartIdleAnimation()
+    {
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
     }
 
     public void AnimationEventFunctionRelay(string type)
@@ -290,7 +314,9 @@ public class UnitScript : EntityScript
             AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
             state.speed = (state.length+4*animationFadeFactor) / attackCooldown;
             model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
-           
+            attackAnimEnd = attackCooldown + Time.time;
+
+
         }
 
         
@@ -356,13 +382,15 @@ public class UnitScript : EntityScript
 
 
 
-
+    protected AudioManagerScript AudioManager;
 
 	protected void PickUpItem(GameObject item)
 	{
 		// if in range, try to pick up
 		if (item.GetComponent<ItemScript>().PlayerTouching)
 		{
+            AudioManager.PlayPickupItemAudio(this.GetComponent<AudioSource>());
+
 			StopMovement();
 			InventoryItemsList.Add(item);
 			//Destroy(item);

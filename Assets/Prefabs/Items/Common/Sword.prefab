@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4118342644371548}
   - component: {fileID: 33706252025437248}
   - component: {fileID: 23205081014280036}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 65663338142981718}
   - component: {fileID: 54392828308201858}
   - component: {fileID: 114264675278891726}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Sword
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1353475970629484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 50, y: -10.062539, z: 10.7}
+  m_LocalPosition: {x: 262.01428, y: 100.25, z: 90.78166}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 4607157216948300}

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NPCScript : EntityScript
@@ -12,6 +13,8 @@ public class NPCScript : EntityScript
 	public List<QuestScript> questList = new List<QuestScript>();
 
 	public GameObject QuestTarget1;
+	public GameObject QuestTarget2;
+	public GameObject QuestReward1;
 
 	// Use this for initialization
 	new void Start () {
@@ -26,13 +29,23 @@ public class NPCScript : EntityScript
 			GameObject.Find("Perkele")
 		));
 		*/
+
+		questList.Add(new QuestScript(
+			QuestType.Kill,
+			"Kill Skeleton King",
+			"He is there. At the church. Looking at the bones. Using them. Find him. Kill him.",
+			true,
+			false,
+			QuestTarget1
+		));
+
 		questList.Add(new QuestScript(
 			QuestType.Kill,
 			"Find and kill his lieutenant",
 			"His minions are strong. Killing their leaders will make them weaker.",
 			true,
 			false,
-			QuestTarget1
+			QuestTarget2
 		));
 	}
 
@@ -50,22 +63,40 @@ public class NPCScript : EntityScript
 			print("hi");
 			FirstConversation = false;
 
-			// play sound
+			interactor.GetComponent<UnitScript>().Abilities.Add(new AbilityScript("Fireball", AbilityType.Fireball, 5, -15, 10, 10, 20, GameObject.Find("UISpritesFireball").transform.GetComponent<SpriteRenderer>().sprite));
+			interactor.GetComponent<UnitScript>().Abilities.LastOrDefault().Description = "The most magnificent fireball that will kill balls";
+
+			// TODO: play sound
 		}
 		else
 		{
+			bool anyQuestCompleted = false;
 			foreach (var quest in interactor.GetComponent<UnitScript>().QuestList)
 			{
-				if (quest.Type == QuestType.Kill && quest.Target!=null && !quest.Target.GetComponent<UnitScript>().Active)
+				if (quest.Type == QuestType.Kill && quest.Target!=null && !quest.Target.GetComponent<UnitScript>().Active && quest.Completed != true)
 				{
 					quest.Completed = true;
 					print("Quest "+ quest.Title +" finished");
 
 					// TODO: loot drop
+					if (quest.Target == QuestTarget1)
+					{
+						interactor.GetComponent<UnitScript>().InventoryItemsList.Add(QuestReward1);
+						interactor.GetComponent<UnitScript>().AbilityPoints += 2;
+
+						// TODO: play sound
+					}
+
+					anyQuestCompleted = true;
 				}
 			}
 
-			print("go to work");
+			if (!anyQuestCompleted)
+			{
+				// TODO: play sound
+				print("go to work");
+			}
+			
 
 			// play some other sound
 		}

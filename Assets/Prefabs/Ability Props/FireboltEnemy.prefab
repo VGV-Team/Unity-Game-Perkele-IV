@@ -430,7 +430,7 @@ MonoBehaviour:
   ProjectileDirection: {x: 0, y: 0, z: 1}
   ProjectileCollisionLayers:
     serializedVersion: 2
-    m_Bits: 4294967039
+    m_Bits: 4294958847
   ProjectileDestroyParticleSystemsOnCollision:
   - {fileID: 198851320549205270}
 --- !u!114 &114721386853408076
@@ -2479,7 +2479,7 @@ ParticleSystem:
   CollisionModule:
     enabled: 0
     serializedVersion: 3
-    type: 0
+    type: 1
     collisionMode: 0
     plane0: {fileID: 0}
     plane1: {fileID: 0}

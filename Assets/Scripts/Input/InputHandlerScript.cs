@@ -122,6 +122,7 @@ public class InputHandlerScript : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+
             if (EventSystem.current.IsPointerOverGameObject() == true)
             {
                 //print("UI clicked");
@@ -167,6 +168,9 @@ public class InputHandlerScript : MonoBehaviour
 					case "NPC":
 						print("NPC");
 		                break;
+                    case "Enemy":
+                        GameObject.Find("Player").GetComponent<PlayerScript>().basicAttackClick = true;
+                        break;
                     default:
                         print("Not terrain or chest");
                         break;

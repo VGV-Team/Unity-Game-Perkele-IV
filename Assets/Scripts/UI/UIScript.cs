@@ -73,6 +73,7 @@ public class UIScript : MonoBehaviour
 	public GameObject UICharacterStatsMaxXPLabel;
 	public GameObject UICharacterStatsScrapLabel;
 	public GameObject UICharacterStatsGoldLabel;
+	public GameObject UICharacterStatsAbilityPointsLabel;
 
 	// Buttons
 	public GameObject UIInventoryUnequipButton;
@@ -123,7 +124,7 @@ public class UIScript : MonoBehaviour
     private GameObject selectedItem = null;
     //private List<GameObject> selectedItemList = null;
 
-	
+	private AudioManagerScript AudioManager;
 
 
 	// Use this for initialization
@@ -140,6 +141,7 @@ public class UIScript : MonoBehaviour
         #endregion
 
         UpdateAbilityOptionsPopup();
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
     }
 	
 	// Update is called once per frame
@@ -148,19 +150,46 @@ public class UIScript : MonoBehaviour
         UpdateUI();
     }
 
+    IEnumerator Defeat()
+    {
+        yield return new WaitForSeconds(8.0f);
+        GlobalsScript.IsPlayerAlive = true;
+        //SceneManager.LoadScene("GameLostScene");
+		ShowGameLostScreen();
+    }
+
+    IEnumerator Victory()
+    {
+        yield return new WaitForSeconds(1.5f);
+        GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
+        GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
+    }
+
+    private bool once = false;
 
     private void UpdateUI()
     {
-	    if (GlobalsScript.IsPlayerAlive == false)
+
+	    if (GlobalsScript.IsPlayerAlive == false && !once)
 	    {
-			// TODO: this
-			SceneManager.LoadScene("GameLostScene");
+
+            once = true;
+            AudioManager.PlayAmbientDefeatAudio();
+			GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
+			StartCoroutine(Defeat());
+			
+
 		}
-	    if (GlobalsScript.IsGameOver == true)
+        if (GlobalsScript.IsGameOver)
+        {
+            GameObject.Find("Player").GetComponent<AudioSource>().volume -= Time.deltaTime * 0.075f;
+        }
+	    if (GlobalsScript.IsGameOver == true && !once)
 	    {
-			// TODO: this
-			SceneManager.LoadScene("GameWonScene");
-		}
+            once = true;
+            StartCoroutine(Victory());
+
+        }
 
         #region Update main UI bars
 
@@ -320,8 +349,10 @@ public class UIScript : MonoBehaviour
 		UICharacterStatsMaxXPLabel.GetComponent<Text>().text = ActivePlayer.MaxXp.ToString("F0");
 		UICharacterStatsScrapLabel.GetComponent<Text>().text = ActivePlayer.Scrap.ToString("F0");
 		UICharacterStatsGoldLabel.GetComponent<Text>().text = ActivePlayer.Gold.ToString("F0");
+		UICharacterStatsAbilityPointsLabel.GetComponent<Text>().text = ActivePlayer.AbilityPoints.ToString("F0");
 
-	    if (ActivePlayer.AbilityPoints > 0)
+
+		if (ActivePlayer.AbilityPoints > 0)
 	    {
 		    foreach (var item in GameObject.FindGameObjectsWithTag("StatUpgrade"))
 		    {
@@ -382,11 +413,22 @@ public class UIScript : MonoBehaviour
 	}
 
 
-    /// <summary>
-    /// Called by button to toggle objectToToggle state between active and inactive
-    /// </summary>
-    /// <param name="objectToToggle">GameObject to toggle</param>
-    public void ToggleActiveInactive(GameObject objectToToggle)
+	public void ShowGameWonScreen()
+	{
+		SceneManager.LoadScene("GameWonScene");
+	}
+
+	public void ShowGameLostScreen()
+	{
+		SceneManager.LoadScene("GameLostScene");
+	}
+
+
+	/// <summary>
+	/// Called by button to toggle objectToToggle state between active and inactive
+	/// </summary>
+	/// <param name="objectToToggle">GameObject to toggle</param>
+	public void ToggleActiveInactive(GameObject objectToToggle)
     {
         // if we are showing ability list window then update list first
         if (objectToToggle.name == "UISkillConfigurePanel")
@@ -533,15 +575,16 @@ public class UIScript : MonoBehaviour
         {
 			//if (abilitiesList[id] != null)
 			//    GameObject.Find("InputHandlerObject").GetComponent<InputHandlerScript>().AbilityUse(abilitiesList[id]);
-			abilitiesList[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
+			if(abilitiesList[id] != null)
+				abilitiesList[id].Use(GameObject.Find("Player"), GameObject.Find("Player").GetComponent<UnitScript>().Target);
 
 		}
     }
 
     public void UpdateAbilityOptionsPopup()
     {
-        // Remove any previous abilities
-        int size = UISkillConfigurePanel.transform.childCount;
+		// Remove any previous abilities
+		int size = UISkillConfigurePanel.transform.childCount;
         for (int i = 0; i < size; i++)
         {
 	        GameObject child = UISkillConfigurePanel.transform.GetChild(i).gameObject;

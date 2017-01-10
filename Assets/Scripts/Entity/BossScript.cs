@@ -12,9 +12,18 @@ public class BossScript : MonoBehaviour {
     public bool Necromancer = false;
     private GameObject NecromancerUnit;
 
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
-	// Use this for initialization
-	void Start () {
+
+    List<GameObject> SpawnedMinions;
+
+    private AudioManagerScript AudioManager;
+
+    GameObject particle4;
+
+    // Use this for initialization
+    void Start () {
         Boss = GameObject.Find("Boss");
         ES = Boss.GetComponent<EnemyScript>();
 
@@ -24,11 +33,54 @@ public class BossScript : MonoBehaviour {
         ES.MeleeAttack = true;
 
         NecromancerUnit = GameObject.Find("EffectLoader").GetComponent<EffectLoaderScript>().NecromancerUnit;
+
+        initialPosition = Boss.transform.position;
+        initialRotation = Boss.transform.rotation;
+
+        SpawnedMinions = new List<GameObject>();
+
+        AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+
+        particle4 = GameObject.Find("ParticlePhase4");
+        particle4.SetActive(false);
     }
-	
+
+    bool dead = false;
+
+    IEnumerator BossDead()
+    {
+        yield return new WaitForSeconds(7.0f);
+        AudioManager.PlayBossTeleportAudio(GameObject.Find("Player").GetComponent<AudioSource>());
+
+        //GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
+
+
+        //yield return new WaitForSeconds(1.0f);
+
+        GlobalsScript.IsGameOver = true;
+        this.gameObject.SetActive(false);
+
+        
+        
+    }
+
 	// Update is called once per frame
 	void Update () {
 		
+        if (!dead && Boss.GetComponent<UnitScript>().HP <= 0)
+        {
+            dead = true;
+            Boss.GetComponent<UnitScript>().HPChange = 0;
+            particle4.SetActive(true);
+            AudioManager.PlayAmbientVictoryAudio();
+            for (int i = 0; i < SpawnedMinions.Count; i++)
+            {
+                Destroy(SpawnedMinions[i]);
+            }
+            StartCoroutine(BossDead());
+            
+        }
+
         if (Phase == 1)
         {
             if (ES.HP < 2 * ES.MaxHP / 3)
@@ -63,6 +115,13 @@ public class BossScript : MonoBehaviour {
                     }
                 }
 
+                //SOUND EFFECT
+                AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
+
+                //Teleport
+                Boss.transform.position = initialPosition;
+                Boss.transform.rotation = initialRotation;
+
             }
         }
 
@@ -90,17 +149,28 @@ public class BossScript : MonoBehaviour {
                             t[i].gameObject.layer = 0;
                         }
                     }
+                    if (child.name == "Shield")
+                    {
+                        child.gameObject.SetActive(false);
+                    }
                 }
 
                 //NECROMANCER
                 ES.RangedAttack = false;
                 ES.Necromancer = true;
 
-                //TODO: SOUND EFFECT, TLELEPORT TO CENTER OF ROOM
-                ///sadasd
+                //TODO: SOUND EFFECT
+                AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
+
+                ES.StopMovement();
+                ES.StartHealAnimation();
+
+                //Teleport
+                Boss.transform.position = initialPosition;
+                Boss.transform.rotation = initialRotation;
 
                 StartCoroutine(NecromancerAbility());
-
+                
             }
         }
         
@@ -109,24 +179,29 @@ public class BossScript : MonoBehaviour {
 
     IEnumerator NecromancerAbility()
     {
+        if (Boss.GetComponent<UnitScript>().HP <= 0) yield return new WaitForSeconds(0);
+        else
+        {
+            GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, 2.0f);
+            SpawnedMinions.Add(newUnit);
+
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 5.0f, -2.0f);
+            SpawnedMinions.Add(newUnit);
+
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, 2.0f);
+            SpawnedMinions.Add(newUnit);
+
+            newUnit = GameObject.Instantiate(NecromancerUnit);
+            newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
+            SpawnedMinions.Add(newUnit);
+
+            yield return new WaitForSeconds(10);
+
+            StartCoroutine(NecromancerAbility());
+        }
         
-
-        ES.StartHealAnimation();
-
-        GameObject newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 0.0f, 2.0f);
-
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(2.0f, 0.0f, -2.0f);
-
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 0.0f, 2.0f);
-
-        newUnit = GameObject.Instantiate(NecromancerUnit);
-        newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 0.0f, -2.0f);
-
-        yield return new WaitForSeconds(10);
-
-        StartCoroutine(NecromancerAbility());
     }
 }
