@@ -158,6 +158,13 @@ public class UIScript : MonoBehaviour
 		ShowGameLostScreen();
     }
 
+    IEnumerator Victory()
+    {
+        yield return new WaitForSeconds(1.5f);
+        GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
+        GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
+    }
+
     private bool once = false;
 
     private void UpdateUI()
@@ -173,13 +180,16 @@ public class UIScript : MonoBehaviour
 			
 
 		}
+        if (GlobalsScript.IsGameOver)
+        {
+            GameObject.Find("Player").GetComponent<AudioSource>().volume -= Time.deltaTime * 0.075f;
+        }
 	    if (GlobalsScript.IsGameOver == true && !once)
 	    {
             once = true;
-            GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
-            GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
-            
-		}
+            StartCoroutine(Victory());
+
+        }
 
         #region Update main UI bars
 

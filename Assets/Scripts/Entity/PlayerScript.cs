@@ -17,7 +17,7 @@ public class PlayerScript : UnitScript
     new void Start ()
 	{
 	    base.Start();
-        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, -10, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 1, -10, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
 		Abilities.LastOrDefault().Description = "Exceptionally magnificent skill that owns everything";
 		Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 10, 0, 25, 0, 50, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
 		Abilities.LastOrDefault().Description = "Magnificent heal for magnificent owner";
@@ -33,6 +33,8 @@ public class PlayerScript : UnitScript
 
         agent = GetComponent<NavMeshAgent>();
     }
+
+    public bool basicAttackClick = false;
 
     // Update is called once per frame
     new void Update ()
@@ -70,7 +72,7 @@ public class PlayerScript : UnitScript
         {
 
             float distance = Vector3.Distance(this.transform.position, Target.transform.position);
-
+            Debug.Log(Target.tag); 
             switch (Target.tag)
             {
                 case "Enemy":
@@ -81,7 +83,18 @@ public class PlayerScript : UnitScript
                         {
                             Destroy(waypoint);
                             waypoint = null;
-                            if (ability.Use(this.gameObject, Target)) break;
+                            Debug.Log(attackAnimEnd);
+                            if (ability.Use(this.gameObject, Target))
+                            {
+                                basicAttackClick = false;
+                                break;
+                            }
+                            else if (ability.TimeToReady > 0 && basicAttackClick)
+                            {
+                                Debug.Log("STOPPING");
+                                StopMovement();
+                            }
+
                             // TODO: should we click for basic attack? If yes then break
 
                             //break;
@@ -95,9 +108,9 @@ public class PlayerScript : UnitScript
                 case "Chest":
                     OpenChest(Target);
                     break;
-				case "NPC":
-		            InteractWithNPC(Target);
-					break;
+                case "NPC":
+                    InteractWithNPC(Target);
+                    break;
                 /*case "Crate":
                     DestroyCrate(Target);
                     break;*/

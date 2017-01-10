@@ -74,7 +74,6 @@ public class MainCameraScript : MonoBehaviour
         yield return new WaitForSeconds(14.0f);
         // GOTO VICTORY SCENE
         GlobalsScript.IsGameOver = false;
-
 		GameObject.Find("UI").transform.FindChild("UI Handler").GetComponent<UIScript>().ShowGameWonScreen();
         //SceneManager.LoadScene("GameWonScene");
     }

@@ -68,11 +68,14 @@ public class UnitScript : EntityScript
 
 	public List<QuestScript> QuestList = new List<QuestScript>();
 
+    protected float attackAnimEnd;
+
 	public new void Start()
     {
         base.Start();
 
         AudioManager = GameObject.Find("AudioManager").GetComponent<AudioManagerScript>();
+        attackAnimEnd = Time.time;
 
         MovementInit();
     }
@@ -230,6 +233,7 @@ public class UnitScript : EntityScript
         waypoint = null;
     }
 
+
     public void StartMovement()
     {
 
@@ -243,6 +247,11 @@ public class UnitScript : EntityScript
         model.FindChild("Model").GetComponent<Animation>().wrapMode = WrapMode.ClampForever;
         model.FindChild("Model").GetComponent<Animation>().CrossFade("die", animationFadeFactor);
         
+    }
+
+    public void StartIdleAnimation()
+    {
+        model.FindChild("Model").GetComponent<Animation>().CrossFade("idle", animationFadeFactor);
     }
 
     public void AnimationEventFunctionRelay(string type)
@@ -305,7 +314,9 @@ public class UnitScript : EntityScript
             AnimationState state = model.FindChild("Model").GetComponent<Animation>()["attack"];
             state.speed = (state.length+4*animationFadeFactor) / attackCooldown;
             model.FindChild("Model").GetComponent<Animation>().CrossFade("attack", animationFadeFactor);
-           
+            attackAnimEnd = attackCooldown + Time.time;
+
+
         }
 
         

@@ -19,7 +19,7 @@ public class EnemyScript : UnitScript
     new void Start ()
     {
         base.Start();
-        if (MeleeAttack) Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, 0, 0, 2.5, 20)); //20 <-- Strength
+        if (MeleeAttack) Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 1, 0, 0, 2.5, 20)); //20 <-- Strength
         else if (RangedAttack) Abilities.Add(new AbilityScript("Fireball", AbilityType.Fireball, 1, 0, 0, ViewRange, 150, GameObject.Find("UISpritesFireball").transform.GetComponent<SpriteRenderer>().sprite));
         Player = GameObject.Find("Player");
     }
