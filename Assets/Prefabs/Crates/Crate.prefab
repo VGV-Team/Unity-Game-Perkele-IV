@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 54114862392269868}
   - component: {fileID: 114808103264847674}
   - component: {fileID: 82922301148242680}
+  - component: {fileID: 208417553502903728}
   m_Layer: 9
   m_Name: Crate
   m_TagString: Enemy
@@ -255,3 +256,18 @@ MonoBehaviour:
   MeleeAttack: 0
   RangedAttack: 0
   Necromancer: 0
+--- !u!208 &208417553502903728
+NavMeshObstacle:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1446230987699754}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
