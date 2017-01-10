@@ -111,6 +111,7 @@ public class UnitScript : EntityScript
             }
             else
             {
+				AudioManager.PlayLevelUpAudio();
                 MaxXp = GlobalsScript.XPCurve[Level];
                 Level++;
                 Xp = overheadXP;
@@ -412,7 +413,8 @@ public class UnitScript : EntityScript
 			//player is in range, but does he have enough scrap?
 			if (Scrap >= chest.GetComponent<ChestScript>().ScrapRequired)
 			{
-				Debug.Log("Opening chest");
+				//Debug.Log("Opening chest");
+				AudioManager.PlayChestOpenAudio();
 				Scrap -= chest.GetComponent<ChestScript>().ScrapRequired;
 				StopMovement();
 				chest.GetComponent<ChestScript>().OpenChest();
@@ -429,8 +431,8 @@ public class UnitScript : EntityScript
 		
 		if (NPC.GetComponent<NPCScript>().PlayerTouching)
 		{
-			Debug.Log("Starting NPC conversation");
-			Debug.Log("Starting NPC conversation");
+			//Debug.Log("Starting NPC conversation");
+			//Debug.Log("Starting NPC conversation");
 			StopMovement();
 
 			NPC.GetComponent<NPCScript>().StartConversation(this.gameObject);
@@ -468,7 +470,7 @@ public class UnitScript : EntityScript
 
 		if (itemScript == null)
 		{
-			Debug.Log("Invalid equip item");
+			//Debug.Log("Invalid equip item");
 			return;
 		}
 

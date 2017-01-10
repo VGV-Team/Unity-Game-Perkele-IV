@@ -32,6 +32,10 @@ public class AudioManagerScript : MonoBehaviour {
 
     public AudioClip[] CrateDestroy;
 
+	public AudioClip ChestOpen;
+	public AudioClip LevelUp;
+	public AudioClip QuestCompleted;
+
 
 	// Use this for initialization
 	void Start () {
@@ -156,5 +160,20 @@ public class AudioManagerScript : MonoBehaviour {
 	public void PlayBossLaughAudio()
 	{
 		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(BossLaugh[Random.Range(0, BossLaugh.Length-1)]);
+	}
+
+	public void PlayChestOpenAudio()
+	{
+		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(ChestOpen);
+	}
+
+	public void PlayLevelUpAudio()
+	{
+		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(LevelUp);
+	}
+
+	public void PlayQuestCompletedAudio()
+	{
+		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(QuestCompleted);
 	}
 }

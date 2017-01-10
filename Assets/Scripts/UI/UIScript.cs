@@ -115,6 +115,9 @@ public class UIScript : MonoBehaviour
 	public GameObject UISkillConfigurePopupManaRequiredLabel;
 	public GameObject UISkillConfigurePopupImage;
 
+	// Conversation labels
+	public GameObject UINPCConversationLabel;
+
 	#endregion
 
 	public int AbilitiesPerRow = 3;
@@ -444,6 +447,7 @@ public class UIScript : MonoBehaviour
 			UIInventoryPanel.SetActive(false);
 			UICharacterPanel.SetActive(false);
 			UISkillConfigurePopupPanel.SetActive(false);
+			UINPCConversationPanel.SetActive(false);
 		}
         if (objectToToggle.name == "UIInventoryPanel")
         {
@@ -455,6 +459,7 @@ public class UIScript : MonoBehaviour
 			UICharacterPanel.SetActive(false);
 			UISkillConfigurePanel.SetActive(false);
 			UISkillConfigurePopupPanel.SetActive(false);
+			UINPCConversationPanel.SetActive(false);
 		}
 		if (objectToToggle.name == "UICharacterPanel")
 		{
@@ -466,6 +471,7 @@ public class UIScript : MonoBehaviour
 			UIInventoryPanel.SetActive(false);
 			UISkillConfigurePanel.SetActive(false);
 			UISkillConfigurePopupPanel.SetActive(false);
+			UINPCConversationPanel.SetActive(false);
 		}
 
 		
@@ -839,6 +845,13 @@ public class UIScript : MonoBehaviour
 	public void QuitGameButton()
 	{
 		SceneManager.LoadScene("MainMenuScene");
+	}
+
+
+	public void ShowConversationText(string text)
+	{
+		ToggleActiveInactive(UINPCConversationPanel);
+		UINPCConversationLabel.GetComponent<Text>().text = text;
 	}
 }
 
