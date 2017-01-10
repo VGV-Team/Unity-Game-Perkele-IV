@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MouseEnterScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
+public class UIMouseEventScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
+
+	public UIScript Script;
+	public AbilityScript Ability;
 
 	// Use this for initialization
 	void Start () {
@@ -17,10 +21,11 @@ public class MouseEnterScript : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
 	public void OnPointerEnter(PointerEventData eventData)
 	{
-		print("qwe");
+		print(eventData.position);
+		Script.ShowAbilityPopup(Ability);
 	}
 	public void OnPointerExit(PointerEventData eventData)
 	{
-		print("ewq");
+		Script.HideAbilityPopup();
 	}
 }

@@ -11,6 +11,7 @@ TagManager:
   - StatUpgrade
   - NPC
   - Fire
+  - Crate
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - FireLayer
   - InvisibleParticles
   - Item no collision
-  - 
+  - Invisible
   - 
   - 
   - 

@@ -362,7 +362,8 @@ public class UnitScript : EntityScript
         waypointTmp.name = "Waypoint from " + Name;
         waypointTmp.GetComponent<Renderer>().material.color = GlobalsScript.WaypointColor;
         waypointTmp.GetComponent<Collider>().enabled = false;
-        waypointTmp.transform.position = point;
+	    waypointTmp.GetComponent<MeshRenderer>().enabled = false;
+		waypointTmp.transform.position = point;
 
         this.waypoint = waypointTmp;
     }

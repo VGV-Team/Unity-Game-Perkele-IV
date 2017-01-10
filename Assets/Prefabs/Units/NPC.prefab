@@ -1262,8 +1262,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1390058414646846}
-  m_LocalRotation: {x: -0, y: 0.96641034, z: -0, w: 0.25700396}
-  m_LocalPosition: {x: 63.62, y: 0.5, z: 31.87}
+  m_LocalRotation: {x: 0.18172927, y: 0.6833553, z: 0.6833554, w: 0.18172924}
+  m_LocalPosition: {x: 49.765656, y: 76.64765, z: 100.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4936347976642710}
@@ -1966,10 +1966,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ImageToShow: {fileID: 0}
-  Name: Test NPC
+  Name: Villager
   Active: 1
   PlayerTouching: 0
   FirstConversation: 1
+  SecondConversation: 1
+  QuestTarget1: {fileID: 0}
+  QuestTarget2: {fileID: 0}
+  QuestReward1: {fileID: 0}
 --- !u!135 &135664613631710654
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2086,7 +2090,7 @@ NavMeshAgent:
   m_Radius: 0.66
   m_Speed: 3
   m_Acceleration: 9999
-  avoidancePriority: 50
+  avoidancePriority: 0
   m_AngularSpeed: 1000
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
