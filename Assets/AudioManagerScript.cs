@@ -25,6 +25,9 @@ public class AudioManagerScript : MonoBehaviour {
 
 	public AudioClip AmbientBoss;
 
+    public AudioClip[] PlayerDeath;
+    public AudioClip BossDeath;
+
 
 	// Use this for initialization
 	void Start () {
@@ -36,6 +39,17 @@ public class AudioManagerScript : MonoBehaviour {
 		
 	}
 
+    public void PlayPlayerDeathAudio()
+    {
+        //PlayerBasicAttackImpact[0].Play();
+        int r = Random.Range(0, PlayerDeath.Length);
+        GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(PlayerDeath[r]);
+    }
+
+    public void PlayBossDeathAudio()
+    {
+        GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(BossDeath);
+    }
 
     public void PlayBossTeleportAudio(AudioSource AS)
     {

@@ -152,6 +152,7 @@ public class UIScript : MonoBehaviour
 
     IEnumerator Defeat()
     {
+        AudioManager.PlayPlayerDeathAudio();
         yield return new WaitForSeconds(8.0f);
         GlobalsScript.IsPlayerAlive = true;
         //SceneManager.LoadScene("GameLostScene");
@@ -182,7 +183,8 @@ public class UIScript : MonoBehaviour
 		}
         if (GlobalsScript.IsGameOver)
         {
-            GameObject.Find("Player").GetComponent<AudioSource>().volume -= Time.deltaTime * 0.075f;
+            GameObject.Find("Player").GetComponent<AudioSource>().volume -= Time.deltaTime * 0.060f;
+            GameObject.Find("Endgame Light").GetComponent<Light>().intensity += Time.deltaTime * 0.075f;
         }
 	    if (GlobalsScript.IsGameOver == true && !once)
 	    {

@@ -73,6 +73,7 @@ public class BossScript : MonoBehaviour {
             Boss.GetComponent<UnitScript>().HPChange = 0;
             particle4.SetActive(true);
             AudioManager.PlayAmbientVictoryAudio();
+            AudioManager.PlayBossDeathAudio();
             for (int i = 0; i < SpawnedMinions.Count; i++)
             {
                 Destroy(SpawnedMinions[i]);
