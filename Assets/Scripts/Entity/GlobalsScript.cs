@@ -26,7 +26,7 @@ public enum ItemType
 
 public static class GlobalsScript{
 
-    public static int[] XPCurve = { 250, 1000, 2500, 5000, 10000, 25000, 100000 };
+    public static int[] XPCurve = { 100, 250, 600, 1300, 3000, 7000, 15000 };
 
     public static Color RarityToColor(RarityType? rarityType)
     {

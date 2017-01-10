@@ -161,14 +161,29 @@ public class AbilityScript
                 case AbilityType.FireExplosion:
                     caster.GetComponent<UnitScript>().StopMovement();
                     AbilityTypeFireExplosion(caster);
-                    break;
+
+					caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+					caster.GetComponent<UnitScript>().HP -= HPRequired;
+					caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+					TimeToReady = Cooldown;
+					break;
                 case AbilityType.Flamethrower:
                     caster.GetComponent<UnitScript>().StopMovement();
                     AbilityTypeFlamethrower(caster);
-                    break;
+
+					caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+					caster.GetComponent<UnitScript>().HP -= HPRequired;
+					caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+					TimeToReady = Cooldown;
+					break;
                 case AbilityType.Heal:
                     AbilityTypeHeal(caster);
-                    break;
+
+					caster.GetComponent<UnitScript>().Mana -= ManaRequired;
+					caster.GetComponent<UnitScript>().HP -= HPRequired;
+					caster.GetComponent<UnitScript>().Shield -= ShieldRequired;
+					TimeToReady = Cooldown;
+					break;
 
             }
 
@@ -213,7 +228,8 @@ public class AbilityScript
     private void AbilityTypeFlamethrower(GameObject caster)
     {
         AbilityTypeFlamethrowerCast(caster);
-    }
+
+	}
     private void AbilityTypeFlamethrowerCast(GameObject caster)
     {
         Debug.Log("Casting flamethrower!");
@@ -324,6 +340,7 @@ public class AbilityScript
             else shield -= (damage);
             target.GetComponent<UnitScript>().HP = hp;
             target.GetComponent<UnitScript>().Shield = shield;
+
         }
 
     }
