@@ -73,7 +73,7 @@ public class NPCScript : EntityScript
 			GameObject.Find("UI Handler").GetComponent<UIScript>().ShowConversationText("" +
 			                                                                            "NPC: Ohh reinforcements! At last we are saved! You must be a scout, tell your army to hurry up.\n" +
 			                                                                            "Player: Army? I am alone, there is noone else.\n" +
-			                                                                            "NPC: What?? So alliance has left us here to rot... " +
+			                                                                            "NPC: What?? So the alliance has left us here to rot... " +
 			                                                                            "Look...I think their leader is at the church north of here. " +
 			                                                                            "If you could somehow eradicate him from this world there might " +
 			                                                                            "be a chance in getting out alive. But be careful, he is powerful and " +

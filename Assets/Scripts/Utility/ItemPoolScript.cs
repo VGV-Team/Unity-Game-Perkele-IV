@@ -69,9 +69,9 @@ public class ItemPoolScript : MonoBehaviour {
 
         int maxItems = 0;
         int minItems = 0;
-        if (discovery < 20) { maxItems = 1; }
-        else if (discovery < 40) { maxItems = 2; }
-        else if (discovery < 50) { maxItems = 3; }
+        if (discovery < 30) { maxItems = 1; }
+        else if (discovery < 50) { maxItems = 2; }
+        else if (discovery < 60) { maxItems = 3; }
         else { maxItems = 3 + discovery / 20; minItems = 1; }
 
         //OR discovery = chance to drop until no drop
