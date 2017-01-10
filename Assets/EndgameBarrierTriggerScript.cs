@@ -32,8 +32,9 @@ public class EndgameBarrierTriggerScript : MonoBehaviour {
 
             //Trigger boss
             //GameObject.Find("Boss").GetComponent<EnemyScript>().ViewRange = 50;
-            
-            this.gameObject.SetActive(false);
+			GameObject.Find("AudioManager").GetComponent<AudioManagerScript>().PlayAmbientBossAudio();
+
+			this.gameObject.SetActive(false);
         }
     }
 }

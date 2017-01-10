@@ -6678,7 +6678,7 @@ Transform:
   m_Children:
   - {fileID: 4483256753622190}
   m_Father: {fileID: 4901164575036286}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4862887627942884
 Transform:
@@ -6745,8 +6745,8 @@ Transform:
   - {fileID: 4380642330799462}
   - {fileID: 4890166636822548}
   - {fileID: 224980370174504088}
-  - {fileID: 4956165107297806}
   - {fileID: 4817124033068388}
+  - {fileID: 4956165107297806}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6776,7 +6776,7 @@ Transform:
   - {fileID: 4723795648725742}
   - {fileID: 4812693854615108}
   m_Father: {fileID: 4901164575036286}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &82469544712889042
 AudioSource:

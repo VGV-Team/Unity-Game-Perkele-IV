@@ -23,6 +23,9 @@ public class AudioManagerScript : MonoBehaviour {
 
     public AudioClip BossTeleport;
 
+	public AudioClip AmbientBoss;
+
+
 	// Use this for initialization
 	void Start () {
         //PlayAmbientDefaultAudio(GameObject.Find("Player").GetComponent<AudioSource>());
@@ -120,4 +123,9 @@ public class AudioManagerScript : MonoBehaviour {
     {
         AS.PlayOneShot(UIButtonPress);
     }
+
+	public void PlayAmbientBossAudio()
+	{
+		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(AmbientBoss);
+	}
 }

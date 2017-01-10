@@ -168,8 +168,9 @@ public class UIScript : MonoBehaviour
 
             once = true;
             AudioManager.PlayAmbientDefeatAudio();
-            StartCoroutine(Defeat());
 			GameObject.Find("UI").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = false;
+			StartCoroutine(Defeat());
+			
 
 		}
 	    if (GlobalsScript.IsGameOver == true && !once)
@@ -405,20 +406,11 @@ public class UIScript : MonoBehaviour
 	public void ShowGameWonScreen()
 	{
 		SceneManager.LoadScene("GameWonScene");
-		GlobalsScript.IsGameOver = false;
-		GlobalsScript.IsPlayerAlive = true;
-		GameObject.Find("UIGameWon").transform.FindChild("EventSystem").GetComponent<EventSystem>().enabled = true;
-		GameObject.Find("UIGameWon").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = true;
 	}
 
 	public void ShowGameLostScreen()
 	{
 		SceneManager.LoadScene("GameLostScene");
-		print("lost");
-		GlobalsScript.IsGameOver = false;
-		GlobalsScript.IsPlayerAlive = true;
-		GameObject.Find("UIGameLost").transform.FindChild("EventSystem").GetComponent<EventSystem>().enabled = true;
-		GameObject.Find("UIGameLost").transform.FindChild("Canvas").GetComponent<Canvas>().enabled = true;
 	}
 
 
