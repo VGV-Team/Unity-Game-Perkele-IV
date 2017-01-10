@@ -98,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1378581875785134}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 53.02, y: -9.85, z: 8.855484}
+  m_LocalPosition: {x: 260.2375, y: 100.25, z: 91.806656}
   m_LocalScale: {x: 2.268272, y: 2.268262, z: 2.26825}
   m_Children:
   - {fileID: 4157399108981406}
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6ca98b119d3b1248bfe5640f4220b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImageToShow: {fileID: 21300000, guid: 95f9a996221921d48aea8f5090d2b2b8, type: 3}
+  ImageToShow: {fileID: 21300000, guid: d883dc4c00b1e404e85c664e4100a56c, type: 3}
   Name: Wooden Shield
   Active: 1
   PlayerTouching: 0
