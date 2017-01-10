@@ -59,7 +59,7 @@ public abstract class EntityScript : MonoBehaviour
     {
         if (collider.tag == "Player")
         {
-            Debug.Log("JZ SM" + this.name);
+            //Debug.Log("JZ SM" + this.name);
             PlayerTouching = true;
         }
     }

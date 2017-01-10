@@ -37,25 +37,25 @@ public class InputHandlerScript : MonoBehaviour
     {
         if (Input.GetKeyDown("1"))
         {
-            Debug.Log("1");
+            //Debug.Log("1");
 	        GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(0);
 			//AbilityUse(1);
         }
         if (Input.GetKeyDown("2"))
         {
-            Debug.Log("2");
+            //Debug.Log("2");
 			GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(1);
 			//AbilityUse(2);
         }
         if (Input.GetKeyDown("3"))
         {
-            Debug.Log("3");
+            //Debug.Log("3");
 			GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(2);
 			//AbilityUse(3);
 		}
         if (Input.GetKeyDown("4"))
         {
-            Debug.Log("4");
+            //Debug.Log("4");
 			GameObject.Find("UI Handler").GetComponent<UIScript>().AbilityButtonClick(3);
 			//AbilityUse(4);
         }
@@ -63,17 +63,17 @@ public class InputHandlerScript : MonoBehaviour
 
 		if (Input.GetKeyDown("i"))
 		{
-			Debug.Log("i");
+			//Debug.Log("i");
 			GameObject.Find("UI Handler").GetComponent<UIScript>().ToggleActiveInactive(GameObject.Find("UI Handler").GetComponent<UIScript>().UIInventoryPanel);
 		}
 		if (Input.GetKeyDown("c"))
 		{
-			Debug.Log("c");
+			//Debug.Log("c");
 			GameObject.Find("UI Handler").GetComponent<UIScript>().ToggleActiveInactive(GameObject.Find("UI Handler").GetComponent<UIScript>().UICharacterPanel);
 		}
 		if (Input.GetKeyDown("a"))
 		{
-			Debug.Log("a");
+			//Debug.Log("a");
 			GameObject.Find("UI Handler").GetComponent<UIScript>().ToggleActiveInactive(GameObject.Find("UI Handler").GetComponent<UIScript>().UISkillConfigurePanel);
 		}
 
@@ -132,7 +132,7 @@ public class InputHandlerScript : MonoBehaviour
             if (HoveredObject != null)
             {
                 PlayerWaypointScript.SetWaypoint(HoveredObject);
-                print("Moving to object!");
+                //print("Moving to object!");
                 //SetWaypoint(mouseOverObject.transform.position);
                 //Destination = HoveredObject.transform.position;
                 //return;
@@ -154,25 +154,25 @@ public class InputHandlerScript : MonoBehaviour
                         PlayerWaypointScript.MoveTo(hit);
                         //MoveTo(hit);
                         //Destination = hit.point;
-                        print("Terrain");
+                        //print("Terrain");
                         break;
                     case "Chest":
-                        print("CHEST");
+                        //print("CHEST");
                         // Testing
                         //hit.transform.GetComponent<ChestScript>().OpenChest();
                         break;
                     case "Item":
-                        print("ITEM");
+                        //print("ITEM");
                         //PlayerWaypointScript.PickUpItem(hit.transform);
                         break;
 					case "NPC":
-						print("NPC");
+						//print("NPC");
 		                break;
                     case "Enemy":
                         GameObject.Find("Player").GetComponent<PlayerScript>().basicAttackClick = true;
                         break;
                     default:
-                        print("Not terrain or chest");
+                        //print("Not terrain or chest");
                         break;
                 }
             }

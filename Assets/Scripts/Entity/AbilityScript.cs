@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -199,7 +200,7 @@ public class AbilityScript
 
     public void AbilityImpact(GameObject caster, GameObject target)
     {
-        Debug.Log(Name);
+        //Debug.Log(Name);
         switch (Type)
         {
             case AbilityType.BasicAttack:
@@ -307,34 +308,36 @@ public class AbilityScript
                 {
                     if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                         target.GetComponent<CrateScript>().DestroyCrate();
-                    else
-                    {
-                        caster.GetComponent<UnitScript>().Target = null;
-                        target.GetComponent<UnitScript>().Active = false;
-                        target.GetComponent<UnitScript>().Die();
+
+	                if (Check(target)) hp = 1;
+	                else
+	                {
+		                caster.GetComponent<UnitScript>().Target = null;
+		                //target.GetComponent<UnitScript>().Active = false;
+		                target.GetComponent<UnitScript>().Die();
 
 
 
-                        // Loot drops and XP
-                        if (caster.tag == "Player")
-                        {
+		                // Loot drops and XP
+		                if (caster.tag == "Player")
+		                {
 
-                            // Give XP to caster
-                            caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
-
-
-
-                            GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
-                                caster,
-                                0,
-                                rareChance,
-                                legendaryChance,
-                                epicChance,
-                                target.transform);
-                         }
+			                // Give XP to caster
+			                caster.GetComponent<UnitScript>().Xp += target.GetComponent<UnitScript>().XPWorth;
 
 
-                    }
+
+			                GameObject.Find("ItemPool").GetComponent<ItemPoolScript>().LootDrop(
+				                caster,
+				                0,
+				                rareChance,
+				                legendaryChance,
+				                epicChance,
+				                target.transform);
+		                }
+
+
+	                }
                 }
             }
             else shield -= (damage);
@@ -401,10 +404,12 @@ public class AbilityScript
                     {
                         if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                             target.GetComponent<CrateScript>().DestroyCrate();
-                        else
+
+						if (Check(target)) hp = 1;
+						else
                         {
                             caster.GetComponent<UnitScript>().Target = null;
-                            target.GetComponent<UnitScript>().Active = false;
+                            //target.GetComponent<UnitScript>().Active = false;
                             target.GetComponent<UnitScript>().Die();
 
 
@@ -444,7 +449,7 @@ public class AbilityScript
     }
     private void AbilityTypeFireballCast(GameObject caster)
     {
-        Debug.Log("Casting fireball!");
+        //Debug.Log("Casting fireball!");
 
         Vector3 targetPosition, sourcePosition;
         GameObject fireball;
@@ -529,10 +534,13 @@ public class AbilityScript
                 {
                     if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                         target.GetComponent<CrateScript>().DestroyCrate();
-                    else
+
+					if (Check(target)) hp = 1;
+					else
                     {
-                        caster.GetComponent<UnitScript>().Target = null;
-                        target.GetComponent<UnitScript>().Active = false;
+
+						caster.GetComponent<UnitScript>().Target = null;
+                        //target.GetComponent<UnitScript>().Active = false;
                         target.GetComponent<UnitScript>().Die();
                         // Loot drops and XP
                         if (caster.tag == "Player")
@@ -577,7 +585,7 @@ public class AbilityScript
         if (Vector3.Distance(caster.transform.position, target.transform.position) > Range)
         {
             // Target too far away - miss
-            Debug.Log(caster.name + ": Basic attack MISS!");
+            //Debug.Log(caster.name + ": Basic attack MISS!");
             return;
         }
 
@@ -630,10 +638,12 @@ public class AbilityScript
             {
                 if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                     target.GetComponent<CrateScript>().DestroyCrate();
-                else
+
+				if (Check(target)) hp = 1;
+				else
                 { 
                     caster.GetComponent<UnitScript>().Target = null;
-                    target.GetComponent<UnitScript>().Active = false;
+                    //target.GetComponent<UnitScript>().Active = false;
                     target.GetComponent<UnitScript>().Die();
 
 
@@ -684,11 +694,14 @@ public class AbilityScript
             {
                 if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                     target.GetComponent<CrateScript>().DestroyCrate();
-                else
+
+				if (Check(target)) hp = 1;
+				else
                 {
-                    caster.GetComponent<UnitScript>().Target = null;
-                    target.GetComponent<UnitScript>().Active = false;
-                    target.GetComponent<UnitScript>().StartDeathAnimation();
+						caster.GetComponent<UnitScript>().Target = null;
+						//target.GetComponent<UnitScript>().Active = false;
+						target.GetComponent<UnitScript>().Die();
+						//target.GetComponent<UnitScript>().StartDeathAnimation();
                 }
             }
         }
@@ -721,4 +734,20 @@ public class AbilityScript
 
     }
 
+	private bool Check(GameObject target)
+	{
+		if (target == GameObject.Find("Boss") && 
+			GameObject.Find("Boss").GetComponent<BossScript>().SpecialAmulet != null &&
+		    GameObject.Find("Player").GetComponent<UnitScript>().EquippedItems.AmuletSlot !=
+		    GameObject.Find("Boss").GetComponent<BossScript>().SpecialAmulet)
+		{
+			GameObject.Find("Boss").GetComponent<UnitScript>().HP = 1;
+			AudioManager.PlayBossLaughAudio();
+			return true;
+		}
+		else return false;
+	}
 }
+
+
+

@@ -6,8 +6,9 @@ public class AudioManagerScript : MonoBehaviour {
     public AudioClip[] PlayerBasicAttackImpact;
     public AudioClip[] PlayerGetHitImpact;
     public AudioClip[] EnemyBasicAttackImpact;
+	
 
-    public AudioClip[] PlayerFootsteps;
+	public AudioClip[] PlayerFootsteps;
 
     public AudioClip PlayerHeal;
 
@@ -27,6 +28,7 @@ public class AudioManagerScript : MonoBehaviour {
 
     public AudioClip[] PlayerDeath;
     public AudioClip BossDeath;
+	public AudioClip[] BossLaugh;
 
 
 	// Use this for initialization
@@ -141,5 +143,10 @@ public class AudioManagerScript : MonoBehaviour {
 	public void PlayAmbientBossAudio()
 	{
 		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(AmbientBoss);
+	}
+
+	public void PlayBossLaughAudio()
+	{
+		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(BossLaugh[Random.Range(0, BossLaugh.Length-1)]);
 	}
 }

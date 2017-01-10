@@ -19,7 +19,7 @@ public class EndgameBarrierTriggerScript : MonoBehaviour {
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("ENDGAME BARRIER TRIGGER!");
+            //Debug.Log("ENDGAME BARRIER TRIGGER!");
             GameObject barrier = GameObject.Find("EndgameBarrier");
             Transform[] t = barrier.GetComponentsInChildren<Transform>();
             for (int i = 0; i < t.Length; i++)

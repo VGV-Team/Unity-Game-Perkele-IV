@@ -107,7 +107,7 @@ public class EnemyScript : UnitScript
                     {
                         if (MeleeAttack && ability.Type != AbilityType.BasicAttack) continue;
                         if (RangedAttack && ability.Type != AbilityType.Fireball) continue;
-                        Debug.Log(ability.Name + " " + distance);
+                        //Debug.Log(ability.Name + " " + distance);
                         ok = true;
                         if (ability.Type == AbilityType.BasicAttack)
                         {
@@ -139,7 +139,7 @@ public class EnemyScript : UnitScript
             {
                 if (CheckVisibility())
                 {
-                    Debug.Log("***********************************");
+                    //Debug.Log("***********************************");
                     //SetWaypoint(GameObject.Find("Player"));
                     Target = GameObject.Find("Player");
                 }

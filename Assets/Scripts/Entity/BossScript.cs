@@ -18,6 +18,8 @@ public class BossScript : MonoBehaviour {
 
     List<GameObject> SpawnedMinions;
 
+	public GameObject SpecialAmulet;
+
     private AudioManagerScript AudioManager;
 
     GameObject particle4;
@@ -69,18 +71,18 @@ public class BossScript : MonoBehaviour {
 		
         if (!dead && Boss.GetComponent<UnitScript>().HP <= 0)
         {
-            dead = true;
-            Boss.GetComponent<UnitScript>().HPChange = 0;
-            particle4.SetActive(true);
-            AudioManager.PlayAmbientVictoryAudio();
-            AudioManager.PlayBossDeathAudio();
-            for (int i = 0; i < SpawnedMinions.Count; i++)
-            {
-                Destroy(SpawnedMinions[i]);
-            }
-            StartCoroutine(BossDead());
-            
-        }
+			print("ewqeqwewqqewqw" + Boss.GetComponent<UnitScript>().HP);
+			dead = true;
+			Boss.GetComponent<UnitScript>().HPChange = 0;
+			particle4.SetActive(true);
+			AudioManager.PlayAmbientVictoryAudio();
+			AudioManager.PlayBossDeathAudio();
+			for (int i = 0; i < SpawnedMinions.Count; i++)
+			{
+				Destroy(SpawnedMinions[i]);
+			}
+			StartCoroutine(BossDead());
+		}
 
         if (Phase == 1)
         {
