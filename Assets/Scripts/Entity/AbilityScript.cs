@@ -307,7 +307,7 @@ public class AbilityScript
                 if (hp <= 0)
                 {
                     if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
-                        target.GetComponent<CrateScript>().DestroyCrate();
+                        target.GetComponent<CrateScript>().DestroyCrate(caster);
 
 	                if (Check(target)) hp = 1;
 	                else
@@ -403,7 +403,7 @@ public class AbilityScript
                     if (hp <= 0)
                     {
                         if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
-                            target.GetComponent<CrateScript>().DestroyCrate();
+                            target.GetComponent<CrateScript>().DestroyCrate(caster);
 
 						if (Check(target)) hp = 1;
 						else
@@ -533,7 +533,7 @@ public class AbilityScript
                 if (hp <= 0)
                 {
                     if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
-                        target.GetComponent<CrateScript>().DestroyCrate();
+                        target.GetComponent<CrateScript>().DestroyCrate(caster);
 
 					if (Check(target)) hp = 1;
 					else
@@ -637,7 +637,7 @@ public class AbilityScript
             if (hp <= 0)
             {
                 if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
-                    target.GetComponent<CrateScript>().DestroyCrate();
+                    target.GetComponent<CrateScript>().DestroyCrate(caster);
 
 				if (Check(target)) hp = 1;
 				else
@@ -693,7 +693,7 @@ public class AbilityScript
             if (hp <= 0)
             {
                 if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
-                    target.GetComponent<CrateScript>().DestroyCrate();
+                    target.GetComponent<CrateScript>().DestroyCrate(caster);
 
 				if (Check(target)) hp = 1;
 				else

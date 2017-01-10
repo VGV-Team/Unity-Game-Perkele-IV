@@ -167,7 +167,7 @@ public class EnemyScript : UnitScript
         //Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, 2.0f, 0.0f) - this.transform.position).normalized, out hit, 100, layerMask);
 
         Vector3 origin = this.transform.position + new Vector3(0, 0.5f, 0);
-        Vector3 direction = Player.transform.position + new Vector3(0, 0.5f, 0) - origin;
+        //Vector3 direction = Player.transform.position + new Vector3(0, 0.5f, 0) - origin;
         Physics.Raycast(this.transform.position + new Vector3(0.0f, 0.1f, 0.0f), (Player.transform.position + new Vector3(0.0f, 2.0f, 0.0f) - this.transform.position).normalized, out hit, 100, layerMask);
 
         if (hit.collider!=null && hit.collider.gameObject.tag.Equals("Player"))
