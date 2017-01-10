@@ -3298,10 +3298,10 @@ Transform:
   m_Children:
   - {fileID: 405602892}
   - {fileID: 1042586453}
-  - {fileID: 1206184996}
   - {fileID: 820005334}
   - {fileID: 1261602234}
   - {fileID: 211549303}
+  - {fileID: 1206184996}
   - {fileID: 1020886272}
   - {fileID: 1267210765}
   - {fileID: 1777659231}
@@ -5189,7 +5189,7 @@ Prefab:
     - target: {fileID: 224507067478318368, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -42.5
       objectReference: {fileID: 0}
     - target: {fileID: 224698247986401534, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}
@@ -5209,7 +5209,7 @@ Prefab:
     - target: {fileID: 224698247986401534, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -82.5
       objectReference: {fileID: 0}
     - target: {fileID: 114738891625870212, guid: ad9154d1a9056b34d88085e7563d1958,
         type: 2}

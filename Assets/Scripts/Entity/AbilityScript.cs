@@ -305,7 +305,7 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    if (target.name == "Crate" || target.name=="Barrel")
+                    if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                         target.GetComponent<CrateScript>().DestroyCrate();
                     else
                     {
@@ -399,7 +399,7 @@ public class AbilityScript
                     shield = 0;
                     if (hp <= 0)
                     {
-                        if (target.name == "Crate" || target.name == "Barrel")
+                        if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                             target.GetComponent<CrateScript>().DestroyCrate();
                         else
                         {
@@ -527,7 +527,7 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    if (target.name == "Crate" || target.name == "Barrel")
+                    if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                         target.GetComponent<CrateScript>().DestroyCrate();
                     else
                     {
@@ -612,7 +612,7 @@ public class AbilityScript
         if (criticalChance > r) damage *= 2;
 
         //Play audio
-        if (target.tag == "Enemy")
+        if (target.tag == "Enemy" && target.GetComponent<UnitScript>().Name != "Crate" && target.GetComponent<UnitScript>().Name != "Barrel")
         {
             AudioManager.PlayPlayerBasicAttackImpact(target.GetComponent<AudioSource>());
         }
@@ -628,7 +628,7 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
-                if (target.name == "Crate" || target.name == "Barrel")
+                if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                     target.GetComponent<CrateScript>().DestroyCrate();
                 else
                 { 
@@ -682,7 +682,7 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
-                if (target.name == "Crate" || target.name == "Barrel")
+                if (target.GetComponent<UnitScript>().Name == "Crate" || target.GetComponent<UnitScript>().Name == "Barrel")
                     target.GetComponent<CrateScript>().DestroyCrate();
                 else
                 {
