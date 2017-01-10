@@ -28,6 +28,8 @@ public class AudioManagerScript : MonoBehaviour {
     public AudioClip[] PlayerDeath;
     public AudioClip BossDeath;
 
+    public AudioClip[] CrateDestroy;
+
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +40,12 @@ public class AudioManagerScript : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void PlayCrateDestroyAudio()
+    {
+        int r = Random.Range(0, CrateDestroy.Length);
+        GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(CrateDestroy[r]);
+    }
 
     public void PlayPlayerDeathAudio()
     {
