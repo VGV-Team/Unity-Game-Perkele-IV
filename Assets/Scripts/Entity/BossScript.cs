@@ -51,12 +51,16 @@ public class BossScript : MonoBehaviour {
     {
         yield return new WaitForSeconds(7.0f);
         AudioManager.PlayBossTeleportAudio(GameObject.Find("Player").GetComponent<AudioSource>());
-       
+
         //GameObject.Find("Main Camera").GetComponent<MainCameraScript>().EndGame();
 
-        GlobalsScript.IsGameOver = true;
 
+        //yield return new WaitForSeconds(1.0f);
+
+        GlobalsScript.IsGameOver = true;
         this.gameObject.SetActive(false);
+
+        
         
     }
 
@@ -158,6 +162,7 @@ public class BossScript : MonoBehaviour {
                 //TODO: SOUND EFFECT
                 AudioManager.PlayBossTeleportAudio(this.GetComponent<AudioSource>());
 
+                ES.StopMovement();
                 ES.StartHealAnimation();
 
                 //Teleport

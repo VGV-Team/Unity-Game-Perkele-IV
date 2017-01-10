@@ -17,7 +17,7 @@ public class PlayerScript : UnitScript
     new void Start ()
 	{
 	    base.Start();
-        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 2, -10, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
+        Abilities.Add(new AbilityScript("Basic Attack", AbilityType.BasicAttack, 1, -10, 0, 3, 5, GameObject.Find("UISpritesBasicAttack").transform.GetComponent<SpriteRenderer>().sprite));
 		Abilities.LastOrDefault().Description = "Exceptionally magnificent skill that owns everything";
 		Abilities.Add(new AbilityScript("Heal", AbilityType.Heal, 10, 0, 25, 0, 50, GameObject.Find("UISpritesHeal").transform.GetComponent<SpriteRenderer>().sprite));
 		Abilities.LastOrDefault().Description = "Magnificent heal for magnificent owner";
