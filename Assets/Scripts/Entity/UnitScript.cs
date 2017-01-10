@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
-
+using UnityStandardAssets.Characters.ThirdPerson;
 
 
 public class UnitScript : EntityScript
@@ -103,7 +103,7 @@ public class UnitScript : EntityScript
         {
             int overheadXP = Xp - MaxXp;
 
-            Debug.Log("LEVEL UP!");
+            //Debug.Log("LEVEL UP!");
 
             if (Level >= GlobalsScript.XPCurve.Length)
             {
@@ -291,17 +291,17 @@ public class UnitScript : EntityScript
 
     public void Die()
     {
-        StartDeathAnimation();
-        this.GetComponent<NavMeshAgent>().enabled = false;
-        this.GetComponent<Collider>().enabled = false;
-        this.transform.FindChild("Minimap Marker").gameObject.SetActive(false);
-        if (waypoint) Destroy(waypoint);
+		this.GetComponent<UnitScript>().Active = false;
+		StartDeathAnimation();
+		this.GetComponent<NavMeshAgent>().enabled = false;
+		this.GetComponent<Collider>().enabled = false;
+		this.transform.FindChild("Minimap Marker").gameObject.SetActive(false);
+		if (waypoint) Destroy(waypoint);
 
-	    if (this.gameObject.tag == "Player")
-	    {
-		    GlobalsScript.IsPlayerAlive = false;
-	    }
-
+		if (this.gameObject.tag == "Player")
+		{
+			GlobalsScript.IsPlayerAlive = false;
+		}
     }
 
     public void StartBasicAttackAnimation(float attackCooldown = -1)

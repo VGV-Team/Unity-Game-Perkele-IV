@@ -57,7 +57,7 @@ public class PlayerScript : UnitScript
             agent.CalculatePath(waypoint.transform.position, path);
             if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
             {
-                Debug.Log("Out of bounds!");
+                //Debug.Log("Out of bounds!");
                 //if waypoint not reachable, stop
                 StopMovement();
             }
@@ -72,7 +72,7 @@ public class PlayerScript : UnitScript
         {
 
             float distance = Vector3.Distance(this.transform.position, Target.transform.position);
-            Debug.Log(Target.tag); 
+            //Debug.Log(Target.tag); 
             switch (Target.tag)
             {
                 case "Enemy":
@@ -83,7 +83,7 @@ public class PlayerScript : UnitScript
                         {
                             Destroy(waypoint);
                             waypoint = null;
-                            Debug.Log(attackAnimEnd);
+                            //Debug.Log(attackAnimEnd);
                             if (ability.Use(this.gameObject, Target))
                             {
                                 basicAttackClick = false;
@@ -91,7 +91,7 @@ public class PlayerScript : UnitScript
                             }
                             else if (ability.TimeToReady > 0 && basicAttackClick)
                             {
-                                Debug.Log("STOPPING");
+                                //Debug.Log("STOPPING");
                                 StopMovement();
                             }
 
@@ -115,7 +115,7 @@ public class PlayerScript : UnitScript
                     DestroyCrate(Target);
                     break;*/
                 default:
-                    Debug.Log("DEFAULT playerscript switch");
+                    //Debug.Log("DEFAULT playerscript switch");
                     break;
 
             }

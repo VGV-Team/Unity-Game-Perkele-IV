@@ -3511,7 +3511,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -3566,7 +3566,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3600,7 +3600,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3634,7 +3634,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3668,7 +3668,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3702,7 +3702,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3736,7 +3736,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3879,7 +3879,7 @@ MonoBehaviour:
   AttackSpeed: 100
   CriticalChance: 20
   Discovery: 0
-  MovementSpeed: 800
+  MovementSpeed: 1100
   Level: 1
   Xp: 0
   MaxXp: 50
@@ -3887,11 +3887,11 @@ MonoBehaviour:
   Scrap: 0
   Gold: 0
   AbilityPoints: 0
-  FallbackDistance: 6
+  FallbackDistance: 0
   Target: {fileID: 0}
   InventoryItemsList: []
   waypoint: {fileID: 0}
-  ViewRange: 15
+  ViewRange: 20
   MeleeAttack: 0
   RangedAttack: 0
   Necromancer: 0
@@ -3907,6 +3907,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Necromancer: 0
+  SpecialAmulet: {fileID: 0}
 --- !u!114 &114435740360875762
 MonoBehaviour:
   m_ObjectHideFlags: 1

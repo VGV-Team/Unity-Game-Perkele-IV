@@ -16,7 +16,7 @@ public class AnimationEventReceiverScript : MonoBehaviour {
 
     void AnimationEventFunction(AnimationEvent e)
     {
-        Debug.Log(this.transform.parent.name + "HAS RECIEVED ANIM EVENT " + e.stringParameter);
+        //Debug.Log(this.transform.parent.name + "HAS RECIEVED ANIM EVENT " + e.stringParameter);
         transform.parent.GetComponent<UnitScript>().AnimationEventFunctionRelay(e.stringParameter);
     }
 }

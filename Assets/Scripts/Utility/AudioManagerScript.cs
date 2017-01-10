@@ -6,8 +6,9 @@ public class AudioManagerScript : MonoBehaviour {
     public AudioClip[] PlayerBasicAttackImpact;
     public AudioClip[] PlayerGetHitImpact;
     public AudioClip[] EnemyBasicAttackImpact;
+	
 
-    public AudioClip[] PlayerFootsteps;
+	public AudioClip[] PlayerFootsteps;
 
     public AudioClip PlayerHeal;
 
@@ -27,6 +28,9 @@ public class AudioManagerScript : MonoBehaviour {
 
     public AudioClip[] PlayerDeath;
     public AudioClip BossDeath;
+	public AudioClip[] BossLaugh;
+
+    public AudioClip[] CrateDestroy;
 
 
 	// Use this for initialization
@@ -38,6 +42,12 @@ public class AudioManagerScript : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void PlayCrateDestroyAudio()
+    {
+        int r = Random.Range(0, CrateDestroy.Length);
+        GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(CrateDestroy[r]);
+    }
 
     public void PlayPlayerDeathAudio()
     {
@@ -141,5 +151,10 @@ public class AudioManagerScript : MonoBehaviour {
 	public void PlayAmbientBossAudio()
 	{
 		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(AmbientBoss);
+	}
+
+	public void PlayBossLaughAudio()
+	{
+		GameObject.Find("Player").GetComponent<AudioSource>().PlayOneShot(BossLaugh[Random.Range(0, BossLaugh.Length-1)]);
 	}
 }
