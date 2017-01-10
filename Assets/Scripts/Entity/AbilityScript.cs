@@ -269,7 +269,7 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    if (target.name == "Crate")
+                    if (target.name == "Crate" || target.name=="Barrel")
                         target.GetComponent<CrateScript>().DestroyCrate();
                     else
                     {
@@ -361,7 +361,7 @@ public class AbilityScript
                     shield = 0;
                     if (hp <= 0)
                     {
-                        if (target.name == "Crate")
+                        if (target.name == "Crate" || target.name == "Barrel")
                             target.GetComponent<CrateScript>().DestroyCrate();
                         else
                         {
@@ -488,7 +488,7 @@ public class AbilityScript
                 shield = 0;
                 if (hp <= 0)
                 {
-                    if (target.name == "Crate")
+                    if (target.name == "Crate" || target.name == "Barrel")
                         target.GetComponent<CrateScript>().DestroyCrate();
                     else
                     {
@@ -579,7 +579,7 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
-                if (target.name == "Crate")
+                if (target.name == "Crate" || target.name == "Barrel")
                     target.GetComponent<CrateScript>().DestroyCrate();
                 else
                 { 
@@ -632,7 +632,7 @@ public class AbilityScript
             shield = 0;
             if (hp <= 0)
             {
-                if (target.name == "Crate")
+                if (target.name == "Crate" || target.name == "Barrel")
                     target.GetComponent<CrateScript>().DestroyCrate();
                 else
                 {

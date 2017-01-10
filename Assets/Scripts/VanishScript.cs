@@ -17,7 +17,7 @@ public class VanishScript : MonoBehaviour {
 
     IEnumerator Wait()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(2);
         Destroy(gameObject);
     }
 }
