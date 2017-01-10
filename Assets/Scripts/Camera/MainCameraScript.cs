@@ -71,7 +71,11 @@ public class MainCameraScript : MonoBehaviour
 
     IEnumerator ChangeScene()
     {
-        yield return new WaitForSeconds(14.0f);
+        yield return new WaitForSeconds(16.0f);
+        this.GetComponent<Camera>().cullingMask = 0;
+        this.GetComponent<Camera>().clearFlags = CameraClearFlags.SolidColor;
+        yield return new WaitForSeconds(2.0f);
+
         // GOTO VICTORY SCENE
         GlobalsScript.IsGameOver = false;
 		GameObject.Find("UI").transform.FindChild("UI Handler").GetComponent<UIScript>().ShowGameWonScreen();

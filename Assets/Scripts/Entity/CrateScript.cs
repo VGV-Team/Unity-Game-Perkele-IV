@@ -18,6 +18,7 @@ public class CrateScript : EntityScript {
 
     public void DestroyCrate()
     {
+        Debug.Log("qwe");
         Instantiate(remains, transform.position, transform.rotation);
         this.GetComponent<EntityScript>().Active = false;
         this.GetComponent<Collider>().enabled = false;
