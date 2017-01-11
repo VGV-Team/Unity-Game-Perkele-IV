@@ -40,7 +40,7 @@ public class NPCScript : EntityScript
 			"He is there. At the church. Looking at the bones. Using them. Find him. Kill him.",
 			true,
 			false,
-			QuestTarget1
+			QuestTarget2
 		));
 
 		questList.Add(new QuestScript(
@@ -49,7 +49,7 @@ public class NPCScript : EntityScript
 			"His minions are strong. Killing their leaders will make them weaker.",
 			true,
 			false,
-			QuestTarget2
+			QuestTarget1
 		));
 	}
 

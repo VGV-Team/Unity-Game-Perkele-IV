@@ -401,6 +401,7 @@ public class UIScript : MonoBehaviour
 			questRow.transform.FindChild("Image").GetComponent<Image>().overrideSprite = UISpritesCheckboxUnchecked.transform.GetComponent<SpriteRenderer>().sprite; // finished quest image
 			questRow.transform.FindChild("Text").GetComponent<Text>().text = quest.Title + "\nReturn to NPC to finish quest.";
 			questRow.transform.FindChild("Text").GetComponent<Text>().fontStyle = FontStyle.Italic;
+            print(quest.Title + " " + quest.Target.GetComponent<UnitScript>().Name);
 		}
 
 		foreach (var quest in ActivePlayer.QuestList.FindAll(q => q.Received && q.Completed).ToList())
