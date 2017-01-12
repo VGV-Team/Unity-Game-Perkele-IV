@@ -1843,11 +1843,11 @@ MonoBehaviour:
   Name: Skeleton Mage
   Active: 1
   PlayerTouching: 0
-  MaxHP: 20
-  HP: 20
+  MaxHP: 50
+  HP: 50
   HPChange: 0
-  MaxShield: 100
-  Shield: 100
+  MaxShield: 150
+  Shield: 150
   ShieldChange: 1
   MaxFury: 20
   Fury: 0

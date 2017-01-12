@@ -3862,8 +3862,8 @@ MonoBehaviour:
   Name: Skeleton King
   Active: 1
   PlayerTouching: 0
-  MaxHP: 300
-  HP: 300
+  MaxHP: 2000
+  HP: 2000
   HPChange: 1
   MaxShield: 0
   Shield: 0

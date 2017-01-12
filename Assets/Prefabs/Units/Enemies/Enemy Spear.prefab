@@ -1567,8 +1567,8 @@ MonoBehaviour:
   Name: Skeleton Fighter
   Active: 1
   PlayerTouching: 0
-  MaxHP: 100
-  HP: 100
+  MaxHP: 150
+  HP: 150
   HPChange: 0.5
   MaxShield: 0
   Shield: 0

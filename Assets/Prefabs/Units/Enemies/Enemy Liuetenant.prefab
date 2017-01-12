@@ -1750,8 +1750,8 @@ MonoBehaviour:
   Name: Skeleton Lieutenant
   Active: 1
   PlayerTouching: 0
-  MaxHP: 100
-  HP: 100
+  MaxHP: 250
+  HP: 250
   HPChange: 0.75
   MaxShield: 5
   Shield: 0

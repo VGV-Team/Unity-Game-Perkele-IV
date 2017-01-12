@@ -201,7 +201,7 @@ public class BossScript : MonoBehaviour {
             newUnit.transform.position = Boss.transform.position + new Vector3(-2.0f, 5.0f, -2.0f);
             SpawnedMinions.Add(newUnit);
 
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(7);
 
             StartCoroutine(NecromancerAbility());
         }

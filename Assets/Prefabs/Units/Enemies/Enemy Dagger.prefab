@@ -1483,8 +1483,8 @@ MonoBehaviour:
   Name: Skeleton Construct
   Active: 1
   PlayerTouching: 0
-  MaxHP: 50
-  HP: 50
+  MaxHP: 100
+  HP: 100
   HPChange: 0
   MaxShield: 0
   Shield: 0

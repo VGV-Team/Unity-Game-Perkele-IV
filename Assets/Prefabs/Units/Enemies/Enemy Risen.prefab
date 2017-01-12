@@ -1483,8 +1483,8 @@ MonoBehaviour:
   Name: Risen Skeleton
   Active: 1
   PlayerTouching: 0
-  MaxHP: 20
-  HP: 20
+  MaxHP: 100
+  HP: 100
   HPChange: 2
   MaxShield: 0
   Shield: 0
